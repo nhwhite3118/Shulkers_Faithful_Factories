@@ -2,6 +2,8 @@ package com.nhwhite3118.cobbler;
 
 import java.util.Random;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
@@ -17,7 +19,7 @@ public final class ForgeEventSubscriber {
 	@SubscribeEvent
     public static void onUseBonemeal(BonemealEvent event) {
 		Random rand = new Random();
-		if(rand.nextFloat() > 0.05) {
+		if(rand.nextFloat() > 0.15) {
 			return;
 		}
 		World world = event.getWorld();
@@ -29,18 +31,21 @@ public final class ForgeEventSubscriber {
 		int x = event.getPos().getX();
 		int y = event.getPos().getY();
 		int z = event.getPos().getZ();
-		int xOffset = rand.nextInt(6) - 3;
-		int zOffset = rand.nextInt(6) - 3;
+		int xOffset = rand.nextInt(7) - 3;
+		int zOffset = rand.nextInt(7) - 3;
+		int yOffset = rand.nextInt(3) - 1;
 		//Placing a sapling over the event block will cause the default bonemeal listener to do nothing.
-		if(xOffset == 0 && zOffset == 0) {
+		if(xOffset == 0 && zOffset == 0 && yOffset == 0) {
 			return;
 		}
-		BlockPos potentialTree = new BlockPos(x + xOffset,y+1,z + zOffset);
-		BlockPos potentialSoil = new BlockPos(x + xOffset,y,z + zOffset);
+		BlockPos potentialTreePos = new BlockPos(x + xOffset,y + yOffset + 1,z + zOffset);
+		BlockPos potentialSoilPos = new BlockPos(x + xOffset,y+ yOffset,z + zOffset);
+		BlockState potentialTree = world.getBlockState(potentialTreePos);
+		BlockState potentialSoil = world.getBlockState(potentialSoilPos);
 		
-    	if(event.getBlock() != null && event.getBlock().canSustainPlant(world, potentialSoil, Direction.UP, (IPlantable) Blocks.OAK_SAPLING) ) {
-    		if(world.isAirBlock(potentialTree) || world.getBlockState(potentialTree).getBlock() == Blocks.GRASS) {
-    			world.setBlockState(potentialTree, Blocks.OAK_SAPLING.getDefaultState());
+    	if(potentialSoil != null && potentialSoil.canSustainPlant(world, potentialTreePos, Direction.UP, (IPlantable) Blocks.OAK_SAPLING) ) {
+    		if(potentialTree != null && potentialTree.getBlock() == Blocks.AIR || potentialTree.getBlock() == Blocks.GRASS) {
+    			world.setBlockState(potentialTreePos, Blocks.OAK_SAPLING.getDefaultState());
     		}
     	}
     }
