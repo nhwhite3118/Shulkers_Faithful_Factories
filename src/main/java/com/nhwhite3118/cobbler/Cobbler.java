@@ -24,6 +24,7 @@ public class Cobbler
 {
     // Directly reference a log4j logger.
     private static final Logger LOGGER = LogManager.getLogger();
+    public static final String MODID = "cobbler";
 
     public Cobbler() {
         // Register the setup method for modloading
