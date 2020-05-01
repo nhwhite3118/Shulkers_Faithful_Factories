@@ -2,14 +2,18 @@ package com.nhwhite3118.cobbler;
 
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.client.Minecraft;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.entity.player.BonemealEvent;
+import net.minecraftforge.event.world.SaplingGrowTreeEvent;
+import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
@@ -49,4 +53,21 @@ public final class ForgeEventSubscriber {
     		}
     	}
     }
+
+	@SubscribeEvent
+    public static void onPlantGrowth(SaplingGrowTreeEvent event) {
+		World world = (World)event.getWorld();
+		if(world.isRemote) {
+			return;
+		}
+		
+		Random rand = new Random();
+		BlockPos saplingPos = event.getPos();
+		
+		// func_226691_t_ appears to get the biome of a given BlockPos
+		if(rand.nextFloat() <= 0.3 && world.func_226691_t_(saplingPos).getCategory() == Biome.Category.DESERT) {
+			world.setBlockState(saplingPos, Blocks.DEAD_BUSH.getDefaultState());
+			event.setResult(Result.DENY);
+		}
+	}
 }
