@@ -8,10 +8,10 @@ This mod is in the very early stages of development, and since it is the first m
 
 ## Finished Features
 - Bonemealing grass now has a small chance to spawn an oak sapling, making fully automatic wood farms possible.
+- Saplings now have chance to convert to dead bushes instead of becoming a tree in the desert depending on light level. This makes dead bushes renewable, and in conjunction with the change causing bonemeal to rarely create saplings, a semi-automatic farm should be possible, if difficult. Fully automatic farms would not currently be possible since dispensers can't shear dead bushes. 
 
 ## Planned Features
 - Make spiders spawn cobwebs under certain conditions, making cowbebs able to be farmed semi-automatically.
-- Make sapplings convert to dead bushes under certain conditions, making them able to be farmed semi-automatically.
 - Add shulker respawn mechanic with high diffulculty to farm. Possibly spawn reinforcements in adjacent end cities, or respawn shulkers after some event.
 - Add difficult way to obtain more dragon eggs. Possibly double ender dragon fight.
 - Make cocoa fully automatically farmable. Possibly allow endermen to pickup and place. It would be unusual in that endermen do not currently interact with crops, but since they are most likely of the same race as the player, they could remember liking chocolate. Villagers would be the obvious choice, but many resources can already be farmed by farmer villagers, and this would be trivial to farm since they have no reason to pick up cocoa.
