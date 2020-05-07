@@ -10,14 +10,12 @@ import net.minecraft.world.gen.placement.Placement;
 
 public class Structures {
 
-	
 	public static void generateShulkerFactory(Biome biome, String biomeNamespace, String biomePath)
 	{
-		biome.addFeature(Decoration.SURFACE_STRUCTURES, Cobbler.SHULKER_FACTORY.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG).withPlacement(Placement.NOPE.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
-		
 		if(biome.getCategory() == Category.THEEND  && biome != Biomes.THE_END && biome != Biomes.SMALL_END_ISLANDS)
 		{
-			biome.addStructure(Cobbler.SHULKER_FACTORY.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
+			//func_225566_b_ appears to create a configured feature from a feature and config
+			biome.addFeature(Decoration.SURFACE_STRUCTURES, Cobbler.SHULKER_FACTORY.func_225566_b_(IFeatureConfig.NO_FEATURE_CONFIG).func_227228_a_(Placement.NOPE.func_227446_a_(IPlacementConfig.NO_PLACEMENT_CONFIG)));
 		}
 	}
 }

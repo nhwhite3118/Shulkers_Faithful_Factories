@@ -28,6 +28,7 @@ public class ShulkerFactory extends Feature<NoFeatureConfig> {
 	{
 		super(configFactory);
 	}
+	
 	@Override
 	public boolean place(IWorld world, ChunkGenerator<? extends GenerationSettings> changedBlock, Random rand, BlockPos position, NoFeatureConfig p_212245_5_)
 	{
