@@ -1,5 +1,6 @@
 package com.nhwhite3118.cobbler;
 
+import com.nhwhite3118.cobbler.structures.Structures;
 import com.nhwhite3118.cobbler.utils.ConfigHelper;
 import com.nhwhite3118.cobbler.utils.ConfigHelper.ConfigValueListener;
 
@@ -15,7 +16,7 @@ public final class ModEventSubscriber {
 	@SubscribeEvent
 	public static void onRegisterFeatures(final RegistryEvent.Register<Feature<?>> event)
 	{
-		Cobbler.registerFeatures(event);
+		Structures.registerFeatures(event);
 	}
 
 	public static class Config {
