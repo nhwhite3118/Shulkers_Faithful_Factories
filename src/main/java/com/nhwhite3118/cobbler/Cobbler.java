@@ -5,7 +5,6 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -27,11 +26,10 @@ import com.nhwhite3118.cobbler.utils.ConfigHelper;
 import java.util.stream.Collectors;
 
 // The value here should match an entry in the META-INF/mods.toml file
-@SuppressWarnings("deprecation")
 @Mod("cobbler")
 public class Cobbler {
 	// Directly reference a log4j logger.
-	private static final Logger LOGGER = LogManager.getLogger();
+	public static final Logger LOGGER = LogManager.getLogger();
 	public static final String MODID = "cobbler";
 	public static Config CobblerConfig = null;
 
@@ -91,7 +89,7 @@ public class Cobbler {
 	}
 
 	public void setup(final FMLCommonSetupEvent event) {
-		DeferredWorkQueue.runLater(Cobbler::addFeaturesAndStructuresToBiomes);
+		Cobbler.addFeaturesAndStructuresToBiomes();
 	}
 
 	private static void addFeaturesAndStructuresToBiomes() {

@@ -9,6 +9,8 @@ import net.minecraft.world.gen.ChunkGenerator;
 import java.util.Random;
 import java.util.function.Function;
 
+import org.apache.logging.log4j.Level;
+
 import com.mojang.datafixers.Dynamic;
 import com.nhwhite3118.cobbler.Cobbler;
 
@@ -168,8 +170,7 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
 			this.recalculateStructureSize();
 
 			//I use to debug and quickly find out if the structure is spawning or not and where it is.
-			// Might add back later, the locate command should work for me. I think.
-			//StructureTutorialMain.LOGGER.log(Level.DEBUG, "Rundown House at " + (blockpos.getX()) + " " + blockpos.getY() + " " + (blockpos.getZ()));
+			Cobbler.LOGGER.log(Level.DEBUG, "Shulker Factory at " + (blockpos.getX()) + " " + blockpos.getY() + " " + (blockpos.getZ()));
 		}
 
 	}
