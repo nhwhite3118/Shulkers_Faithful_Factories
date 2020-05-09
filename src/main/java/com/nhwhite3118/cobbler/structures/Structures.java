@@ -46,13 +46,13 @@ public class Structures {
 			//func_225566_b_ appears to create a configured feature from a feature and config
 		biome.addFeature(Decoration.SURFACE_STRUCTURES, 
 				SHULKER_FACTORY
-					.func_225566_b_(IFeatureConfig.NO_FEATURE_CONFIG)
-					.func_227228_a_(Placement.NOPE
-							.func_227446_a_(IPlacementConfig.NO_PLACEMENT_CONFIG)));
+					.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG)
+					.withPlacement(Placement.NOPE
+							.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
 		
 		if(biome.getCategory() == Category.THEEND  && biome != Biomes.THE_END && biome != Biomes.SMALL_END_ISLANDS)
 		{
-			biome.func_226711_a_(SHULKER_FACTORY.func_225566_b_(IFeatureConfig.NO_FEATURE_CONFIG));
+			biome.addStructure(SHULKER_FACTORY.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
 		}
 	}
 }
