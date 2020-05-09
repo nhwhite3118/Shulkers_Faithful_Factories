@@ -35,7 +35,34 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
  */
 public class ShulkerFactoryPieces {
 	private static final ResourceLocation ENTRANCE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_entrance");
-	private static final Map<ResourceLocation, BlockPos> OFFSET = ImmutableMap.of(ENTRANCE, new BlockPos(0, 1, 0));
+	private static final ResourceLocation LOW_SPLIT_LEFT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left");
+	private static final ResourceLocation LOW_SPLIT_RIGHT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right");
+	private static final ResourceLocation WATCHTOWER_SUPPORT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_support_9x18x9");
+	private static final ResourceLocation WATCHTOWER_LEFT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_watch_tower_left");
+	private static final ResourceLocation RUINED_WATCHTOWER_LEFT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_ruined_watch_tower_left");
+	private static final ResourceLocation SHORT_BRIDGE_UP = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_short_bridge_up");
+	private static final ResourceLocation SPAWNER_OBSIDIAN_BASE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_obsidian_base");
+	private static final ResourceLocation SPAWNER_PIT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_pit.");
+	private static final ResourceLocation SPAWNER_MIDDLE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_tower_middle_tileable");
+	private static final ResourceLocation SPAWNER_ROOM = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_tower_top");
+	private static final ResourceLocation SPAWNER_RAMP = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_ramp");
+	private static final ResourceLocation SPAWNER_RAMP_SUPPORT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_ramp_supports");
+	
+	private static final Map<ResourceLocation, BlockPos> OFFSET = ImmutableMap.<ResourceLocation, BlockPos>builder()
+			.put(ENTRANCE, new BlockPos(0, -4, 0))
+			.put(LOW_SPLIT_LEFT, new BlockPos(0, 0, 0))
+			.put(LOW_SPLIT_RIGHT, new BlockPos(0, 0, 0))
+			.put(WATCHTOWER_SUPPORT, new BlockPos(0, 0, 0))
+			.put(WATCHTOWER_LEFT, new BlockPos(0, 0, 0))
+			.put(RUINED_WATCHTOWER_LEFT, new BlockPos(0, 0, 0))
+			.put(SHORT_BRIDGE_UP, new BlockPos(0, 0, 0))
+			.put(SPAWNER_OBSIDIAN_BASE, new BlockPos(0, 0, 0))
+			.put(SPAWNER_PIT, new BlockPos(0, 0, 0))
+			.put(SPAWNER_MIDDLE, new BlockPos(0, 0, 0))
+			.put(SPAWNER_ROOM, new BlockPos(0, 0, 0))
+			.put(SPAWNER_RAMP, new BlockPos(0, 0, 0))
+			.put(SPAWNER_RAMP_SUPPORT, new BlockPos(0, -32, 0))
+			.build();
 
 	/*
 	 * Begins assembling your structure and where the pieces needs to go.
@@ -54,7 +81,7 @@ public class ShulkerFactoryPieces {
 		//
 		//Lots of trial and error may be needed to get this right for your structure.
 		BlockPos rotationOffSet = new BlockPos(0, 0, 0).rotate(rotation);
-		BlockPos blockpos = rotationOffSet.add(x, pos.getY() - 5, z);
+		BlockPos blockpos = rotationOffSet.add(x, pos.getY(), z);
 		pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, ENTRANCE, blockpos, rotation));
 //
 //		rotationOffSet = new BlockPos(-10, 0, 0).rotate(rotation);
