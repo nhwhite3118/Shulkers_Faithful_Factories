@@ -50,72 +50,140 @@ public class ShulkerFactoryPieces {
 	private static final ResourceLocation SPAWNER_RAMP_SUPPORT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_ramp_supports");
 	
 	private static final Map<ResourceLocation, BlockPos> OFFSET = ImmutableMap.<ResourceLocation, BlockPos>builder()
-			.put(ENTRANCE, new BlockPos(0, -4, 0))
-			.put(LOW_SPLIT_LEFT, new BlockPos(0, -6, 0))  //+5x
-			.put(LOW_SPLIT_RIGHT, new BlockPos(0, -6, 0)) //+5x
-			.put(WATCHTOWER_SUPPORT, new BlockPos(0, -32, 0))
-			.put(WATCHTOWER_LEFT, new BlockPos(0, -2, 0))
-			.put(RUINED_WATCHTOWER_LEFT, new BlockPos(0, -2, 0))
-			.put(SHORT_BRIDGE_UP, new BlockPos(0, 7, 0)) //+4x +6z
+			.put(ENTRANCE, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_LEFT, new BlockPos(0, -14, 0))  //+5x
+			.put(LOW_SPLIT_RIGHT, new BlockPos(0, -14, 0)) //+5x
+			.put(WATCHTOWER_SUPPORT, new BlockPos(0, 0, 0))
+			.put(WATCHTOWER_LEFT, new BlockPos(0, -1, 0))
+			.put(RUINED_WATCHTOWER_LEFT, new BlockPos(0, -1, 0))
+			.put(SHORT_BRIDGE_UP, new BlockPos(0, -2, 0)) //+4x +6z
+			//y values for tower pieces are handled in the creation method
 			.put(SPAWNER_OBSIDIAN_BASE, new BlockPos(0, 0, 0))
-			.put(SPAWNER_PIT, new BlockPos(0, -10, 0))
-			.put(SPAWNER_MIDDLE, new BlockPos(0, 0, 0))
-			.put(SPAWNER_ROOM, new BlockPos(0, 0, 0))
-			.put(SPAWNER_RAMP, new BlockPos(0, 0, 0))
-			.put(SPAWNER_RAMP_SUPPORT, new BlockPos(0, 0, 0))
+			.put(SPAWNER_PIT, new BlockPos(0, -8, 0))
+			.put(SPAWNER_MIDDLE, new BlockPos(0, -8, 0))
+			.put(SPAWNER_ROOM, new BlockPos(0, -8, 0))
+			.put(SPAWNER_RAMP, new BlockPos(0, -28, 0))
+			.put(SPAWNER_RAMP_SUPPORT, new BlockPos(0, -9, 0))
 			.build();
 
 	private static void assembleSpawnerTower(TemplateManager templateManager, BlockPos pos, Rotation rotation, List<StructurePiece> pieceList, Random random) {
 
 		int x = pos.getX();
 		int z = pos.getZ();
-		int y = pos.getY();
-		
-		BlockPos blockpos = pos;
+		int spawnerRoomHeight = pos.getY() + 4;
+		BlockPos blockpos;
 		BlockPos rotationOffSet;
-		int spawnerRoomBaseHeight = pos.getY() + 4;
-		pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SPAWNER_RAMP, blockpos, rotation));
 		
-		//y=32 should be right in the middle of most islands
-		while(blockpos.getY() > 64) {
-			blockpos = blockpos.add(0, -32, 0);
-			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SPAWNER_RAMP_SUPPORT, blockpos, rotation));
-		}
-		
-		for(int i = -32; i<spawnerRoomBaseHeight; i+=4) {
-			rotationOffSet = new BlockPos(10, i, -5).rotate(rotation);	
-			blockpos = rotationOffSet.add(x, y, z);
-			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SPAWNER_MIDDLE, blockpos, rotation));
+		/*///////////////////////////////////////////////////////////////////////////////////////////
+		 * 
+		 * 	Ramp
+		 * 
+		 *///////////////////////////////////////////////////////////////////////////////////////////
+		{
+			rotationOffSet = new BlockPos(0, 0, -2).rotate(rotation);
+			blockpos = pos.add(rotationOffSet);
 			
+			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SPAWNER_RAMP, blockpos, rotation));
+			
+			//y=32 should be right in the middle of most islands
+			while(blockpos.getY() > 57) {
+				blockpos = blockpos.add(0, -32, 0);
+				pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SPAWNER_RAMP_SUPPORT, blockpos, rotation));
+			}
 		}
-		
-		rotationOffSet = new BlockPos(10, -32, -5).rotate(rotation);	
-		blockpos = rotationOffSet.add(x, y, z);
-		pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SPAWNER_PIT, blockpos, rotation));;
-		
-		rotationOffSet = new BlockPos(10, spawnerRoomBaseHeight, -5).rotate(rotation);	
-		blockpos = rotationOffSet.add(x, y, z);
-		pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SPAWNER_ROOM, blockpos, rotation));
+		/*///////////////////////////////////////////////////////////////////////////////////////////
+		 * 
+		 * 	Tower
+		 * 
+		 *///////////////////////////////////////////////////////////////////////////////////////////
+		{
+			rotationOffSet = new BlockPos(10, spawnerRoomHeight - 32, -6).rotate(rotation);	
+			blockpos = rotationOffSet.add(x, 0, z);
+			while(blockpos.getY() <= spawnerRoomHeight - 4) {
+				blockpos = blockpos.add(0, 4, 0);
+				pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SPAWNER_MIDDLE, blockpos, rotation));
+				
+			}
+			
+			rotationOffSet = new BlockPos(10, spawnerRoomHeight -42, -6).rotate(rotation);	
+			blockpos = rotationOffSet.add(x, 0, z);
+			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SPAWNER_PIT, blockpos, rotation));;
+			
+			blockpos = blockpos.add(0, -8, 0);
+			while(blockpos.getY() > 2) {
+				blockpos = blockpos.add(0, -2, 0);
+				pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SPAWNER_OBSIDIAN_BASE, blockpos, rotation));
+				
+			}
+			
+			rotationOffSet = new BlockPos(10, 0, -6).rotate(rotation);	
+			blockpos = rotationOffSet.add(x, spawnerRoomHeight, z);
+			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SPAWNER_ROOM, blockpos, rotation));
+		}
 	}
 	
 	// Randomly picks a left or right split. Returns the position to start the bridge out
-	private static Tuple<BlockPos, Rotation> addSplit(TemplateManager templateManager, BlockPos pos, Rotation rotation, List<StructurePiece> pieceList, Random random) {
-		BlockPos rotationOffSet;
-		BlockPos blockpos;
+	private static Tuple<BlockPos, Rotation> addTurnUp(TemplateManager templateManager, BlockPos pos, Rotation rotation, List<StructurePiece> pieceList, Random random) {
+		//Move from bl corner of entrance to bl corner
+		BlockPos rotationOffSet = new BlockPos(0, 0, -3).rotate(rotation);
+		BlockPos blockpos = pos.add(rotationOffSet);
 		Rotation rot;
 		if(random.nextInt(2) == 0) {
-			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, LOW_SPLIT_LEFT, pos, rotation.add(Rotation.COUNTERCLOCKWISE_90)));
-			rotationOffSet = new BlockPos(9, 0, 6).rotate((rotation));
-			blockpos = pos.add(rotationOffSet);
+			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, LOW_SPLIT_LEFT, blockpos, rotation));
+			//Move from bl corner to bl corner of stairs up and turn left
+			rotationOffSet = new BlockPos(2, 2, 0).rotate((rotation));
+			blockpos = blockpos.add(rotationOffSet);
 			rot = rotation.add(Rotation.COUNTERCLOCKWISE_90);
 		} else {
-			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, LOW_SPLIT_RIGHT, pos, rotation.add(Rotation.COUNTERCLOCKWISE_90)));
-			rotationOffSet = new BlockPos(7, 0, 1).rotate((rotation));
-			blockpos = pos.add(rotationOffSet);
+			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, LOW_SPLIT_RIGHT, blockpos, rotation));
+			//Move from bl corner to bl corner of stairs up and turn right
+			rotationOffSet = new BlockPos(6, 2, 9).rotate((rotation));
+			blockpos = blockpos.add(rotationOffSet);
 			rot = rotation.add(Rotation.CLOCKWISE_90);
 		}
 		return new Tuple<BlockPos, Rotation>(blockpos, rot);
 	}
+	
+	private static Rotation subtract(Rotation a, Rotation b) {
+	      switch(b) {
+	      case CLOCKWISE_180:
+	         switch(a) {
+	         case NONE:
+	            return Rotation.CLOCKWISE_180;
+	         case CLOCKWISE_90:
+	            return Rotation.COUNTERCLOCKWISE_90;
+	         case CLOCKWISE_180:
+	            return Rotation.NONE;
+	         case COUNTERCLOCKWISE_90:
+	            return Rotation.CLOCKWISE_90;
+	         }
+	      case COUNTERCLOCKWISE_90:
+	         switch(a) {
+	         case NONE:
+	            return Rotation.CLOCKWISE_90;
+	         case CLOCKWISE_90:
+	            return Rotation.CLOCKWISE_180;
+	         case CLOCKWISE_180:
+	            return Rotation.COUNTERCLOCKWISE_90;
+	         case COUNTERCLOCKWISE_90:
+	            return Rotation.NONE;
+	         }
+	      case CLOCKWISE_90:
+	         switch(a) {
+	         case NONE:
+	            return Rotation.COUNTERCLOCKWISE_90;
+	         case CLOCKWISE_90:
+	            return Rotation.NONE;
+	         case CLOCKWISE_180:
+	            return Rotation.CLOCKWISE_90;
+	         case COUNTERCLOCKWISE_90:
+	            return Rotation.CLOCKWISE_180;
+	         }
+		  case NONE:
+	      default:
+	         return a;
+	      }
+	   }
 	
 	private static Tuple<BlockPos, Rotation> steepRampsUp(TemplateManager templateManager, BlockPos pos, Rotation rotation, List<StructurePiece> pieceList, Random random) {
 
@@ -136,29 +204,120 @@ public class ShulkerFactoryPieces {
 	}
 
 	private static Tuple<BlockPos, Rotation> randomTowerLeft(TemplateManager templateManager, BlockPos pos, Rotation rotation, List<StructurePiece> pieceList, Random random) {
-		BlockPos rotationOffSet = new BlockPos(0, 10, -4).rotate((rotation));
+		BlockPos rotationOffSet = new BlockPos(0, 0, -4).rotate((rotation));
 		BlockPos blockpos = pos.add(rotationOffSet);
 		
-		if(random.nextInt(10) < 6) {
+		/*/////////////////////////////////////////////////////////////////////////////////////////////////
+		 * 
+		 * Tower
+		 * 
+		 *////////////////////////////////////////////////////////////////////////////////////////////////
+		
+		if(random.nextInt(10) < 5) {
 			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, RUINED_WATCHTOWER_LEFT, blockpos, rotation));
 
 		} else {
 			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, WATCHTOWER_LEFT, blockpos, rotation));
 		}
 		
-		BlockPos structurePos = blockpos;
-		int supportY = blockpos.getY();
-		do {
-			supportY -=32;
-			rotationOffSet = new BlockPos(0, supportY + 10, -4).rotate(rotation);	
-			structurePos = rotationOffSet.add(pos.getX(), pos.getY(), pos.getZ());
-			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, WATCHTOWER_SUPPORT, structurePos, rotation));
-		} while(supportY > 32);
+		/*/////////////////////////////////////////////////////////////////////////////////////////////////
+		 * 
+		 * Supports
+		 * 
+		 *////////////////////////////////////////////////////////////////////////////////////////////////
 		
-		rotationOffSet = new BlockPos(5, 0, 0).rotate((rotation));
+		rotationOffSet = new BlockPos(2, -3, -2).rotate(rotation);	
+		BlockPos structurePos = pos.add(rotationOffSet);
+		do {
+			structurePos = structurePos.add(0, -16, 0);
+			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, WATCHTOWER_SUPPORT, structurePos, rotation));
+		} while(structurePos.getY() > 32);
+		
+		rotationOffSet = new BlockPos(4, 2, -5).rotate((rotation));
 		blockpos = pos.add(rotationOffSet);
 
 		return new Tuple<BlockPos, Rotation>(blockpos, rotation.add(Rotation.COUNTERCLOCKWISE_90));
+	}
+	
+	
+	private static Tuple<BlockPos, Rotation> addRandomPiece(TemplateManager templateManager, Tuple<BlockPos, Rotation> location, List<StructurePiece> pieceList, Random random) {
+		int randomValue = random.nextInt(100);
+		Tuple<BlockPos, Rotation> endPosition;
+		
+		if(randomValue > 50) {
+			endPosition = addNonClockWisePiece(templateManager, location, pieceList, random);
+		} else {
+			endPosition = addNonCounterClockWisePiece(templateManager, location, pieceList, random);
+		}
+		return endPosition;
+	}
+	
+	private static Tuple<BlockPos, Rotation> addNonClockWisePiece(TemplateManager templateManager, Tuple<BlockPos, Rotation> location, List<StructurePiece> pieceList, Random random) {
+		int randomValue = random.nextInt(100);
+		Tuple<BlockPos, Rotation> endPosition;
+		
+		if(randomValue > 90) {
+			endPosition = randomTowerLeft(templateManager, location.getA(), location.getB(), pieceList, random);
+		} else if(randomValue > 50) {
+			endPosition = addTurnLeft(templateManager, location.getA(), location.getB(), pieceList, random);
+		} else {
+			endPosition = steepRampsUp(templateManager, location.getA(), location.getB(), pieceList, random, 4 + random.nextInt(13));
+		}
+		return endPosition;
+	}	
+	
+	private static Tuple<BlockPos, Rotation> addNonCounterClockWisePiece(TemplateManager templateManager, Tuple<BlockPos, Rotation> location, List<StructurePiece> pieceList, Random random) {
+		int randomValue = random.nextInt(100);
+		Tuple<BlockPos, Rotation> endPosition;
+		
+		if(randomValue > 50) {
+			endPosition = addTurnRight(templateManager, location.getA(), location.getB(), pieceList, random);
+		} else {
+			endPosition = steepRampsUp(templateManager, location.getA(), location.getB(), pieceList, random, 4 + random.nextInt(13));
+		}
+		return endPosition;
+	}	
+	
+	private static Tuple<BlockPos, Rotation> addTurnLeft(TemplateManager templateManager, BlockPos pos, Rotation rotation, List<StructurePiece> pieceList, Random random) {
+		//Move from bl corner of entrance to bl corner
+		BlockPos rotationOffSet = new BlockPos(0, 0, -2).rotate(rotation);
+		BlockPos blockpos = pos.add(rotationOffSet);
+		Rotation rot;
+		pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, LOW_SPLIT_LEFT, blockpos, rotation));
+		//Move from bl corner to bl corner of stairs up and turn left
+		rotationOffSet = new BlockPos(2, 1, -1).rotate((rotation));
+		BlockPos finalPos = blockpos.add(rotationOffSet);
+		rot = rotation.add(Rotation.COUNTERCLOCKWISE_90);
+
+		rotationOffSet = new BlockPos(0, -2, -2).rotate(rotation);	
+		BlockPos structurePos = pos.add(rotationOffSet);
+		do {
+			structurePos = structurePos.add(0, -16, 0);
+			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, WATCHTOWER_SUPPORT, structurePos, rotation));
+		} while(structurePos.getY() > 32);
+		
+		return new Tuple<BlockPos, Rotation>(finalPos, rot);
+	}	
+	
+	private static Tuple<BlockPos, Rotation> addTurnRight(TemplateManager templateManager, BlockPos pos, Rotation rotation, List<StructurePiece> pieceList, Random random) {
+		//Move from bl corner of entrance to bl corner
+		BlockPos rotationOffSet = new BlockPos(0, 0, -2).rotate(rotation);
+		BlockPos blockpos = pos.add(rotationOffSet);
+		Rotation rot;
+		pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, LOW_SPLIT_RIGHT, blockpos, rotation));
+		//Move from bl corner to bl corner of stairs up and turn right
+		rotationOffSet = new BlockPos(6, 1, 9).rotate((rotation));
+		BlockPos finalPos = blockpos.add(rotationOffSet);
+		rot = rotation.add(Rotation.CLOCKWISE_90);
+
+		rotationOffSet = new BlockPos(0, -3, -2).rotate(rotation);	
+		BlockPos structurePos = pos.add(rotationOffSet);
+		do {
+			structurePos = structurePos.add(0, -16, 0);
+			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, WATCHTOWER_SUPPORT, structurePos, rotation));
+		} while(structurePos.getY() > 32);
+		
+		return new Tuple<BlockPos, Rotation>(finalPos, rot);
 	}
 	
 	/*
@@ -180,17 +339,32 @@ public class ShulkerFactoryPieces {
 		//Lots of trial and error may be needed to get this right for your structure.
 		BlockPos rotationOffSet = new BlockPos(0, 0, 0).rotate(rotation);
 		BlockPos blockpos = rotationOffSet.add(x, y, z);
-		pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, ENTRANCE, blockpos, rotation.add(Rotation.COUNTERCLOCKWISE_90)));
+		pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, ENTRANCE, blockpos, rotation));
 		
-		rotationOffSet = new BlockPos(27, 0, 0).rotate((rotation));
-		blockpos = blockpos.add(rotationOffSet);		
+		rotationOffSet = new BlockPos(27, 9, 3).rotate((rotation));
+		blockpos = blockpos.add(rotationOffSet);
 		
 
 
-		Tuple<BlockPos, Rotation> currentLoc = addSplit(templateManager, blockpos, rotation.add(Rotation.COUNTERCLOCKWISE_90), pieceList, random);
-		currentLoc = steepRampsUp(templateManager, currentLoc.getA(), currentLoc.getB(), pieceList, random, 8);
-		currentLoc = randomTowerLeft(templateManager, currentLoc.getA(), currentLoc.getB(), pieceList, random);
-		currentLoc = steepRampsUp(templateManager, currentLoc.getA(), currentLoc.getB(), pieceList, random, 12);
+		Tuple<BlockPos, Rotation> currentLoc = addTurnUp(templateManager, blockpos, rotation, pieceList, random);
+		
+		while(currentLoc.getA().getY() < 170) {
+			switch(subtract(currentLoc.getB(), rotation)) {
+				case CLOCKWISE_90:
+					currentLoc = addNonClockWisePiece(templateManager, currentLoc, pieceList, random);
+					break;
+				case COUNTERCLOCKWISE_90:
+					currentLoc = addNonCounterClockWisePiece(templateManager, currentLoc, pieceList, random);
+				case NONE:
+				case CLOCKWISE_180:
+				default:
+					currentLoc = addRandomPiece(templateManager, currentLoc, pieceList, random);
+			}
+		}
+		
+//		currentLoc = steepRampsUp(templateManager, currentLoc.getA(), currentLoc.getB(), pieceList, random, 8);
+//		currentLoc = randomTowerLeft(templateManager, currentLoc.getA(), currentLoc.getB(), pieceList, random);
+//		currentLoc = steepRampsUp(templateManager, currentLoc.getA(), currentLoc.getB(), pieceList, random, 12);
 		
 		assembleSpawnerTower(templateManager, currentLoc.getA(), currentLoc.getB(), pieceList, random);
 //
