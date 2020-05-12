@@ -1,0 +1,478 @@
+{
+    "type": "minecraft:chest",
+    "pools": [
+        {
+            "rolls": {
+                "min": 5,
+                "max": 15
+            },
+            "entries": [
+                {
+                    "type": "item",
+                    "weight": 10,
+                    "name": "minecraft:chorus_fruit",
+                    "quality": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 7,
+                                "max": 24
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "loot_table",
+                    "weight": 2,
+                    "name": "minecraft:chests/end_city_treasure",
+                    "min": 5
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:piston",
+                    "quality": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 10
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:redstone",
+                    "quality": 5,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 10,
+                                "max": 64
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "minecraft:sticky_piston",
+                    "quality": 4,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 5
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:comparator",
+                    "quality": 4,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 4,
+                                "max": 12
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 7,
+                    "name": "minecraft:purpur_block",
+                    "quality": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 12,
+                                "max": 42
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 5,
+                    "name": "minecraft:end_rod",
+                    "quality": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 3,
+                                "max": 8
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:observer",
+                    "quality": 4,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:repeater",
+                    "quality": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 3,
+                                "max": 12
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:redstone_torch",
+                    "quality": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 12,
+                                "max": 32
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:redstone_lamp",
+                    "quality": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 3,
+                                "max": 12
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:purple_bed",
+                    "quality": 1
+                },
+                {
+                    "type": "item",
+                    "weight": 5,
+                    "name": "minecraft:dispenser",
+                    "quality": 3,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 4,
+                                "max": 14
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "minecraft:tripwire_hook",
+                    "quality": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "minecraft:magenta_stained_glass_pane",
+                    "quality": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 7,
+                                "max": 18
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:map",
+                    "quality": 1
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "minecraft:lever",
+                    "quality": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:hopper",
+                    "quality": 2,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 4
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:honey_bottle",
+                    "quality": 1
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:end_crystal",
+                    "quality": 7
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:elytra",
+                    "quality": 30,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0,
+                                "max": 0.4
+                            }
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "mending",
+                                "unbreaking"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:shulker_shell",
+                    "quality": 7,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 6
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:shield",
+                    "quality": 1,
+                    "functions": [
+                        {
+                            "function": "set_damage",
+                            "damage": {
+                                "min": 0.3,
+                                "max": 0.8
+                            }
+                        },
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "unbreaking",
+                                "vanishing_curse"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 7,
+                    "name": "minecraft:popped_chorus_fruit",
+                    "quality": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 4,
+                                "max": 16
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:poisonous_potato",
+                    "quality": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 3
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:jukebox",
+                    "quality": 2
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:furnace"
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:fletching_table"
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:fishing_rod",
+                    "functions": [
+                        {
+                            "function": "enchant_randomly",
+                            "enchantments": [
+                                "mending",
+                                "unbreaking",
+                                "luck_of_the_sea",
+                                "lure",
+                                "vanishing_curse"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "minecraft:ender_eye",
+                    "quality": 2
+                },
+                {
+                    "type": "item",
+                    "weight": 7,
+                    "name": "minecraft:ender_pearl",
+                    "quality": 1,
+                    "functions": [
+                        {
+                            "function": "set_count",
+                            "count": {
+                                "min": 1,
+                                "max": 16
+                            }
+                        }
+                    ]
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "minecraft:ender_chest",
+                    "quality": 3
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:dragon_egg",
+                    "quality": 50
+                },
+                {
+                    "type": "item",
+                    "weight": 3,
+                    "name": "minecraft:dragon_breath",
+                    "quality": 1
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:daylight_detector",
+                    "quality": 5
+                },
+                {
+                    "type": "item",
+                    "weight": 2,
+                    "name": "minecraft:damaged_anvil",
+                    "quality": 3
+                },
+                {
+                    "type": "item",
+                    "weight": 4,
+                    "name": "minecraft:crafting_table"
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:compass",
+                    "quality": 1
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:clock",
+                    "quality": 1
+                },
+                {
+                    "type": "item",
+                    "weight": 1,
+                    "name": "minecraft:cartography_table"
+                }
+            ]
+        }
+    ]
+}

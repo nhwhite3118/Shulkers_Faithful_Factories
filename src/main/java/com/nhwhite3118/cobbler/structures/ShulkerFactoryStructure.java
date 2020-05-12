@@ -39,8 +39,8 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
 	protected ChunkPos getStartPositionForPosition(ChunkGenerator<?> chunkGenerator, Random random, int x, int z, int spacingOffsetsX, int spacingOffsetsZ)
 	{
 		//this means Run Down Houses cannot be closer than 7 chunks or more than 12 chunks
-		int maxDistance = 12;
-		int minDistance = 7;
+		int maxDistance = 50;
+		int minDistance = 20;
 
 		int xTemp = x + maxDistance * spacingOffsetsX;
 		int ztemp = z + maxDistance * spacingOffsetsZ;
@@ -160,6 +160,9 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
 
 			//Finds the y value of the terrain at location.
 			int surfaceY = generator.func_222531_c(x, z, Heightmap.Type.WORLD_SURFACE_WG);
+			if(surfaceY < 30) {
+				return;
+			}
 			BlockPos blockpos = new BlockPos(x, surfaceY, z);
 
 			//Now adds the structure pieces to this.components with all details such as where each part goes 
