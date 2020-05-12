@@ -352,10 +352,12 @@ public class ShulkerFactoryPieces {
 
 		rotationOffSet = new BlockPos(0, -2, -2).rotate(rotation);	
 		BlockPos structurePos = pos.add(rotationOffSet);
-		do {
-			structurePos = structurePos.add(0, -16, 0);
-			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, WATCHTOWER_SUPPORT, structurePos, rotation));
-		} while(structurePos.getY() > 32);
+		if(StructurePiece.findIntersecting(pieceList, getSupportsBoundingBox(new Tuple<BlockPos, Rotation>(structurePos, rotation))) == null) {
+			do {
+				structurePos = structurePos.add(0, -16, 0);
+				pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, WATCHTOWER_SUPPORT, structurePos, rotation));
+			} while(structurePos.getY() > 32);
+		}
 		
 		return new Tuple<BlockPos, Rotation>(finalPos, rot);
 	}	
@@ -408,10 +410,12 @@ public class ShulkerFactoryPieces {
 
 		rotationOffSet = new BlockPos(0, -3, -2).rotate(rotation);	
 		BlockPos structurePos = pos.add(rotationOffSet);
-		do {
-			structurePos = structurePos.add(0, -16, 0);
-			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, WATCHTOWER_SUPPORT, structurePos, rotation));
-		} while(structurePos.getY() > 32);
+		if(StructurePiece.findIntersecting(pieceList, getSupportsBoundingBox(new Tuple<BlockPos, Rotation>(structurePos, rotation))) == null) {
+			do {
+				structurePos = structurePos.add(0, -16, 0);
+				pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, WATCHTOWER_SUPPORT, structurePos, rotation));
+			} while(structurePos.getY() > 32);
+		}
 		
 		return new Tuple<BlockPos, Rotation>(finalPos, rot);
 	}
