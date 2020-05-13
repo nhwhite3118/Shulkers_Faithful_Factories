@@ -38,9 +38,9 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
 	@Override
 	protected ChunkPos getStartPositionForPosition(ChunkGenerator<?> chunkGenerator, Random random, int x, int z, int spacingOffsetsX, int spacingOffsetsZ)
 	{
-		//this means Run Down Houses cannot be closer than 7 chunks or more than 12 chunks
-		int maxDistance = 50;
-		int minDistance = 20;
+		//~10 end cities generate in a 200x200 chunk square. Factories should be ~10x rarer
+		int maxDistance = 300;
+		int minDistance = 100;
 
 		int xTemp = x + maxDistance * spacingOffsetsX;
 		int ztemp = z + maxDistance * spacingOffsetsZ;

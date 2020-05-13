@@ -66,7 +66,7 @@ public class ShulkerFactoryPieces {
 	private static final ResourceLocation SPAWNER_PIT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_pit");
 	private static final ResourceLocation SPAWNER_MIDDLE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_tower_middle_tileable");
 	private static final ResourceLocation SPAWNER_ROOM = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_tower_top");
-	private static final ResourceLocation SPAWNER_RAMP = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_ramp");
+	private static final ResourceLocation SPAWNER_RAMP = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_ramp_reinforced");
 	private static final ResourceLocation SPAWNER_RAMP_SUPPORT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_ramp_supports_reinforced");
 	private static final ResourceLocation FACTORY_LOOT = new ResourceLocation(Cobbler.MODID + ":chests/shulker_factory_treasure");
 	
@@ -103,7 +103,7 @@ public class ShulkerFactoryPieces {
 			.put(SPAWNER_PIT, new BlockPos(0, -8, 0))
 			.put(SPAWNER_MIDDLE, new BlockPos(0, -8, 0))
 			.put(SPAWNER_ROOM, new BlockPos(0, -8, 0))
-			.put(SPAWNER_RAMP, new BlockPos(0, -28, 0))
+			.put(SPAWNER_RAMP, new BlockPos(0, -27, 0))
 			.put(SPAWNER_RAMP_SUPPORT, new BlockPos(0, -9, 0))
 			.build();
 
