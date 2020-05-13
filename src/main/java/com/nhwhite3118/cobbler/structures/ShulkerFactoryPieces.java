@@ -5,23 +5,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.apache.commons.lang3.mutable.MutableBoolean;
-import org.apache.logging.log4j.Level;
-
 import com.google.common.collect.ImmutableMap;
 import com.nhwhite3118.cobbler.Cobbler;
 
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.item.ItemFrameEntity;
 import net.minecraft.entity.monster.ShulkerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.nbt.CompoundNBT;
-import net.minecraft.tileentity.LockableLootTileEntity;
 import net.minecraft.tileentity.ShulkerBoxTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Mirror;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
@@ -36,7 +28,6 @@ import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
 import net.minecraft.world.gen.feature.template.Template;
 import net.minecraft.world.gen.feature.template.TemplateManager;
-import net.minecraft.world.storage.loot.LootTables;
 /*
  * Below text from TelepathicGrunt's StructureTutorialMod. Putting it here to remind me to look into Jigsaw Block
  * Sections are heavily borrowed from TelepathicGrunt's tutorial since some sections are 'voodo', and this is my first mod
@@ -50,7 +41,7 @@ import net.minecraft.world.storage.loot.LootTables;
  */
 public class ShulkerFactoryPieces {
 	private static final ResourceLocation ENTRANCE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_entrance");
-	private static final ResourceLocation LOW_SPLIT_LEFT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_improved");
+	private static final ResourceLocation LOW_SPLIT_LEFT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left");
 	private static final ResourceLocation LOW_SPLIT_LEFT_VAR_ONE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var1");
 	private static final ResourceLocation LOW_SPLIT_LEFT_VAR_TWO = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var2");
 	private static final ResourceLocation LOW_SPLIT_LEFT_VAR_THREE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var3");
@@ -58,7 +49,7 @@ public class ShulkerFactoryPieces {
 	private static final ResourceLocation LOW_SPLIT_LEFT_VAR_FIVE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var5");
 	private static final ResourceLocation LOW_SPLIT_LEFT_VAR_SIX = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var6");
 	private static final ResourceLocation LOW_SPLIT_LEFT_VAR_EIGHT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var7");
-	private static final ResourceLocation LOW_SPLIT_RIGHT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_improved");
+	private static final ResourceLocation LOW_SPLIT_RIGHT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right");
 	private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_ONE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var1");
 	private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_TWO = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var2");
 	private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_THREE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var3");
@@ -76,7 +67,7 @@ public class ShulkerFactoryPieces {
 	private static final ResourceLocation SPAWNER_MIDDLE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_tower_middle_tileable");
 	private static final ResourceLocation SPAWNER_ROOM = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_tower_top");
 	private static final ResourceLocation SPAWNER_RAMP = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_ramp");
-	private static final ResourceLocation SPAWNER_RAMP_SUPPORT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_ramp_supports");
+	private static final ResourceLocation SPAWNER_RAMP_SUPPORT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_ramp_supports_reinforced");
 	private static final ResourceLocation FACTORY_LOOT = new ResourceLocation(Cobbler.MODID + ":chests/shulker_factory_treasure");
 	
 	private static int TOWER_WEIGHT = 5;
@@ -186,11 +177,13 @@ public class ShulkerFactoryPieces {
 	//location is the top of the supports
 	private static MutableBoundingBox getSupportsBoundingBox(Tuple<BlockPos, Rotation> location) {
 		BlockPos swbCorner = location.getA().add(new BlockPos(0,-256, 0).rotate(location.getB()));
-		BlockPos netCorner = location.getA().add(new BlockPos(9,-1, 9).rotate(location.getB()));
+		BlockPos netCorner = location.getA().add(new BlockPos(8,-4, 8).rotate(location.getB()));
 		return new MutableBoundingBox(
 				Math.min(swbCorner.getX(), netCorner.getX()),
+				0,
 				Math.min(swbCorner.getZ(), netCorner.getZ()),
 				Math.max(swbCorner.getX(), netCorner.getX()),
+				netCorner.getY(),
 				Math.max(swbCorner.getZ(), netCorner.getZ()));
 		
 	}
@@ -443,7 +436,7 @@ public class ShulkerFactoryPieces {
 		pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, ENTRANCE, blockpos, rotation));
 		existingStructures.add(new Tuple<BlockPos, BlockPos>(blockpos, blockpos.add(27,0, 15)));
 		
-		rotationOffSet = new BlockPos(27, 9, 3).rotate((rotation));
+		rotationOffSet = new BlockPos(27, 5, 3).rotate((rotation));
 		blockpos = blockpos.add(rotationOffSet);
 		
 		Tuple<BlockPos, Rotation> currentLoc = addTurnUp(templateManager, blockpos, rotation, pieceList, random);
