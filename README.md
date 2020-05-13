@@ -8,9 +8,9 @@ This mod is in the very early stages of development, and since it is the first m
 
 ## Finished Features
 - Added Shulker Factories - an extremely rare structure in the end towering above the surrounding landscape with a series of randomly generated platforms guarded by shulkers, and containing items left by the creators of shulkers.
-  -Contains one shulker spawner each at the top
-  -Randomly generated loot with a rare chance of items such as dragon eggs and enchanted elytra
-  -Lore-rich structure with details of its design which hint at how and why the shulkers were created
+  - Contains one shulker spawner each at the top
+  - Randomly generated loot with a rare chance of items such as dragon eggs and enchanted elytra
+  - Lore-rich structure with details of its design which hint at how and why the shulkers were created
 - Bonemealing grass now has a small chance to spawn an oak sapling, making fully automatic wood farms possible.
 - Saplings now have chance to convert to dead bushes instead of becoming a tree in the desert depending on light level. This makes dead bushes renewable, and in conjunction with the change causing bonemeal to rarely create saplings, a semi-automatic farm should be possible, if difficult. Fully automatic farms would not currently be possible since dispensers can't shear dead bushes. 
 
