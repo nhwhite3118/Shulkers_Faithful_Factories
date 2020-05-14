@@ -1,0 +1,187 @@
+If you're looking to edit the loot tables you're in the wrong place. You want shulker_factory_treasure.json. This file is based on that so that you can get an idea of the
+different items in the loottable and their rarity. Where no count is listed the count is 1.
+
+"weight": 10,
+"name": "minecraft:chorus_fruit",
+            "min": 7,
+            "max": 24
+
+"weight": 2,
+"name": "minecraft:chests/end_city_treasure",
+"min": 5
+
+"weight": 1,
+"name": "minecraft:piston",
+            "min": 1,
+            "max": 10
+
+"weight": 1,
+"name": "minecraft:redstone",
+            "min": 10,
+            "max": 64
+
+"weight": 2,
+"name": "minecraft:sticky_piston",
+            "min": 1,
+            "max": 5
+
+"weight": 1,
+"name": "minecraft:comparator",
+            "min": 4,
+            "max": 12
+
+"weight": 7,
+"name": "minecraft:purpur_block",
+            "min": 12,
+            "max": 42
+
+"weight": 5,
+"name": "minecraft:end_rod",
+            "min": 3,
+            "max": 8
+
+"weight": 1,
+"name": "minecraft:observer",
+            "min": 1,
+            "max": 4
+
+"weight": 1,
+"name": "minecraft:repeater",
+            "min": 3,
+            "max": 12
+
+"weight": 1,
+"name": "minecraft:redstone_torch",
+            "min": 12,
+            "max": 32
+
+"weight": 1,
+"name": "minecraft:redstone_lamp",
+            "min": 3,
+            "max": 12
+
+"weight": 1,
+"name": "minecraft:purple_bed",
+
+"weight": 5,
+"name": "minecraft:dispenser",
+            "min": 4,
+            "max": 14
+
+"weight": 3,
+"name": "minecraft:tripwire_hook",
+            "min": 1,
+            "max": 2
+
+"weight": 3,
+"name": "minecraft:magenta_stained_glass_pane",
+            "min": 7,
+            "max": 18
+
+"weight": 1,
+"name": "minecraft:map",
+
+"weight": 3,
+"name": "minecraft:lever",
+            "min": 1,
+            "max": 4
+
+"weight": 1,
+"name": "minecraft:hopper",
+            "min": 1,
+            "max": 4
+
+"weight": 1,
+"name": "minecraft:honey_bottle",
+
+"weight": 1,
+"name": "minecraft:end_crystal",
+
+"weight": 1,
+"name": "minecraft:elytra",
+        "function": "set_damage", //0 is broken and 1 is full durability
+            "min": 0,
+            "max": 0.4
+        "function": "enchant_randomly",
+        "enchantments": [
+            "mending",
+            "unbreaking"
+
+"weight": 1,
+"name": "minecraft:shulker_shell",
+            "min": 1,
+            "max": 6
+
+"weight": 1,
+"name": "minecraft:shield",
+        "function": "set_damage", //0 is broken and 1 is full durability
+            "min": 0.3,
+            "max": 0.8
+        "function": "enchant_randomly",
+        "enchantments": [
+            "unbreaking",
+            "vanishing_curse"
+
+"weight": 7,
+"name": "minecraft:popped_chorus_fruit",
+            "min": 4,
+            "max": 16
+
+"weight": 1,
+"name": "minecraft:poisonous_potato",
+            "min": 1,
+            "max": 3
+
+"weight": 1,
+"name": "minecraft:jukebox",
+
+"weight": 1,
+"name": "minecraft:furnace"
+
+"weight": 1,
+"name": "minecraft:fletching_table"
+
+"weight": 1,
+"name": "minecraft:fishing_rod",
+        "function": "enchant_randomly",
+        "enchantments": [
+            "mending",
+            "unbreaking",
+            "luck_of_the_sea",
+            "lure",
+            "vanishing_curse"
+
+"weight": 3,
+"name": "minecraft:ender_eye",
+
+"weight": 7,
+"name": "minecraft:ender_pearl",
+            "min": 1,
+            "max": 16
+
+"weight": 2,
+"name": "minecraft:ender_chest",
+
+"weight": 1,
+"name": "minecraft:dragon_egg",
+
+"weight": 3,
+"name": "minecraft:dragon_breath",
+
+"weight": 1,
+"name": "minecraft:daylight_detector",
+
+"weight": 2,
+"name": "minecraft:damaged_anvil",
+
+"weight": 4,
+"name": "minecraft:crafting_table"
+
+"weight": 1,
+"name": "minecraft:compass",
+
+"weight": 1,
+"name": "minecraft:clock",
+
+"weight": 1,
+"name": "minecraft:cartography_table"

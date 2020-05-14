@@ -41,6 +41,7 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
  */
 public class ShulkerFactoryPieces {
 	private static final ResourceLocation ENTRANCE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_entrance");
+	
 	private static final ResourceLocation LOW_SPLIT_LEFT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left");
 	private static final ResourceLocation LOW_SPLIT_LEFT_VAR_ONE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var1");
 	private static final ResourceLocation LOW_SPLIT_LEFT_VAR_TWO = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var2");
@@ -49,6 +50,7 @@ public class ShulkerFactoryPieces {
 	private static final ResourceLocation LOW_SPLIT_LEFT_VAR_FIVE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var5");
 	private static final ResourceLocation LOW_SPLIT_LEFT_VAR_SIX = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var6");
 	private static final ResourceLocation LOW_SPLIT_LEFT_VAR_EIGHT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var7");
+	
 	private static final ResourceLocation LOW_SPLIT_RIGHT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right");
 	private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_ONE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var1");
 	private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_TWO = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var2");
@@ -58,46 +60,77 @@ public class ShulkerFactoryPieces {
 	private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_SIX = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var6");
 	private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_SEVEN = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var7");
 	private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_EIGHT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var8");
-	private static final ResourceLocation WATCHTOWER_SUPPORT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_support_9x18x9");
+	
+	private static final ResourceLocation SIMPLE_SUPPORT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_support_9x18x9");
+	private static final ResourceLocation REINFORCED_SUPPORT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_support_9x18x9_reinforced");
+	
 	private static final ResourceLocation WATCHTOWER_LEFT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_watch_tower_left");
 	private static final ResourceLocation RUINED_WATCHTOWER_LEFT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_ruined_watch_tower_left");
+	
 	private static final ResourceLocation SHORT_BRIDGE_UP = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_short_bridge_up");
+	private static final ResourceLocation SHORT_BRIDGE_UP_DESTROYED = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_short_bridge_up_destroyed");
+	private static final ResourceLocation SHORT_BRIDGE_UP_DESTROYED_VAR_ONE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_short_bridge_up_destroyed_var1");
+
+	private static final ResourceLocation LONG_BRIDGE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_long_bridge");
+	private static final ResourceLocation LONG_BRIDGE_VAR_ONE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_long_bridge_var1");
+	private static final ResourceLocation LONG_BRIDGE_VAR_TWO = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_long_bridge_var2");
+	private static final ResourceLocation LONG_BRIDGE_VAR_THREE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_long_bridge_var3");
+	private static final ResourceLocation LONG_BRIDGE_DESTROYED = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_long_bridge_destroyed");
+	
 	private static final ResourceLocation SPAWNER_OBSIDIAN_BASE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_obsidian_base");
 	private static final ResourceLocation SPAWNER_PIT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_pit");
 	private static final ResourceLocation SPAWNER_MIDDLE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_tower_middle_tileable");
 	private static final ResourceLocation SPAWNER_ROOM = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_tower_top");
 	private static final ResourceLocation SPAWNER_RAMP = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_ramp_reinforced");
 	private static final ResourceLocation SPAWNER_RAMP_SUPPORT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_ramp_supports_reinforced");
+	
+	private static final ResourceLocation RESTAURANT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_restaurant");
+
 	private static final ResourceLocation FACTORY_LOOT = new ResourceLocation(Cobbler.MODID + ":chests/shulker_factory_treasure");
 	
-	private static int TOWER_WEIGHT = 5;
-	private static int RUINED_TOWER_WEIGHT = 10;
+	private static int TOWER_WEIGHT = 6;
+	private static int RUINED_TOWER_WEIGHT = 9;
 	private static int PLATFORM_WEIGHT = 40;
 	private static int OPTIONAL_STAIRS_WEIGHT = 5;
+	private static int RESTAURAUNT_WEIGHT = 3;
 	
 	private static final Map<ResourceLocation, BlockPos> OFFSET = ImmutableMap.<ResourceLocation, BlockPos>builder()
 			.put(ENTRANCE, new BlockPos(0, -3, 0))
-			.put(LOW_SPLIT_LEFT, new BlockPos(0, -3, 0))  //+5x
-			.put(LOW_SPLIT_LEFT_VAR_ONE, new BlockPos(0, -3, 0))  //+5x
-			.put(LOW_SPLIT_LEFT_VAR_TWO, new BlockPos(0, -3, 0))  //+5x
-			.put(LOW_SPLIT_LEFT_VAR_THREE, new BlockPos(0, -3, 0))  //+5x
-			.put(LOW_SPLIT_LEFT_VAR_FOUR, new BlockPos(0, -3, 0))  //+5x
-			.put(LOW_SPLIT_LEFT_VAR_FIVE, new BlockPos(0, -3, 0))  //+5x
-			.put(LOW_SPLIT_LEFT_VAR_SIX, new BlockPos(0, -3, 0))  //+5x
-			.put(LOW_SPLIT_LEFT_VAR_EIGHT, new BlockPos(0, -3, 0))  //+5x
-			.put(LOW_SPLIT_RIGHT, new BlockPos(0, -3, 0)) //+5x
-			.put(LOW_SPLIT_RIGHT_VAR_ONE, new BlockPos(0, -3, 0)) //+5x
-			.put(LOW_SPLIT_RIGHT_VAR_TWO, new BlockPos(0, -3, 0)) //+5x
-			.put(LOW_SPLIT_RIGHT_VAR_THREE, new BlockPos(0, -3, 0)) //+5x
-			.put(LOW_SPLIT_RIGHT_VAR_FOUR, new BlockPos(0, -3, 0)) //+5x
-			.put(LOW_SPLIT_RIGHT_VAR_FIVE, new BlockPos(0, -3, 0)) //+5x
-			.put(LOW_SPLIT_RIGHT_VAR_SIX, new BlockPos(0, -3, 0)) //+5x
-			.put(LOW_SPLIT_RIGHT_VAR_SEVEN, new BlockPos(0, -3, 0)) //+5x
-			.put(LOW_SPLIT_RIGHT_VAR_EIGHT, new BlockPos(0, -3, 0)) //+5x
-			.put(WATCHTOWER_SUPPORT, new BlockPos(0, 0, 0))
+			
+			.put(LOW_SPLIT_LEFT, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_LEFT_VAR_ONE, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_LEFT_VAR_TWO, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_LEFT_VAR_THREE, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_LEFT_VAR_FOUR, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_LEFT_VAR_FIVE, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_LEFT_VAR_SIX, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_LEFT_VAR_EIGHT, new BlockPos(0, -3, 0))
+			
+			.put(LOW_SPLIT_RIGHT, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_RIGHT_VAR_ONE, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_RIGHT_VAR_TWO, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_RIGHT_VAR_THREE, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_RIGHT_VAR_FOUR, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_RIGHT_VAR_FIVE, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_RIGHT_VAR_SIX, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_RIGHT_VAR_SEVEN, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_RIGHT_VAR_EIGHT, new BlockPos(0, -3, 0))
+
+			.put(SIMPLE_SUPPORT, new BlockPos(0, 0, 0))
+			.put(REINFORCED_SUPPORT, new BlockPos(0, 0, 0))
 			.put(WATCHTOWER_LEFT, new BlockPos(0, -1, 0))
 			.put(RUINED_WATCHTOWER_LEFT, new BlockPos(0, -1, 0))
+
 			.put(SHORT_BRIDGE_UP, new BlockPos(0, -2, 0)) //+4x +6z
+			.put(SHORT_BRIDGE_UP_DESTROYED, new BlockPos(0, -2, 0))
+			.put(SHORT_BRIDGE_UP_DESTROYED_VAR_ONE, new BlockPos(0, -2, 0))
+
+			.put(LONG_BRIDGE, new BlockPos(0, -2, 0)) //+14x
+			.put(LONG_BRIDGE_DESTROYED, new BlockPos(0, -2, 0))
+			.put(LONG_BRIDGE_VAR_ONE, new BlockPos(0, -2, 0))
+			.put(LONG_BRIDGE_VAR_TWO, new BlockPos(0, -2, 0))
+			.put(LONG_BRIDGE_VAR_THREE, new BlockPos(0, -2, 0))
+			
 			//y values for tower pieces are handled in the creation method
 			.put(SPAWNER_OBSIDIAN_BASE, new BlockPos(0, 0, 0))
 			.put(SPAWNER_PIT, new BlockPos(0, -8, 0))
@@ -105,6 +138,8 @@ public class ShulkerFactoryPieces {
 			.put(SPAWNER_ROOM, new BlockPos(0, -8, 0))
 			.put(SPAWNER_RAMP, new BlockPos(0, -27, 0))
 			.put(SPAWNER_RAMP_SUPPORT, new BlockPos(0, -9, 0))
+
+			.put(RESTAURANT, new BlockPos(0, -4, 0)) //+3z, 180 turn
 			.build();
 
 	private static void assembleSpawnerTower(TemplateManager templateManager, BlockPos pos, Rotation rotation, List<StructurePiece> pieceList, Random random) {
@@ -198,8 +233,51 @@ public class ShulkerFactoryPieces {
 
 	// Adds a 4 high, 4 long bridge
 	private static Tuple<BlockPos, Rotation> steepRampsUp(TemplateManager templateManager, BlockPos pos, Rotation rotation, List<StructurePiece> pieceList, Random random) {
-		pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SHORT_BRIDGE_UP, pos, rotation));
+		//2 in 5 bridges will be destroyed
+		int variant = random.nextInt(5);
+		switch(variant) {
+		case 0:
+			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SHORT_BRIDGE_UP_DESTROYED, pos, rotation));
+			break;
+		case 1:
+			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SHORT_BRIDGE_UP_DESTROYED_VAR_ONE, pos, rotation));
+			break;
+		default:
+			pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SHORT_BRIDGE_UP, pos, rotation));
+			break;
+	}
 		BlockPos rotationOffSet = new BlockPos(4, 4, 0).rotate((rotation));
+		BlockPos blockpos = pos.add(rotationOffSet);
+
+		return new Tuple<BlockPos, Rotation>(blockpos, rotation);
+	}
+
+	// Adds a 4 high, 4 long bridge
+	private static Tuple<BlockPos, Rotation> addBridge(TemplateManager templateManager, BlockPos pos, Rotation rotation, List<StructurePiece> pieceList, Random random) {
+		//2 in 6 bridges will be destroyed
+		ShulkerFactoryPieces.Piece piece;
+		int variant = random.nextInt(6);
+		switch(variant) {
+			case 0:
+				piece = new ShulkerFactoryPieces.Piece(templateManager, LONG_BRIDGE, pos, rotation);
+				break;
+			case 1:
+				piece = new ShulkerFactoryPieces.Piece(templateManager, LONG_BRIDGE_VAR_ONE, pos, rotation);
+				break;
+			case 2:
+				piece = new ShulkerFactoryPieces.Piece(templateManager, LONG_BRIDGE_VAR_TWO, pos, rotation);
+			case 3:
+				piece = new ShulkerFactoryPieces.Piece(templateManager, LONG_BRIDGE_VAR_THREE, pos, rotation);
+			default:
+				piece = new ShulkerFactoryPieces.Piece(templateManager, LONG_BRIDGE_DESTROYED, pos, rotation);
+				break;
+		}
+		if(StructurePiece.findIntersecting(pieceList, piece.getBoundingBox()) != null) {
+			//If a bridge can't fit, not many other things will
+			return steepRampsUp(templateManager, pos, rotation, pieceList, random);
+		}
+		pieceList.add(piece);
+		BlockPos rotationOffSet = new BlockPos(14, 0, 0).rotate((rotation));
 		BlockPos blockpos = pos.add(rotationOffSet);
 
 		return new Tuple<BlockPos, Rotation>(blockpos, rotation);
@@ -248,7 +326,7 @@ public class ShulkerFactoryPieces {
 		if(StructurePiece.findIntersecting(pieceList, getSupportsBoundingBox(new Tuple<BlockPos, Rotation>(structurePos, rotation))) == null) {
 			do {
 				structurePos = structurePos.add(0, -16, 0);
-				pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, WATCHTOWER_SUPPORT, structurePos, rotation));
+				pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, REINFORCED_SUPPORT, structurePos, rotation));
 			} while(structurePos.getY() > 32);
 		}
 		
@@ -261,47 +339,33 @@ public class ShulkerFactoryPieces {
 
 	
 	private static Tuple<BlockPos, Rotation> addRandomPiece(TemplateManager templateManager, Tuple<BlockPos, Rotation> location, List<StructurePiece> pieceList, Random random) {
-		int randomValue = random.nextInt(100);
+		int randomValue = random.nextInt((RUINED_TOWER_WEIGHT + TOWER_WEIGHT + OPTIONAL_STAIRS_WEIGHT + PLATFORM_WEIGHT + RESTAURAUNT_WEIGHT) * 2);
 		Tuple<BlockPos, Rotation> endPosition;
+		int previous = 0;
 		
-		if(randomValue > 50) {
-			endPosition = addNonClockWisePiece(templateManager, location, pieceList, random);
+		if(randomValue < (previous = (RUINED_TOWER_WEIGHT + TOWER_WEIGHT)*2)) {
+			endPosition = randomTowerLeft(templateManager, location.getA(), location.getB(), pieceList, random);
+		} else if(randomValue < (previous += PLATFORM_WEIGHT)) {
+			endPosition = addTurnLeft(templateManager, location.getA(), location.getB(), pieceList, random);
+		} else if(randomValue < (previous += PLATFORM_WEIGHT)) {
+			endPosition = addTurnRight(templateManager, location.getA(), location.getB(), pieceList, random);
+		} else if(randomValue < (previous += OPTIONAL_STAIRS_WEIGHT)){
+			endPosition = steepRampsUp(templateManager, location.getA(), location.getB(), pieceList, random, 4 + random.nextInt(8));
+		} else if(randomValue < (previous += OPTIONAL_STAIRS_WEIGHT)){
+			endPosition = addBridge(templateManager, location.getA(), location.getB(), pieceList, random);
+		} else if(randomValue < (previous += RESTAURAUNT_WEIGHT * 2)){
+			endPosition = addRestaurant(templateManager, location.getA(), location.getB(), pieceList, random);
 		} else {
-			endPosition = addNonCounterClockWisePiece(templateManager, location, pieceList, random);
+			//We shouldn't get here
+			Cobbler.LOGGER.info("Did you forget to update the math in Cobbler:ShulkerFactoryPieces.addRandomPiece?");
+			endPosition = steepRampsUp(templateManager, location.getA(), location.getB(), pieceList, random, 4 + random.nextInt(8));
 		}
+		
 		return endPosition;
 	}
 	
-	
-	private static Tuple<BlockPos, Rotation> addNonClockWisePiece(TemplateManager templateManager, Tuple<BlockPos, Rotation> location, List<StructurePiece> pieceList, Random random) {
-		int randomValue = random.nextInt((RUINED_TOWER_WEIGHT + TOWER_WEIGHT)*2 + OPTIONAL_STAIRS_WEIGHT + PLATFORM_WEIGHT);
-		Tuple<BlockPos, Rotation> endPosition = location;
-		
-		if(randomValue < (RUINED_TOWER_WEIGHT + TOWER_WEIGHT)*2) {
-			endPosition = randomTowerLeft(templateManager, location.getA(), location.getB(), pieceList, random);
-		} else if(randomValue < (RUINED_TOWER_WEIGHT + TOWER_WEIGHT)*2 + PLATFORM_WEIGHT) {
-			endPosition = addTurnLeft(templateManager, location.getA(), location.getB(), pieceList, random);
-		} else if(randomValue < (RUINED_TOWER_WEIGHT + TOWER_WEIGHT)*2 + PLATFORM_WEIGHT + OPTIONAL_STAIRS_WEIGHT){
-			endPosition = steepRampsUp(templateManager, location.getA(), location.getB(), pieceList, random, 4 + random.nextInt(8));
-		}
-		return endPosition;
-	}	
-	
-	
-	private static Tuple<BlockPos, Rotation> addNonCounterClockWisePiece(TemplateManager templateManager, Tuple<BlockPos, Rotation> location, List<StructurePiece> pieceList, Random random) {
-		int randomValue = random.nextInt(OPTIONAL_STAIRS_WEIGHT + PLATFORM_WEIGHT);
-		Tuple<BlockPos, Rotation> endPosition = location;
-		
-		if(randomValue < PLATFORM_WEIGHT) {
-			endPosition = addTurnRight(templateManager, location.getA(), location.getB(), pieceList, random);
-		} else if(randomValue < PLATFORM_WEIGHT + OPTIONAL_STAIRS_WEIGHT){
-			endPosition = steepRampsUp(templateManager, location.getA(), location.getB(), pieceList, random, 4 + random.nextInt(8));
-		}
-		return endPosition;
-	}	
-	
 	private static Tuple<BlockPos, Rotation> addTurnLeft(TemplateManager templateManager, BlockPos pos, Rotation rotation, List<StructurePiece> pieceList, Random random) {
-		//Move from bl corner of entrance to bl corner
+		//Move from bottom left corner of entrance to bottom left corner
 		BlockPos rotationOffSet = new BlockPos(0, 0, -2).rotate(rotation);
 		BlockPos blockpos = pos.add(rotationOffSet);
 		
@@ -348,7 +412,7 @@ public class ShulkerFactoryPieces {
 		if(StructurePiece.findIntersecting(pieceList, getSupportsBoundingBox(new Tuple<BlockPos, Rotation>(structurePos, rotation))) == null) {
 			do {
 				structurePos = structurePos.add(0, -16, 0);
-				pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, WATCHTOWER_SUPPORT, structurePos, rotation));
+				pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SIMPLE_SUPPORT, structurePos, rotation));
 			} while(structurePos.getY() > 32);
 		}
 		
@@ -357,7 +421,7 @@ public class ShulkerFactoryPieces {
 	
 	
 	private static Tuple<BlockPos, Rotation> addTurnRight(TemplateManager templateManager, BlockPos pos, Rotation rotation, List<StructurePiece> pieceList, Random random) {
-		//Move from bl corner of entrance to bl corner
+		//Move from bottom left corner of entrance to bottom left corner
 		BlockPos rotationOffSet = new BlockPos(0, 0, -2).rotate(rotation);
 		BlockPos blockpos = pos.add(rotationOffSet);
 		
@@ -406,9 +470,29 @@ public class ShulkerFactoryPieces {
 		if(StructurePiece.findIntersecting(pieceList, getSupportsBoundingBox(new Tuple<BlockPos, Rotation>(structurePos, rotation))) == null) {
 			do {
 				structurePos = structurePos.add(0, -16, 0);
-				pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, WATCHTOWER_SUPPORT, structurePos, rotation));
+				pieceList.add(new ShulkerFactoryPieces.Piece(templateManager, SIMPLE_SUPPORT, structurePos, rotation));
 			} while(structurePos.getY() > 32);
 		}
+		
+		return new Tuple<BlockPos, Rotation>(finalPos, rot);
+	}
+	
+	
+	private static Tuple<BlockPos, Rotation> addRestaurant(TemplateManager templateManager, BlockPos pos, Rotation rotation, List<StructurePiece> pieceList, Random random) {
+		//Move from bottom left corner of entrance to bottom left corner
+		BlockPos rotationOffSet = new BlockPos(0, 0, -9).rotate(rotation);
+		BlockPos blockpos = pos.add(rotationOffSet);
+		ShulkerFactoryPieces.Piece piece = new ShulkerFactoryPieces.Piece(templateManager, RESTAURANT, blockpos, rotation);
+		
+		if(StructurePiece.findIntersecting(pieceList, piece.getBoundingBox()) != null) {
+			//The restaurant is larger than most other structures and rarer, so just let it drop back to random
+			return new Tuple<BlockPos, Rotation>(pos, rotation);
+		}
+		pieceList.add(piece);
+
+		rotationOffSet = new BlockPos(0, 12, 12).rotate((rotation));
+		BlockPos finalPos = blockpos.add(rotationOffSet);
+		Rotation rot = rotation.add(Rotation.CLOCKWISE_180);
 		
 		return new Tuple<BlockPos, Rotation>(finalPos, rot);
 	}
