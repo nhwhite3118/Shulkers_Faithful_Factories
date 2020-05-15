@@ -2,6 +2,7 @@ package com.nhwhite3118.cobbler.structures;
 
 import java.util.Locale;
 
+import com.nhwhite3118.cobbler.Cobbler;
 import com.nhwhite3118.cobbler.utils.RegUtil;
 
 import net.minecraft.util.registry.Registry;
@@ -21,16 +22,26 @@ import net.minecraftforge.registries.IForgeRegistry;
 
 public class Structures {
 	public static Structure<NoFeatureConfig> SHULKER_FACTORY = new ShulkerFactoryStructure(NoFeatureConfig::deserialize);
-	public static IStructurePieceType RDHP = com.nhwhite3118.cobbler.structures.ShulkerFactoryPieces.Piece::new;
+	public static Structure<NoFeatureConfig> TEST_STRUCTURE = new TestStructure(NoFeatureConfig::deserialize);
+	public static IStructurePieceType FOR_REGISTERING_SHULKER_FACTORY = com.nhwhite3118.cobbler.structures.ShulkerFactoryPieces.Piece::new;
+	public static IStructurePieceType FOR_REGISTERING_TEST_STRUCTURE = com.nhwhite3118.cobbler.structures.TestStructurePieces.Piece::new;
 
 	public static void registerFeatures(Register<Feature<?>> event) {
 		IForgeRegistry<Feature<?>> registry = event.getRegistry();
 		RegUtil.register(registry, Structures.SHULKER_FACTORY, "shulker_factory");
+		
+		if(Cobbler.ENVIRONMENT == Cobbler.ENVIRONMENTS.DEBUG) {
+			RegUtil.register(registry, Structures.TEST_STRUCTURE, "test_structure");
+		}
 		Structures.registerStructures();
 	}
 	
 	public static void registerStructures() {
-		register(RDHP, "RDHP");
+		//It looks like changing this after generating a structure in the world throws a ton of errors, so I'm leaving it as-is
+		register(FOR_REGISTERING_SHULKER_FACTORY, "RDHP");
+		if(Cobbler.ENVIRONMENT == Cobbler.ENVIRONMENTS.DEBUG) {
+			register(FOR_REGISTERING_TEST_STRUCTURE, "TS");
+		}
 	}
 	
 	/*
@@ -43,7 +54,6 @@ public class Structures {
 
 	public static void generateShulkerFactory(Biome biome, String biomeNamespace, String biomePath)
 	{
-			//func_225566_b_ appears to create a configured feature from a feature and config
 		biome.addFeature(Decoration.SURFACE_STRUCTURES, 
 				SHULKER_FACTORY
 					.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG)
@@ -54,5 +64,15 @@ public class Structures {
 		{
 			biome.addStructure(SHULKER_FACTORY.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
 		}
+	}
+
+	public static void generateTestStructures(Biome biome, String biomeNamespace, String biomePath)
+	{
+		biome.addFeature(Decoration.SURFACE_STRUCTURES, 
+				TEST_STRUCTURE
+					.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG)
+					.withPlacement(Placement.NOPE
+							.configure(IPlacementConfig.NO_PLACEMENT_CONFIG)));
+		biome.addStructure(TEST_STRUCTURE.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG));
 	}
 }

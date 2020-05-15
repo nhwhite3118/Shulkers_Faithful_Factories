@@ -32,8 +32,12 @@ public class Cobbler {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final String MODID = "cobbler";
 	public static Config CobblerConfig = null;
+	public static final ENVIRONMENTS ENVIRONMENT = ENVIRONMENTS.DEBUG;
 
-
+	public enum ENVIRONMENTS{
+		DEBUG,
+		PRODUCTION
+	};
 
 	public Cobbler() {
 		// Register the setup method for modloading
@@ -98,6 +102,9 @@ public class Cobbler {
 			String biomePath = biome.getRegistryName().getPath();
 
 			Structures.generateShulkerFactory(biome, biomeNamespace, biomePath);
+			if(Cobbler.ENVIRONMENT == Cobbler.ENVIRONMENTS.DEBUG) {
+				Structures.generateTestStructures(biome, biomeNamespace, biomePath);
+			}
 		}
 	}
 }
