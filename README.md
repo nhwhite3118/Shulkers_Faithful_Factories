@@ -1,10 +1,12 @@
+![](http://cf.way2muchnoise.eu/title/cobbler.svg) ![](http://cf.way2muchnoise.eu/full_cobbler_downloads.svg) ![](http://cf.way2muchnoise.eu/versions/cobbler.svg)
 # Cobbler
 
 Cobbler is intended to be to vanilla minecraft what peach cobbler is to ice cream. It is not meant to fundimentally change the experience of vanilla minecraft, but rather to compliment it by opening up the possibilities of creating more farms and making more resources renewable. Cobbler should ultimately keep the same spirit of the vanilla game, but add more things for the more technical players to do.
 
-I do not plan on making any items which can be farmed fully afk any easier to farm. Some semi-automatically farmable items will be given methods to be fully automatic, and some non-renewable resources will only be given semi-afkable farming methods depending on the usefullness of the resource. I will also try to avoid adding farms for items which will become farmable in availible snapshots. For example, at the time of writing, gravel is to become renewable in version 1.16, so I will not be adding a way to farm gravel (although I really like the idea of silverfish converting stone to gravel). 
+I do not plan on making any items which can be farmed fully afk any easier to farm. Some semi-automatically farmable items will be given methods to be fully automatic, and some non-renewable resources will only be given semi-afkable farming methods depending on the usefullness of the resource.
 
-This mod is in the very early stages of development, and since it is the first minecraft mod that I am creating, it is likely that some of the intended features may be better suited to datapacks. 
+## Downloads
+I will be posting new versions semi-regularly on [CurseForge](https://www.curseforge.com/minecraft/mc-mods/cobbler). You can find the latest stable version along with previous stable versions there. Then you just need to add the cobbler<versionNumber>.jar file to your mods folder and you're good to go. If this is your first time installing a mod, you will most likely want to follow the instructions found [here.](https://minecraft.gamepedia.com/Mods/Installing_Forge_mods)
 
 ## Finished Features
 - Added Shulker Factories - an extremely rare structure in the end towering above the surrounding landscape with a series of randomly generated platforms guarded by shulkers, and containing items left by the creators of shulkers.
