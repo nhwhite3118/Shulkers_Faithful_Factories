@@ -3,6 +3,7 @@ package com.nhwhite3118.cobbler.structures;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
@@ -17,11 +18,13 @@ public class GenerationInformation {
 	public int south_boundry;
 	public int west_boundry;
 	public int east_boundry;
-	BlockPos position;
-	Rotation rotation;
-	List<StructurePiece> pieceList;
-	TemplateManager templateManager;
-	Random random;
+	public BlockPos position;
+	public Rotation rotation;
+	public List<StructurePiece> pieceList;
+	public TemplateManager templateManager;
+	public Random random;
+	public boolean lastGenerationSucceded = true;
+	public ResourceLocation lastStructureAttempted;
 	
 	GenerationInformation(int north, int south, int west, int east, BlockPos pos, Rotation rot, List<StructurePiece> pieces, TemplateManager template, Random rand){
 		north_boundry = north;

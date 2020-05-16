@@ -32,7 +32,7 @@ public class Cobbler {
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final String MODID = "cobbler";
 	public static Config CobblerConfig = null;
-	public static final ENVIRONMENTS ENVIRONMENT = ENVIRONMENTS.DEBUG;
+	public static final ENVIRONMENTS ENVIRONMENT = ENVIRONMENTS.PRODUCTION;
 
 	public enum ENVIRONMENTS{
 		DEBUG,

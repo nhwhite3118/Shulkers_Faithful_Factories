@@ -1,9 +1,12 @@
 package com.nhwhite3118.cobbler.structures;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 import com.nhwhite3118.cobbler.Cobbler;
 
@@ -48,7 +51,7 @@ public class ShulkerFactoryPieces {
 	private static final ResourceLocation LOW_SPLIT_LEFT_VAR_FOUR = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var4");
 	private static final ResourceLocation LOW_SPLIT_LEFT_VAR_FIVE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var5");
 	private static final ResourceLocation LOW_SPLIT_LEFT_VAR_SIX = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var6");
-	private static final ResourceLocation LOW_SPLIT_LEFT_VAR_EIGHT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var7");
+	private static final ResourceLocation LOW_SPLIT_LEFT_VAR_SEVEN = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var7");
 	
 	private static final ResourceLocation LOW_SPLIT_RIGHT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right");
 	private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_ONE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var1");
@@ -87,14 +90,18 @@ public class ShulkerFactoryPieces {
 
 	private static final ResourceLocation FACTORY_LOOT = new ResourceLocation(Cobbler.MODID + ":chests/shulker_factory_treasure");
 	
-	private static final int TOWER_WEIGHT = 6;
-	private static final int RUINED_TOWER_WEIGHT = 9;
-	private static final int PLATFORM_WEIGHT = 40;
-	private static final int OPTIONAL_STAIRS_WEIGHT = 5;
-	private static final int RESTAURAUNT_WEIGHT = 3;
+	//Structures with uncommon rotations will generate more often than their weight here would suggest
+	private static final double TOWER_WEIGHT = 6;
+	private static final double RUINED_TOWER_WEIGHT = 9;
+	private static final double PLATFORM_WEIGHT = 40;
+	private static final double OPTIONAL_STAIRS_WEIGHT = 5;
+	private static final double RESTAURAUNT_WEIGHT = 3;
+	//1 generates closer to start, increasing it increases the spread. As it approaches infinity, piece direction will not be taken into account. Increases multiplicatively.
+	//Numbers less than 1 will behave unpredictable, and numbers within a few orders of magnitude of double.MAX_VALUE will also behave unpredictably
+	private static final double SPREAD = 1.0;
 	
 	private static final int BLOCKS_TO_GENERATION_BOUNDRY = 16 * 8 + 8;
-	
+
 	private static final Map<ResourceLocation, BlockPos> OFFSET = ImmutableMap.<ResourceLocation, BlockPos>builder()
 			.put(ENTRANCE, new BlockPos(0, -3, 0))
 			
@@ -105,7 +112,7 @@ public class ShulkerFactoryPieces {
 			.put(LOW_SPLIT_LEFT_VAR_FOUR, new BlockPos(0, -3, 0))
 			.put(LOW_SPLIT_LEFT_VAR_FIVE, new BlockPos(0, -3, 0))
 			.put(LOW_SPLIT_LEFT_VAR_SIX, new BlockPos(0, -3, 0))
-			.put(LOW_SPLIT_LEFT_VAR_EIGHT, new BlockPos(0, -3, 0))
+			.put(LOW_SPLIT_LEFT_VAR_SEVEN, new BlockPos(0, -3, 0))
 			
 			.put(LOW_SPLIT_RIGHT, new BlockPos(0, -3, 0))
 			.put(LOW_SPLIT_RIGHT_VAR_ONE, new BlockPos(0, -3, 0))
@@ -142,6 +149,29 @@ public class ShulkerFactoryPieces {
 
 			.put(RESTAURANT, new BlockPos(0, -4, 0)) //+3z, 180 turn
 			.build();
+	
+	/*
+	 * These will be used for finding which structures to use when we're getting near the edge of the area we can generate in.
+	 * The generation method which includes the variants will be called, so only the default weight is listed
+	 */
+	private static final List<Tuple<Function<GenerationInformation, GenerationInformation>, Double>> FOREWARD_WEIGHTS = ImmutableList.<Tuple<Function<GenerationInformation, GenerationInformation>, Double>>builder()
+			.add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::steepRampsUp, OPTIONAL_STAIRS_WEIGHT/2))
+			.add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::addBridge, OPTIONAL_STAIRS_WEIGHT/2))
+			.build();
+	private static final List<Tuple<Function<GenerationInformation, GenerationInformation>, Double>> RIGHT_WEIGHTS = ImmutableList.<Tuple<Function<GenerationInformation, GenerationInformation>, Double>>builder()
+			.add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::addTurnRight, PLATFORM_WEIGHT/2))
+			.build();
+	private static final List<Tuple<Function<GenerationInformation, GenerationInformation>, Double>> REVERSE_WEIGHTS = ImmutableList.<Tuple<Function<GenerationInformation, GenerationInformation>, Double>>builder()
+			.add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::addRestaurant, RESTAURAUNT_WEIGHT))
+			.build();
+	private static final List<Tuple<Function<GenerationInformation, GenerationInformation>, Double>> LEFT_WEIGHTS = ImmutableList.<Tuple<Function<GenerationInformation, GenerationInformation>, Double>>builder()
+			.add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::addTurnLeft, PLATFORM_WEIGHT/2))
+			.add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::randomTowerLeft, (TOWER_WEIGHT + RUINED_TOWER_WEIGHT)/2))
+			.build();
+	private static final double SUM_OF_FOREWARD_WEIGHTS = FOREWARD_WEIGHTS.stream().mapToDouble(a -> a.getB()).sum();
+	private static final double SUM_OF_RIGHT_WEIGHTS = RIGHT_WEIGHTS.stream().mapToDouble(a -> a.getB()).sum();
+	private static final double SUM_OF_REVERSE_WEIGHTS = REVERSE_WEIGHTS.stream().mapToDouble(a -> a.getB()).sum();
+	private static final double SUM_OF_LEFT_WEIGHTS = LEFT_WEIGHTS.stream().mapToDouble(a -> a.getB()).sum();
 
 	private static void assembleSpawnerTower(GenerationInformation generationInfo) {
 
@@ -160,12 +190,12 @@ public class ShulkerFactoryPieces {
 			rotationOffSet = new BlockPos(0, 0, -2).rotate(generationInfo.rotation);
 			blockpos = generationInfo.position.add(rotationOffSet);
 			
-			generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SPAWNER_RAMP));
+			generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SPAWNER_RAMP, blockpos));
 			
 			//y=32 should be right in the middle of most islands
 			while(blockpos.getY() > 57) {
 				blockpos = blockpos.add(0, -32, 0);
-				generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SPAWNER_RAMP_SUPPORT));
+				generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SPAWNER_RAMP_SUPPORT, blockpos));
 			}
 		}
 		/*///////////////////////////////////////////////////////////////////////////////////////////
@@ -178,24 +208,24 @@ public class ShulkerFactoryPieces {
 			blockpos = rotationOffSet.add(x, 0, z);
 			while(blockpos.getY() <= spawnerRoomHeight - 4) {
 				blockpos = blockpos.add(0, 4, 0);
-				generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SPAWNER_MIDDLE));
+				generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SPAWNER_MIDDLE, blockpos));
 				
 			}
 			
 			rotationOffSet = new BlockPos(10, spawnerRoomHeight -42, -6).rotate(generationInfo.rotation);	
 			blockpos = rotationOffSet.add(x, 0, z);
-			generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SPAWNER_PIT));;
+			generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SPAWNER_PIT, blockpos));;
 			
 			blockpos = blockpos.add(0, -8, 0);
 			while(blockpos.getY() > 2) {
 				blockpos = blockpos.add(0, -2, 0);
-				generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SPAWNER_OBSIDIAN_BASE));
+				generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SPAWNER_OBSIDIAN_BASE, blockpos));
 				
 			}
 			
 			rotationOffSet = new BlockPos(10, 0, -6).rotate(generationInfo.rotation);	
 			blockpos = rotationOffSet.add(x, spawnerRoomHeight, z);
-			generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SPAWNER_ROOM));
+			generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SPAWNER_ROOM, blockpos));
 		}
 	}
 	
@@ -290,9 +320,9 @@ public class ShulkerFactoryPieces {
 	}
 	
 	// increaseBy must be divisible by four
-	private static GenerationInformation steepRampsUp(GenerationInformation generationInfo, int increaseBy) {
+	private static GenerationInformation multipleSteepRampsUp(GenerationInformation generationInfo) {
 		GenerationInformation loc = new GenerationInformation(generationInfo);
-		for(int i = 0; i<increaseBy; i+=4) {
+		for(int i = 0; i<generationInfo.random.nextInt(3) + 1; i++) {
 			loc = steepRampsUp(generationInfo);
 		}
 		return loc;
@@ -308,10 +338,10 @@ public class ShulkerFactoryPieces {
 		 * 
 		 *////////////////////////////////////////////////////////////////////////////////////////////////
 		ShulkerFactoryPieces.Piece piece;
-		if(generationInfo.random.nextInt(TOWER_WEIGHT + RUINED_TOWER_WEIGHT) < RUINED_TOWER_WEIGHT) {
-			piece = new ShulkerFactoryPieces.Piece(generationInfo, RUINED_WATCHTOWER_LEFT);
+		if(generationInfo.random.nextInt((int)(TOWER_WEIGHT + RUINED_TOWER_WEIGHT)) < RUINED_TOWER_WEIGHT) {
+			piece = new ShulkerFactoryPieces.Piece(generationInfo, RUINED_WATCHTOWER_LEFT, blockpos);
 		} else {
-			piece = new ShulkerFactoryPieces.Piece(generationInfo, WATCHTOWER_LEFT);
+			piece = new ShulkerFactoryPieces.Piece(generationInfo, WATCHTOWER_LEFT, blockpos);
 		}
 		
 		if(StructurePiece.findIntersecting(generationInfo.pieceList, piece.getBoundingBox()) != null) {
@@ -328,11 +358,13 @@ public class ShulkerFactoryPieces {
 		
 		rotationOffSet = new BlockPos(2, -3, -2).rotate(generationInfo.rotation);	
 		BlockPos structurePos = generationInfo.position.add(rotationOffSet);
-		
-		if(!canGenerate(generationInfo, REINFORCED_SUPPORT)) {
+
+		GenerationInformation supportInfo = new GenerationInformation(generationInfo);
+		supportInfo.position = structurePos;
+		if(canGenerate(generationInfo, REINFORCED_SUPPORT)) {
 			do {
 				structurePos = structurePos.add(0, -16, 0);
-				generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, REINFORCED_SUPPORT));
+				generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, REINFORCED_SUPPORT, structurePos));
 			} while(structurePos.getY() > 32);
 		}
 		
@@ -348,26 +380,25 @@ public class ShulkerFactoryPieces {
 
 	
 	private static GenerationInformation addRandomPiece(GenerationInformation generationInfo) {
-		int randomValue = generationInfo.random.nextInt((RUINED_TOWER_WEIGHT + TOWER_WEIGHT + OPTIONAL_STAIRS_WEIGHT + PLATFORM_WEIGHT + RESTAURAUNT_WEIGHT) * 2);
+		int randomValue = generationInfo.random.nextInt((int)((RUINED_TOWER_WEIGHT + TOWER_WEIGHT + OPTIONAL_STAIRS_WEIGHT + PLATFORM_WEIGHT + RESTAURAUNT_WEIGHT) * 2));
 		GenerationInformation endPosition = new GenerationInformation(generationInfo);
 		int previous = 0;
 		
-		if(randomValue < (previous = (RUINED_TOWER_WEIGHT + TOWER_WEIGHT)*2)) {
+		if(randomValue < (previous = (int)(RUINED_TOWER_WEIGHT + TOWER_WEIGHT)*2)) {
 			endPosition = randomTowerLeft(generationInfo);
 		} else if(randomValue < (previous += PLATFORM_WEIGHT)) {
 			endPosition = addTurnLeft(generationInfo);
 		} else if(randomValue < (previous += PLATFORM_WEIGHT)) {
 			endPosition = addTurnRight(generationInfo);
 		} else if(randomValue < (previous += OPTIONAL_STAIRS_WEIGHT)){
-			endPosition = steepRampsUp(generationInfo, 4 + generationInfo.random.nextInt(8));
+			endPosition = multipleSteepRampsUp(generationInfo);
 		} else if(randomValue < (previous += OPTIONAL_STAIRS_WEIGHT)){
 			endPosition = addBridge(generationInfo);
 		} else if(randomValue < (previous += RESTAURAUNT_WEIGHT * 2)){
 			endPosition = addRestaurant(generationInfo);
 		} else {
-			//We shouldn't get here
-			Cobbler.LOGGER.info("Did you forget to update the math in Cobbler:ShulkerFactoryPieces.addRandomPiece?");
-			endPosition = steepRampsUp(generationInfo, 4 + generationInfo.random.nextInt(8));
+			//We might get here now due to truncating double weights, but it shouldn't happen often
+			endPosition = multipleSteepRampsUp(generationInfo);
 		}
 		
 		return endPosition;
@@ -380,7 +411,10 @@ public class ShulkerFactoryPieces {
 		
 		if(!canGenerate(generationInfo, LOW_SPLIT_LEFT)) {
 			//Simple way to avoid infinite loop if it, for example, generates 4 left towers in a row
-			return steepRampsUp(generationInfo);
+			GenerationInformation result = new GenerationInformation(generationInfo);
+			result.lastGenerationSucceded = false;
+			result.lastStructureAttempted = LOW_SPLIT_LEFT;
+			return result;
 		}
 		ResourceLocation structure;
 		int variant = generationInfo.random.nextInt(8);
@@ -407,22 +441,27 @@ public class ShulkerFactoryPieces {
 				structure = LOW_SPLIT_LEFT_VAR_SIX;
 				break;
 			case 7:
-				structure = LOW_SPLIT_LEFT_VAR_EIGHT;
+				structure = LOW_SPLIT_LEFT_VAR_SEVEN;
 				break;
 			default:
 				//We shouldn't get here, but the compiler will complain if this isn't included
 				structure = LOW_SPLIT_LEFT;
 		}
-		generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, structure));
+		generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, structure, blockpos));
 		//Move from bl corner to bl corner of stairs up and turn left
 		rotationOffSet = new BlockPos(2, 1, -1).rotate(generationInfo.rotation);
 		GenerationInformation result = new GenerationInformation(generationInfo);
 		result.position = blockpos.add(rotationOffSet);
 		result.rotation = generationInfo.rotation.add(Rotation.COUNTERCLOCKWISE_90);
+		result.lastGenerationSucceded = true;
+		result.lastStructureAttempted = LOW_SPLIT_LEFT;
 
 		rotationOffSet = new BlockPos(0, -2, -2).rotate(generationInfo.rotation);	
 		BlockPos structurePos = generationInfo.position.add(rotationOffSet);
-		if(!canGenerate(generationInfo, SIMPLE_SUPPORT)) {
+		
+		GenerationInformation supportInfo = new GenerationInformation(generationInfo);
+		supportInfo.position = structurePos;
+		if(canGenerate(supportInfo, SIMPLE_SUPPORT)) {
 			do {
 				structurePos = structurePos.add(0, -16, 0);
 				generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SIMPLE_SUPPORT, structurePos));
@@ -439,7 +478,10 @@ public class ShulkerFactoryPieces {
 		
 		if(!canGenerate(generationInfo, LOW_SPLIT_LEFT)) {
 			//Simple way to avoid infinite loop if it, for example, generates 4 left towers in a row
-			return steepRampsUp(generationInfo);
+			GenerationInformation result = new GenerationInformation(generationInfo);
+			result.lastGenerationSucceded = false;
+			result.lastStructureAttempted = LOW_SPLIT_RIGHT;
+			return result;
 		}
 		ResourceLocation structure;
 		int variant = generationInfo.random.nextInt(9);
@@ -475,36 +517,42 @@ public class ShulkerFactoryPieces {
 				//We shouldn't get here, but the compiler will complain if this isn't included
 				structure = LOW_SPLIT_RIGHT;
 		}
-		generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, structure));
+		generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, structure, blockpos));
 		
 		//Move from bl corner to bl corner of stairs up and turn right
 		rotationOffSet = new BlockPos(6, 1, 9).rotate(generationInfo.rotation);
 		GenerationInformation result = new GenerationInformation(generationInfo);
 		result.position = blockpos.add(rotationOffSet);
 		result.rotation = generationInfo.rotation.add(Rotation.CLOCKWISE_90);
+		result.lastGenerationSucceded = true;
+		result.lastStructureAttempted = LOW_SPLIT_RIGHT;
 
 		rotationOffSet = new BlockPos(0, -3, -2).rotate(generationInfo.rotation);	
 		BlockPos structurePos = generationInfo.position.add(rotationOffSet);
-		if(!canGenerate(generationInfo, SIMPLE_SUPPORT)) {
+		
+		GenerationInformation supportInfo = new GenerationInformation(generationInfo);
+		supportInfo.position = structurePos;
+		if(canGenerate(supportInfo, SIMPLE_SUPPORT)) {
 			do {
 				structurePos = structurePos.add(0, -16, 0);
-				generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SIMPLE_SUPPORT));
+				generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SIMPLE_SUPPORT, structurePos));
 			} while(structurePos.getY() > 32);
 		}
 		
 		return result;
 	}
 	
-	
 	private static GenerationInformation addRestaurant(GenerationInformation generationInfo) {
 		//Move from bottom left corner of entrance to bottom left corner
 		BlockPos rotationOffSet = new BlockPos(0, 0, -9).rotate(generationInfo.rotation);
 		BlockPos blockpos = generationInfo.position.add(rotationOffSet);
-		ShulkerFactoryPieces.Piece piece = new ShulkerFactoryPieces.Piece(generationInfo, RESTAURANT);
+		ShulkerFactoryPieces.Piece piece = new ShulkerFactoryPieces.Piece(generationInfo, RESTAURANT, blockpos);
 		
 		if(!canGenerate(generationInfo, RESTAURANT)) {
-			//The restaurant is larger than most other structures and rarer, so just let it drop back to random
-			return generationInfo;
+			GenerationInformation result = new GenerationInformation(generationInfo);
+			result.lastGenerationSucceded = false;
+			result.lastStructureAttempted = RESTAURANT;
+			return result;
 		}
 		generationInfo.pieceList.add(piece);
 
@@ -512,6 +560,8 @@ public class ShulkerFactoryPieces {
 		GenerationInformation result = new GenerationInformation(generationInfo);
 		result.position = blockpos.add(rotationOffSet);
 		result.rotation = generationInfo.rotation.add(Rotation.CLOCKWISE_180);
+		result.lastGenerationSucceded = true;
+		result.lastStructureAttempted = RESTAURANT;
 		
 		return result;
 	}
@@ -530,6 +580,8 @@ public class ShulkerFactoryPieces {
 		
 		GenerationInformation result = new GenerationInformation(generationInfo);
 		result.position = blockpos;
+		result.lastGenerationSucceded = true;
+		result.lastStructureAttempted = ENTRANCE;
 		return result;
 	}
 	
@@ -548,44 +600,96 @@ public class ShulkerFactoryPieces {
 		int east_boundry = z + BLOCKS_TO_GENERATION_BOUNDRY;
 		
 		GenerationInformation generationInfo = new GenerationInformation(north_boundry, south_boundry, west_boundry, east_boundry, pos, rotation, pieceList, templateManager, random);
-		//This is how we factor in rotation for multi-piece structures. 
-		//
-		//I would recommend using the OFFSET map above to have each piece at correct height relative of each other 
-		//and keep the X and Z equal to 0. And then in rotations, have the centermost piece have a rotation 
-		//of 0, 0, 0 and then have all other pieces' rotation be based off of the bottommost left corner of 
-		//that piece (the corner that is smallest in X and Z). 
-		//
-		//Lots of trial and error may be needed to get this right for your structure.
 		
 		generationInfo = addEntrance(generationInfo);
 		generationInfo = addTurnUp(generationInfo);
 
-		while(generationInfo.position.getY() < 170 
-				|| (y < 240 &&  !canGenerate(generationInfo, SPAWNER_ROOM))) {
-			//Turn if we get too close to the edge of where we can generate
-			if(generationInfo.position.getX() > north_boundry - 35) {
-				switch(generationInfo.rotation) {
-				case NONE:
-					break;
-				case CLOCKWISE_90:
-					break;
-				case CLOCKWISE_180:
-					break;
-				case COUNTERCLOCKWISE_90:
-					break;
+		int generationFailCount = 0;
+		while((generationInfo.position.getY() < 170 || (y < 240 &&  !canGenerate(generationInfo, SPAWNER_ROOM))
+				)&&!(
+						//If we get too close to the boundary don't risk getting cut off; just generate the spawner structure
+						generationInfo.position.getX() > north_boundry - 35
+						|| generationInfo.position.getX() < south_boundry + 35	
+						|| generationInfo.position.getZ() > east_boundry - 35
+						|| generationInfo.position.getZ() < west_boundry + 35
+					)
+				) {
+			//We want to try to pull away from the edges of where we can generate if we go too far in one direction
+			//1 pulls strongly to positive, -1 to negative, and 0 has no pull
+			double pullX = -((double)(generationInfo.position.getX() - south_boundry) / (double)(north_boundry - south_boundry));
+			double pullZ = -((double)(generationInfo.position.getZ() - west_boundry) / (double)(east_boundry - west_boundry));
+			double pullRight =0;
+			double pullForewards = 0;
+			switch(generationInfo.rotation) {
+			case NONE:
+				pullForewards = pullX;
+				pullRight = pullZ;
+				break;
+			case CLOCKWISE_90:
+				pullForewards = pullZ;
+				pullRight = -pullX;
+				break;
+			case CLOCKWISE_180:
+				pullForewards = -pullX;
+				pullRight = -pullZ;
+				break;
+			case COUNTERCLOCKWISE_90:
+				pullForewards = -pullZ;
+				pullRight = pullX;
+				break;
+			}
+			generationInfo = generateRandomWithDirectionalWeights(generationInfo, pullForewards, pullRight);
+			if(!generationInfo.lastGenerationSucceded) {
+				generationFailCount ++;
+				if(generationFailCount > 2) {
+					generationInfo = steepRampsUp(generationInfo);
+					generationFailCount = 0;
 				}
-			} else if(generationInfo.position.getX() < south_boundry + 35) {
-				
-			} else if(generationInfo.position.getZ() > east_boundry - 35) {
-			
-			} else if(generationInfo.position.getZ() < west_boundry + 35) {
-				
-			} else {
-				generationInfo = addRandomPiece(generationInfo);
 			}
 		}
 	
 		assembleSpawnerTower(generationInfo);
+	}
+	
+	private static GenerationInformation generateRandomWithDirectionalWeights(GenerationInformation generationInfo, double pullForewards, double pullRight) {
+		//Multipliers are between 0 and 2
+		double leftMultiplier = -pullRight + SPREAD;
+		double rightMultiplier = pullRight + SPREAD;
+		double forewardMultiplier = pullForewards + SPREAD;
+		double reverseMultiplier = -pullForewards + SPREAD;
+		double rollBound = leftMultiplier * (double)SUM_OF_LEFT_WEIGHTS 
+				+ rightMultiplier * (double)SUM_OF_RIGHT_WEIGHTS 
+				+ forewardMultiplier * (double)SUM_OF_FOREWARD_WEIGHTS
+				+ reverseMultiplier * (double)SUM_OF_REVERSE_WEIGHTS;
+		double rand = generationInfo.random.nextDouble() * rollBound;
+		double previous = 0;
+		ArrayList<Tuple<Function<GenerationInformation, GenerationInformation>, Double>> weightedGenerationOptionCutoffs = new ArrayList<Tuple<Function<GenerationInformation, GenerationInformation>, Double>>();
+		for(Tuple<Function<GenerationInformation, GenerationInformation>, Double> weightedPiece : LEFT_WEIGHTS) {
+			weightedGenerationOptionCutoffs.add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(weightedPiece.getA(), previous += weightedPiece.getB() * leftMultiplier));
+		}
+		for(Tuple<Function<GenerationInformation, GenerationInformation>, Double> weightedPiece : RIGHT_WEIGHTS) {
+			weightedGenerationOptionCutoffs.add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(weightedPiece.getA(), previous += weightedPiece.getB() * rightMultiplier));
+		}
+		for(Tuple<Function<GenerationInformation, GenerationInformation>, Double> weightedPiece : FOREWARD_WEIGHTS) {
+			weightedGenerationOptionCutoffs.add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(weightedPiece.getA(), previous += weightedPiece.getB() * forewardMultiplier));
+		}
+		for(Tuple<Function<GenerationInformation, GenerationInformation>, Double> weightedPiece : REVERSE_WEIGHTS) {
+			weightedGenerationOptionCutoffs.add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(weightedPiece.getA(), previous += weightedPiece.getB() * reverseMultiplier));
+		}
+		GenerationInformation result = null;
+		for(Tuple<Function<GenerationInformation, GenerationInformation>, Double> pieceCutoff : weightedGenerationOptionCutoffs) {
+			if(pieceCutoff.getB() >= rand) {
+				result = pieceCutoff.getA().apply(generationInfo);
+				break;
+			}
+		}
+		if(result == null) {
+			//I messed up
+			Cobbler.LOGGER.info("generateRandomWithDirectionalWeights([generationInfo], " + pullForewards +", " + pullRight + " encountered an error, generating a random piece");
+			result = addRandomPiece(generationInfo);
+		}
+		return result;
+		
 	}
 	
 	private static boolean canGenerate(GenerationInformation generationInfo, ResourceLocation structure) {
