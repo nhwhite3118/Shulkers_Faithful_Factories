@@ -23,9 +23,9 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeManager;
 import net.minecraft.world.gen.Heightmap;
 
-public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
+public class TestStructure extends Structure<NoFeatureConfig> {
 
-	public ShulkerFactoryStructure(Function<Dynamic<?>, ? extends NoFeatureConfig> config)
+	public TestStructure(Function<Dynamic<?>, ? extends NoFeatureConfig> config)
 	{
 		super(config);
 	}
@@ -39,9 +39,8 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
 	protected ChunkPos getStartPositionForPosition(ChunkGenerator<?> chunkGenerator, Random random, int x, int z, int spacingOffsetsX, int spacingOffsetsZ)
 	{
 		//~10 end cities generate in a 200x200 chunk square. Factories should be ~10x rarer
-
-		int maxDistance = Cobbler.CobblerConfig.shulkerFactorySpawnrate.get();
-		int minDistance = (int) (maxDistance * 0.75f);
+		int maxDistance = 40;
+		int minDistance = 20;
 
 		int xTemp = x + maxDistance * spacingOffsetsX;
 		int ztemp = z + maxDistance * spacingOffsetsZ;
@@ -70,7 +69,7 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
 	@Override
 	public String getStructureName()
 	{
-		return Cobbler.MODID + ":shulker_factory";
+		return Cobbler.MODID + ":test_structure";
 	}
 	
 	/*
@@ -88,7 +87,7 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
 	@Override
 	public Structure.IStartFactory getStartFactory()
 	{
-		return ShulkerFactoryStructure.Start::new;
+		return TestStructure.Start::new;
 	}
 
 
@@ -100,7 +99,7 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
 	 */
 	protected int getSeedModifier()
 	{
-		return 261892189;
+		return 965448321;
 	}
 	
 	/*
@@ -168,13 +167,13 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
 
 			//Now adds the structure pieces to this.components with all details such as where each part goes 
 			//so that the structure can be added to the world by worldgen.
-			ShulkerFactoryPieces.start(templateManagerIn, blockpos, rotation, this.components, this.rand);
+			TestStructurePieces.start(templateManagerIn, blockpos, rotation, this.components, this.rand);
 
 			//Sets the bounds of the structure. 
 			this.recalculateStructureSize();
 
 			//I use to debug and quickly find out if the structure is spawning or not and where it is.
-			Cobbler.LOGGER.log(Level.DEBUG, "Shulker Factory at " + (blockpos.getX()) + " " + blockpos.getY() + " " + (blockpos.getZ()));
+			Cobbler.LOGGER.log(Level.DEBUG, "Test Structure at " + (blockpos.getX()) + " " + blockpos.getY() + " " + (blockpos.getZ()));
 		}
 
 	}
