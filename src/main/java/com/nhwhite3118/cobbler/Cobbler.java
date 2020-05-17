@@ -19,7 +19,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.nhwhite3118.cobbler.ModEventSubscriber.Config;
+import com.nhwhite3118.cobbler.CobblerConfig.CobblerConfigValues;
 import com.nhwhite3118.cobbler.structures.Structures;
 import com.nhwhite3118.cobbler.utils.ConfigHelper;
 
@@ -31,7 +31,7 @@ public class Cobbler {
 	// Directly reference a log4j logger.
 	public static final Logger LOGGER = LogManager.getLogger();
 	public static final String MODID = "cobbler";
-	public static Config CobblerConfig = null;
+	public static CobblerConfigValues CobblerConfig = null;
 	public static final ENVIRONMENTS ENVIRONMENT = ENVIRONMENTS.PRODUCTION;
 
 	public enum ENVIRONMENTS{
@@ -51,7 +51,7 @@ public class Cobbler {
 
 		// Register ourselves for server and other game events we are interested in
 		MinecraftForge.EVENT_BUS.register(this);
-		CobblerConfig = ConfigHelper.register(ModConfig.Type.COMMON, ModEventSubscriber.Config::new);
+		CobblerConfig = ConfigHelper.register(ModConfig.Type.COMMON, CobblerConfig.CobblerConfigValues::new);
 	}
 
 	private void doClientStuff(final FMLClientSetupEvent event) {
@@ -101,7 +101,10 @@ public class Cobbler {
 			String biomeNamespace = biome.getRegistryName().getNamespace();
 			String biomePath = biome.getRegistryName().getPath();
 
-			Structures.generateShulkerFactory(biome, biomeNamespace, biomePath);
+			if(Cobbler.CobblerConfig.spawnShulkerFactories.get()) {
+				Structures.generateShulkerFactory(biome, biomeNamespace, biomePath);
+			}
+			
 			if(Cobbler.ENVIRONMENT == Cobbler.ENVIRONMENTS.DEBUG) {
 				Structures.generateTestStructures(biome, biomeNamespace, biomePath);
 			}

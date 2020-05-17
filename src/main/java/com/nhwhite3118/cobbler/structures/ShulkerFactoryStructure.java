@@ -39,8 +39,9 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
 	protected ChunkPos getStartPositionForPosition(ChunkGenerator<?> chunkGenerator, Random random, int x, int z, int spacingOffsetsX, int spacingOffsetsZ)
 	{
 		//~10 end cities generate in a 200x200 chunk square. Factories should be ~10x rarer
-		int maxDistance = 300;
-		int minDistance = 100;
+
+		int maxDistance = Cobbler.CobblerConfig.shulkerFactorySpawnrate.get();
+		int minDistance = (int) (maxDistance * 0.75f);
 
 		int xTemp = x + maxDistance * spacingOffsetsX;
 		int ztemp = z + maxDistance * spacingOffsetsZ;
