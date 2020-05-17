@@ -29,9 +29,9 @@ public class CobblerConfig
 									+ "\r\n The chance of a factory generating at a chunk is 1/spawnrate."
 									+ "\r\n 10 to practically always have one in render distance, 1000 for extremely rare factories" 
 									+ "\r\n 20 is slightly more common than end cities" 
-									+ "\r\n Default of 225 should average one every ~7,000 blocks")
+									+ "\r\n Default of 200 should average one every ~7,000 blocks (varies widely)")
 							.translation("nhwhite3118.config.structure.endStructures.shulkerfactories")
-							.defineInRange("shulkerFactorySpawnrate", 225, 10, 1000));
+							.defineInRange("shulkerFactorySpawnrate", 200, 10, 1000));
 				builder.pop();
 			builder.pop();
 		}
