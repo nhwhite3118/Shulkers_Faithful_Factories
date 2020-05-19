@@ -13,7 +13,9 @@ import net.minecraft.world.storage.MapDecoration;
 import net.minecraft.world.storage.loot.ConstantRange;
 import net.minecraft.world.storage.loot.ItemLootEntry;
 import net.minecraft.world.storage.loot.LootPool;
+import net.minecraft.world.storage.loot.RandomValueRange;
 import net.minecraft.world.storage.loot.functions.ExplorationMap;
+import net.minecraft.world.storage.loot.functions.SetCount;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
@@ -87,7 +89,7 @@ public final class ForgeEventSubscriber {
 	@SubscribeEvent
 	public static void lootTablesLoading(LootTableLoadEvent event) {
 		if(event.getName().getPath().equals("chests/end_city_treasure") && Cobbler.CobblerConfig.addMapsToShulkerFactoriesToEndCities.get()) {
-			LootPool.Builder customMapPoolBuilder = LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.MAP).acceptFunction(ExplorationMap.func_215903_b().func_216065_a("cobbler:shulker_factory").func_216064_a(MapDecoration.Type.RED_X).func_216062_a((byte)1).func_216063_a(false)));
+			LootPool.Builder customMapPoolBuilder = LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.MAP).acceptFunction(ExplorationMap.func_215903_b().func_216065_a("cobbler:shulker_factory").func_216064_a(MapDecoration.Type.RED_X).func_216062_a((byte)1).func_216063_a(false)).acceptFunction(SetCount.builder(RandomValueRange.of(-Cobbler.CobblerConfig.shulkerFactoryMapChance.get() + 2.0F, 1.0F))));
 			LootPool customMapPool = customMapPoolBuilder.build();
 			event.getTable().addPool(customMapPool);
 		}

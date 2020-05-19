@@ -20,7 +20,7 @@ public class CobblerConfig
 		public ConfigValueListener<Boolean> spawnShulkerFactories;
 		public ConfigValueListener<Integer> shulkerFactorySpawnrate;
 		public ConfigValueListener<Boolean> addMapsToShulkerFactoriesToEndCities;
-		public ConfigValueListener<Integer> shulkerFactoryMapWeight;
+		public ConfigValueListener<Integer> shulkerFactoryMapChance;
 
 		CobblerConfigValues(ForgeConfigSpec.Builder builder, ConfigHelper.Subscriber subscriber)
 		{
@@ -50,13 +50,11 @@ public class CobblerConfig
 							.translation("repurposedstructures.config.feature.endStructures.addMapsToShulkerFactoriesToEndCities")
 							.define("addMapsToShulkerFactoriesToEndCities", true));
 						
-					shulkerFactoryMapWeight = subscriber.subscribe(builder
-								.comment( "\r\n The weight of shulker factory maps on the End City loot table" 
-										+ "\r\n By default, the sum of the weights of other items in the loot table is ~80, and the number of rolls per chest is 2-6"
-										+ "\r\n If you have other mods installed which add items to the loot table, the probability of rolling a factory map will go down" 
-										+ "\r\n Default value is 5. With no other mods installed, this translates to ~20% chance of getting a map from an End City chest")
-								.translation("nhwhite3118.config.structure.endStructures.shulkerFactoryMapWeight")
-								.defineInRange("shulkerFactoryMapWeight", 5, 1, 1000));
+					shulkerFactoryMapChance = subscriber.subscribe(builder
+								.comment( "\r\n The chance of getting a map to a Shulker Factory from a chest in an End City"
+										+ "the probability of getting the map in any given chest is 1/shulkerFactoryMapWeight")
+								.translation("nhwhite3118.config.structure.endStructures.shulkerFactoryMapChance")
+								.defineInRange("shulkerFactoryMapChance", 5, 1, 1000));
 				builder.pop();
 
 				builder.push("Farmability");
