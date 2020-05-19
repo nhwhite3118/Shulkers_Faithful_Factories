@@ -4,11 +4,18 @@ import java.util.Random;
 
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.item.Items;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.storage.MapDecoration;
+import net.minecraft.world.storage.loot.ConstantRange;
+import net.minecraft.world.storage.loot.ItemLootEntry;
+import net.minecraft.world.storage.loot.LootPool;
+import net.minecraft.world.storage.loot.functions.ExplorationMap;
 import net.minecraftforge.common.IPlantable;
+import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.event.world.SaplingGrowTreeEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
@@ -74,6 +81,15 @@ public final class ForgeEventSubscriber {
 		if(rand.nextFloat() <= saplingDryPercent && world.getBiome(saplingPos).getCategory() == Biome.Category.DESERT) {
 			world.setBlockState(saplingPos, Blocks.DEAD_BUSH.getDefaultState());
 			event.setResult(Result.DENY);
+		}
+	}
+	
+	@SubscribeEvent
+	public static void lootTablesLoading(LootTableLoadEvent event) {
+		if(event.getName().getPath().equals("chests/end_city_treasure") && Cobbler.CobblerConfig.addMapsToShulkerFactoriesToEndCities.get()) {
+			LootPool.Builder customMapPoolBuilder = LootPool.builder().rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.MAP).acceptFunction(ExplorationMap.func_215903_b().func_216065_a("cobbler:shulker_factory").func_216064_a(MapDecoration.Type.RED_X).func_216062_a((byte)1).func_216063_a(false)));
+			LootPool customMapPool = customMapPoolBuilder.build();
+			event.getTable().addPool(customMapPool);
 		}
 	}
 }

@@ -19,6 +19,8 @@ public class CobblerConfig
 		
 		public ConfigValueListener<Boolean> spawnShulkerFactories;
 		public ConfigValueListener<Integer> shulkerFactorySpawnrate;
+		public ConfigValueListener<Boolean> addMapsToShulkerFactoriesToEndCities;
+		public ConfigValueListener<Integer> shulkerFactoryMapWeight;
 
 		CobblerConfigValues(ForgeConfigSpec.Builder builder, ConfigHelper.Subscriber subscriber)
 		{
@@ -40,6 +42,21 @@ public class CobblerConfig
 										+ "\r\n Default value of 200 should average one every ~7,000 blocks (varies widely)")
 								.translation("nhwhite3118.config.structure.endStructures.shulkerfactories")
 								.defineInRange("shulkerFactorySpawnrate", 200, 10, 1000));
+				
+					addMapsToShulkerFactoriesToEndCities = subscriber.subscribe(builder
+							.comment("\r\n Whether or not to add a map, similar to the ones which cartographers sell, to the loot table for"
+									+ "\r\n End City Chests (and by extention very rarely within shulker factory chests)"
+									+ "\r\n Default value is true")
+							.translation("repurposedstructures.config.feature.endStructures.addMapsToShulkerFactoriesToEndCities")
+							.define("addMapsToShulkerFactoriesToEndCities", true));
+						
+					shulkerFactoryMapWeight = subscriber.subscribe(builder
+								.comment( "\r\n The weight of shulker factory maps on the End City loot table" 
+										+ "\r\n By default, the sum of the weights of other items in the loot table is ~80, and the number of rolls per chest is 2-6"
+										+ "\r\n If you have other mods installed which add items to the loot table, the probability of rolling a factory map will go down" 
+										+ "\r\n Default value is 5. With no other mods installed, this translates to ~20% chance of getting a map from an End City chest")
+								.translation("nhwhite3118.config.structure.endStructures.shulkerFactoryMapWeight")
+								.defineInRange("shulkerFactoryMapWeight", 5, 1, 1000));
 				builder.pop();
 
 				builder.push("Farmability");
