@@ -5,6 +5,7 @@ import java.util.Random;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.block.HorizontalBlock;
 import net.minecraft.entity.monster.EndermanEntity;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tags.BlockTags;
@@ -107,9 +108,15 @@ public final class EndermanCocoaFarming {
         BlockPos jungleLogPos = adjacentLog.getA();
         BlockState jungleLogState = iworld.getBlockState(jungleLogPos);
         BlockState heldBlockState = enderman.getHeldBlockState();
+        // Direction[] possibleRotations = heldBlockState.getValidRotations(iworld, blockpos);
+        heldBlockState = heldBlockState.with(HorizontalBlock.HORIZONTAL_FACING, adjacentLog.getB());
         if (heldBlockState != null && canPlaceBlock(iworld, blockpos, heldBlockState, blockstate, jungleLogState, jungleLogPos)
                 && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(enderman,
                         new net.minecraftforge.common.util.BlockSnapshot(iworld, blockpos, jungleLogState), adjacentLog.getB())) {
+//            if (possibleRotations == null || possibleRotations.length == 0) {
+//                return;
+//            }
+            // heldBlockState = Blocks.COCOA.getStateForPlacement(new BlockItemUseContext(context))
             iworld.setBlockState(blockpos, heldBlockState, 3);
             enderman.setHeldBlockState((BlockState) null);
         }
@@ -127,10 +134,10 @@ public final class EndermanCocoaFarming {
     }
 
     private static Tuple<BlockPos, Direction> jungleLogAdjacent(IWorldReader iWorld, BlockPos locationToPlace, Direction direction) {
-        BlockPos west = locationToPlace.add(0, 0, -1);
-        BlockPos east = locationToPlace.add(0, 0, 1);
-        BlockPos north = locationToPlace.add(1, 0, 0);
-        BlockPos south = locationToPlace.add(-1, 0, 0);
+        BlockPos west = locationToPlace.add(-1, 0, 0);
+        BlockPos east = locationToPlace.add(1, 0, 0);
+        BlockPos north = locationToPlace.add(0, 0, -1);
+        BlockPos south = locationToPlace.add(0, 0, 1);
         if (iWorld.getBlockState(west).getBlock().isIn(BlockTags.JUNGLE_LOGS)) {
             return new Tuple<BlockPos, Direction>(west, Direction.WEST);
         } else if (iWorld.getBlockState(east).getBlock().isIn(BlockTags.JUNGLE_LOGS)) {
