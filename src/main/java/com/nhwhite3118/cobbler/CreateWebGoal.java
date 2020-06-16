@@ -27,7 +27,7 @@ public class CreateWebGoal extends Goal {
      */
     public boolean shouldExecute() {
         World world = idleEntity.getEntityWorld();
-        if (!Cobbler.CobblerConfig.spidersCanSpinWebs.get() || world == null || world.isRemote()) {
+        if (world == null || world.isRemote()) {
             return false;
         }
         int lightLevel = world.getLight(this.idleEntity.getPosition());

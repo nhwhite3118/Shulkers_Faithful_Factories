@@ -109,7 +109,7 @@ public final class ForgeEventSubscriber {
 
     @SubscribeEvent
     public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
-        if (event.getEntity() instanceof SpiderEntity) {
+        if (event.getEntity() instanceof SpiderEntity && Cobbler.CobblerConfig.spidersCanSpinWebs.get()) {
             SpiderEntity entity = (SpiderEntity) (event.getEntity());
             entity.goalSelector.addGoal(6, new CreateWebGoal(entity));
         }
