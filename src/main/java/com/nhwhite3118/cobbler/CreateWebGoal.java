@@ -6,7 +6,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.util.Direction;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
@@ -27,11 +27,12 @@ public class CreateWebGoal extends Goal {
      */
     public boolean shouldExecute() {
         World world = idleEntity.getEntityWorld();
-        if (world == null || world.isRemote()) {
+        if (!Cobbler.CobblerConfig.spidersCanSpinWebs.get() || world == null || world.isRemote()) {
             return false;
         }
         int lightLevel = world.getLight(this.idleEntity.getPosition());
-        return this.idleEntity.getRNG().nextFloat() < 0.02F && lightLevel > 7 && lightLevel < 14;
+        return this.idleEntity.getRNG().nextFloat() * 100000 < Cobbler.CobblerConfig.webSpinningFrequency.get()
+                && lightLevel >= Cobbler.CobblerConfig.webSpinningMinLightLevel.get() && lightLevel <= Cobbler.CobblerConfig.webSpinningMaxLightLevel.get();
     }
 
     /**
@@ -55,26 +56,26 @@ public class CreateWebGoal extends Goal {
 
         BlockPos currentPosition = this.idleEntity.getPosition();
         BlockState currentPositionState = world.getBlockState(currentPosition);
-        if (currentPositionState.getBlock() != Blocks.AIR || !isAdjacentToSolidBlockOrWeb(world, currentPosition)) {
+        if (currentPositionState.getBlock() != Blocks.AIR || (!Cobbler.CobblerConfig.websEverywhere.get() && !isValidCobwebLocation(world, currentPosition))) {
             return;
         }
         world.setBlockState(currentPosition, Blocks.COBWEB.getDefaultState());
     }
 
-    private boolean isAdjacentToSolidBlockOrWeb(World world, BlockPos blockPos) {
-        if (world.getBlockState(blockPos.east()).isSolidSide(world, blockPos.east(), Direction.WEST)
-                || world.getBlockState(blockPos.east()).getBlock() == Blocks.COBWEB
-                || world.getBlockState(blockPos.west()).isSolidSide(world, blockPos.west(), Direction.EAST)
-                || world.getBlockState(blockPos.west()).getBlock() == Blocks.COBWEB
-                || world.getBlockState(blockPos.north()).isSolidSide(world, blockPos.north(), Direction.SOUTH)
-                || world.getBlockState(blockPos.north()).getBlock() == Blocks.COBWEB
-                || world.getBlockState(blockPos.south()).isSolidSide(world, blockPos.south(), Direction.NORTH)
-                || world.getBlockState(blockPos.south()).getBlock() == Blocks.COBWEB
-                || world.getBlockState(blockPos.up()).isSolidSide(world, blockPos.up(), Direction.DOWN)
-                || world.getBlockState(blockPos.up()).getBlock() == Blocks.COBWEB
-                || world.getBlockState(blockPos.down()).isSolidSide(world, blockPos.down(), Direction.UP)
-                || world.getBlockState(blockPos.down()).getBlock() == Blocks.COBWEB) {
-            return true;
+    /*
+     * Responsible for determining which types of blocks can have cobwebs spun on them. Not limiting it to trees and other webs makes them spin webs everywhere
+     * which would annoy most players
+     */
+
+    private boolean isValidCobwebLocation(World world, BlockPos blockPos) {
+        BlockState adjacent[] = { world.getBlockState(blockPos.east()), world.getBlockState(blockPos.west()), world.getBlockState(blockPos.south()),
+                world.getBlockState(blockPos.north()), world.getBlockState(blockPos.up()), world.getBlockState(blockPos.down()) };
+
+        for (BlockState blockState : adjacent) {
+            if (blockState.getBlock().isIn(BlockTags.LEAVES) || blockState.getBlock().isIn(BlockTags.LOGS) || blockState.getBlock() == Blocks.COBWEB
+                    || blockState.getBlock() == Blocks.SPAWNER) {
+                return true;
+            }
         }
         return false;
     }
