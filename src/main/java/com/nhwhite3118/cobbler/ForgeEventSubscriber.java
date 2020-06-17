@@ -97,7 +97,7 @@ public final class ForgeEventSubscriber {
     @SubscribeEvent
     public static void lootTablesLoading(LootTableLoadEvent event) {
         if (event.getName().getPath().equals("chests/end_city_treasure") && Cobbler.CobblerConfig.addMapsToShulkerFactoriesToEndCities.get()) {
-            LootPool.Builder customMapPoolBuilder = LootPool.builder().rolls(ConstantRange.of(1))
+            LootPool.Builder customMapPoolBuilder = LootPool.builder().name("cobbler:end_explorers_map_pool").rolls(ConstantRange.of(1))
                     .addEntry(ItemLootEntry.builder(Items.MAP)
                             .acceptFunction(ExplorationMap.func_215903_b().func_216065_a("cobbler:shulker_factory").func_216064_a(MapDecoration.Type.RED_X)
                                     .func_216062_a((byte) 1).func_216063_a(false))
