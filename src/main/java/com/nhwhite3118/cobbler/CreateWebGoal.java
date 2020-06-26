@@ -30,7 +30,8 @@ public class CreateWebGoal extends Goal {
         if (world == null || world.isRemote()) {
             return false;
         }
-        int lightLevel = world.getLight(this.idleEntity.getPosition());
+        int lightLevel = world.getLight(this.idleEntity.func_233580_cy_());
+
         return this.idleEntity.getRNG().nextFloat() * 100000 < Cobbler.CobblerConfig.webSpinningFrequency.get()
                 && lightLevel >= Cobbler.CobblerConfig.webSpinningMinLightLevel.get() && lightLevel <= Cobbler.CobblerConfig.webSpinningMaxLightLevel.get();
     }
@@ -54,7 +55,7 @@ public class CreateWebGoal extends Goal {
             return;
         }
 
-        BlockPos currentPosition = this.idleEntity.getPosition();
+        BlockPos currentPosition = this.idleEntity.func_233580_cy_();
         BlockState currentPositionState = world.getBlockState(currentPosition);
         if (currentPositionState.getBlock() != Blocks.AIR || (!Cobbler.CobblerConfig.websEverywhere.get() && !isValidCobwebLocation(world, currentPosition))) {
             return;
