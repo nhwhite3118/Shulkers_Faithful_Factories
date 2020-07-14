@@ -15,11 +15,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.BlockSnapshot;
 import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.eventbus.api.Event.Result;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -76,9 +75,8 @@ public final class EndermanCocoaFarming {
             // fortune and will get less than a player could anyways
             return;
         }
-        Vector3d vec3d = new Vector3d((double) MathHelper.floor(enderman.getPosX()) + 0.5D, (double) j + 0.5D,
-                (double) MathHelper.floor(enderman.getPosZ()) + 0.5D);
-        Vector3d vec3d1 = new Vector3d((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D);
+        Vec3d vec3d = new Vec3d((double) MathHelper.floor(enderman.getPosX()) + 0.5D, (double) j + 0.5D, (double) MathHelper.floor(enderman.getPosZ()) + 0.5D);
+        Vec3d vec3d1 = new Vec3d((double) i + 0.5D, (double) j + 0.5D, (double) k + 0.5D);
         BlockRayTraceResult blockraytraceresult = world
                 .rayTraceBlocks(new RayTraceContext(vec3d, vec3d1, RayTraceContext.BlockMode.OUTLINE, RayTraceContext.FluidMode.NONE, enderman));
         if (!blockraytraceresult.getPos().equals(blockpos)) {
@@ -113,7 +111,8 @@ public final class EndermanCocoaFarming {
         // Direction[] possibleRotations = heldBlockState.getValidRotations(iworld, blockpos);
         heldBlockState = heldBlockState.with(HorizontalBlock.HORIZONTAL_FACING, adjacentLog.getB());
         if (heldBlockState != null && canPlaceBlock(iworld, blockpos, heldBlockState, blockstate, jungleLogState, jungleLogPos)
-                && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(enderman, BlockSnapshot.create(iworld, blockpos), adjacentLog.getB())) {
+                && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(enderman,
+                        new net.minecraftforge.common.util.BlockSnapshot(iworld, blockpos, jungleLogState), adjacentLog.getB())) {
 //            if (possibleRotations == null || possibleRotations.length == 0) {
 //                return;
 //            }
@@ -131,7 +130,7 @@ public final class EndermanCocoaFarming {
     private static boolean canPlaceBlock(IWorldReader iWorld, BlockPos locationToPlace, BlockState heldBlock, BlockState placementLocationBlockState,
             BlockState blockToPlaceOnBlockState, BlockPos blockToPlaceOnPlacement) {
         return placementLocationBlockState.isAir(iWorld, locationToPlace) && !blockToPlaceOnBlockState.isAir(iWorld, blockToPlaceOnPlacement)
-                && blockToPlaceOnBlockState.func_235785_r_(iWorld, blockToPlaceOnPlacement) && heldBlock.isValidPosition(iWorld, locationToPlace);
+                && blockToPlaceOnBlockState.isCollisionShapeOpaque(iWorld, blockToPlaceOnPlacement) && heldBlock.isValidPosition(iWorld, locationToPlace);
     }
 
     private static Tuple<BlockPos, Direction> jungleLogAdjacent(IWorldReader iWorld, BlockPos locationToPlace, Direction direction) {
