@@ -125,15 +125,18 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
 
         // ChunkPos chunkpos = this.getStartPositionForPosition(chunkGen, rand, chunkPosX, chunkPosZ, 0, 0);
 
-        int spawnRate = Cobbler.CobblerConfig.shulkerFactorySpawnrate.get();
+        double spawnRate = (double) Cobbler.CobblerConfig.shulkerFactorySpawnrate.get();
         if (spawnRate == 0 || !Cobbler.CobblerConfig.spawnShulkerFactories.get()) {
             return false;
         }
+        // This should give the same rarity as before when we used separation
+        double adjustedSpawnRate = Math.pow((spawnRate + spawnRate * 0.75) / 2, 2);
         // Checks to see if current chunk is valid to spawn in.
-        if (random.nextDouble() < 1.0 / (double) spawnRate) {
+        if (random.nextDouble() < 1.0 / adjustedSpawnRate) {
             if (biomeProvider.hasStructure(this)) {
                 return true;
             }
+            Cobbler.LOGGER.info("Tried to add shulkerFactory but biome wasn't valid");
         }
 
         return false;
