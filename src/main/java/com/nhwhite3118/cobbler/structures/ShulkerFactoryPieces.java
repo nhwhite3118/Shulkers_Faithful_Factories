@@ -21,10 +21,8 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Rotation;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.gen.ChunkGenerator;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
@@ -45,88 +43,52 @@ import net.minecraft.world.gen.feature.template.TemplateManager;
 public class ShulkerFactoryPieces {
     private static final ResourceLocation ENTRANCE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_entrance");
 
-    private static final ResourceLocation LOW_SPLIT_LEFT = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_left");
-    private static final ResourceLocation LOW_SPLIT_LEFT_VAR_ONE = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_left_var1");
-    private static final ResourceLocation LOW_SPLIT_LEFT_VAR_TWO = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_left_var2");
-    private static final ResourceLocation LOW_SPLIT_LEFT_VAR_THREE = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_left_var3");
-    private static final ResourceLocation LOW_SPLIT_LEFT_VAR_FOUR = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_left_var4");
-    private static final ResourceLocation LOW_SPLIT_LEFT_VAR_FIVE = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_left_var5");
-    private static final ResourceLocation LOW_SPLIT_LEFT_VAR_SIX = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_left_var6");
-    private static final ResourceLocation LOW_SPLIT_LEFT_VAR_SEVEN = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_left_var7");
+    private static final ResourceLocation LOW_SPLIT_LEFT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left");
+    private static final ResourceLocation LOW_SPLIT_LEFT_VAR_ONE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var1");
+    private static final ResourceLocation LOW_SPLIT_LEFT_VAR_TWO = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var2");
+    private static final ResourceLocation LOW_SPLIT_LEFT_VAR_THREE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var3");
+    private static final ResourceLocation LOW_SPLIT_LEFT_VAR_FOUR = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var4");
+    private static final ResourceLocation LOW_SPLIT_LEFT_VAR_FIVE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var5");
+    private static final ResourceLocation LOW_SPLIT_LEFT_VAR_SIX = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var6");
+    private static final ResourceLocation LOW_SPLIT_LEFT_VAR_SEVEN = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_left_var7");
 
-    private static final ResourceLocation LOW_SPLIT_RIGHT = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_right");
-    private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_ONE = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_right_var1");
-    private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_TWO = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_right_var2");
-    private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_THREE = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_right_var3");
-    private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_FOUR = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_right_var4");
-    private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_FIVE = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_right_var5");
-    private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_SIX = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_right_var6");
-    private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_SEVEN = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_right_var7");
-    private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_EIGHT = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_low_split_right_var8");
+    private static final ResourceLocation LOW_SPLIT_RIGHT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right");
+    private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_ONE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var1");
+    private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_TWO = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var2");
+    private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_THREE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var3");
+    private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_FOUR = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var4");
+    private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_FIVE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var5");
+    private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_SIX = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var6");
+    private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_SEVEN = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var7");
+    private static final ResourceLocation LOW_SPLIT_RIGHT_VAR_EIGHT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_low_split_right_var8");
 
-    private static final ResourceLocation SIMPLE_SUPPORT = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_support_9x18x9");
-    private static final ResourceLocation REINFORCED_SUPPORT = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_support_9x18x9_reinforced");
+    private static final ResourceLocation SIMPLE_SUPPORT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_support_9x18x9");
+    private static final ResourceLocation REINFORCED_SUPPORT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_support_9x18x9_reinforced");
 
-    private static final ResourceLocation WATCHTOWER_LEFT = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_watch_tower_left");
-    private static final ResourceLocation RUINED_WATCHTOWER_LEFT = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_ruined_watch_tower_left");
+    private static final ResourceLocation WATCHTOWER_LEFT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_watch_tower_left");
+    private static final ResourceLocation RUINED_WATCHTOWER_LEFT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_ruined_watch_tower_left");
 
-    private static final ResourceLocation SHORT_BRIDGE_UP = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_short_bridge_up");
-    private static final ResourceLocation SHORT_BRIDGE_UP_DESTROYED = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_short_bridge_up_destroyed");
+    private static final ResourceLocation SHORT_BRIDGE_UP = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_short_bridge_up");
+    private static final ResourceLocation SHORT_BRIDGE_UP_DESTROYED = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_short_bridge_up_destroyed");
     private static final ResourceLocation SHORT_BRIDGE_UP_DESTROYED_VAR_ONE = new ResourceLocation(
             Cobbler.MODID + ":shulkerfactory_short_bridge_up_destroyed_var1");
 
-    private static final ResourceLocation LONG_BRIDGE = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_long_bridge");
-    private static final ResourceLocation LONG_BRIDGE_VAR_ONE = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_long_bridge_var1");
-    private static final ResourceLocation LONG_BRIDGE_VAR_TWO = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_long_bridge_var2");
-    private static final ResourceLocation LONG_BRIDGE_VAR_THREE = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_long_bridge_var3");
-    private static final ResourceLocation LONG_BRIDGE_DESTROYED = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_long_bridge_destroyed");
+    private static final ResourceLocation LONG_BRIDGE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_long_bridge");
+    private static final ResourceLocation LONG_BRIDGE_VAR_ONE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_long_bridge_var1");
+    private static final ResourceLocation LONG_BRIDGE_VAR_TWO = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_long_bridge_var2");
+    private static final ResourceLocation LONG_BRIDGE_VAR_THREE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_long_bridge_var3");
+    private static final ResourceLocation LONG_BRIDGE_DESTROYED = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_long_bridge_destroyed");
 
-    private static final ResourceLocation SPAWNER_OBSIDIAN_BASE = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_spawner_obsidian_base");
-    private static final ResourceLocation SPAWNER_PIT = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_spawner_pit");
-    private static final ResourceLocation SPAWNER_MIDDLE = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_spawner_tower_middle_tileable");
-    private static final ResourceLocation SPAWNER_ROOM = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_spawner_tower_top");
-    private static final ResourceLocation SPAWNER_RAMP = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_spawner_ramp_reinforced");
-    private static final ResourceLocation SPAWNER_RAMP_SUPPORT = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_spawner_ramp_supports_reinforced");
+    private static final ResourceLocation SPAWNER_OBSIDIAN_BASE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_obsidian_base");
+    private static final ResourceLocation SPAWNER_PIT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_pit");
+    private static final ResourceLocation SPAWNER_MIDDLE = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_tower_middle_tileable");
+    private static final ResourceLocation SPAWNER_ROOM = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_tower_top");
+    private static final ResourceLocation SPAWNER_RAMP = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_ramp_reinforced");
+    private static final ResourceLocation SPAWNER_RAMP_SUPPORT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_ramp_supports_reinforced");
 
-    private static final ResourceLocation RESTAURANT = new ResourceLocation(
-            Cobbler.MODID + ":shulkerfactory_restaurant");
+    private static final ResourceLocation RESTAURANT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_restaurant");
 
-    private static final ResourceLocation FACTORY_LOOT = new ResourceLocation(
-            Cobbler.MODID + ":chests/shulker_factory_treasure");
+    private static final ResourceLocation FACTORY_LOOT = new ResourceLocation(Cobbler.MODID + ":chests/shulker_factory_treasure");
 
     // Structures with uncommon rotations will generate more often than their weight
     // here would suggest
@@ -144,13 +106,12 @@ public class ShulkerFactoryPieces {
 
     private static final int BLOCKS_TO_GENERATION_BOUNDRY = 16 * 8 + 8;
 
-    private static final Map<ResourceLocation, BlockPos> OFFSET = ImmutableMap.<ResourceLocation, BlockPos>builder()
-            .put(ENTRANCE, new BlockPos(0, -3, 0))
+    private static final Map<ResourceLocation, BlockPos> OFFSET = ImmutableMap.<ResourceLocation, BlockPos>builder().put(ENTRANCE, new BlockPos(0, -3, 0))
 
-            .put(LOW_SPLIT_LEFT, new BlockPos(0, -3, 0)).put(LOW_SPLIT_LEFT_VAR_ONE, new BlockPos(0, -3, 0))
-            .put(LOW_SPLIT_LEFT_VAR_TWO, new BlockPos(0, -3, 0)).put(LOW_SPLIT_LEFT_VAR_THREE, new BlockPos(0, -3, 0))
-            .put(LOW_SPLIT_LEFT_VAR_FOUR, new BlockPos(0, -3, 0)).put(LOW_SPLIT_LEFT_VAR_FIVE, new BlockPos(0, -3, 0))
-            .put(LOW_SPLIT_LEFT_VAR_SIX, new BlockPos(0, -3, 0)).put(LOW_SPLIT_LEFT_VAR_SEVEN, new BlockPos(0, -3, 0))
+            .put(LOW_SPLIT_LEFT, new BlockPos(0, -3, 0)).put(LOW_SPLIT_LEFT_VAR_ONE, new BlockPos(0, -3, 0)).put(LOW_SPLIT_LEFT_VAR_TWO, new BlockPos(0, -3, 0))
+            .put(LOW_SPLIT_LEFT_VAR_THREE, new BlockPos(0, -3, 0)).put(LOW_SPLIT_LEFT_VAR_FOUR, new BlockPos(0, -3, 0))
+            .put(LOW_SPLIT_LEFT_VAR_FIVE, new BlockPos(0, -3, 0)).put(LOW_SPLIT_LEFT_VAR_SIX, new BlockPos(0, -3, 0))
+            .put(LOW_SPLIT_LEFT_VAR_SEVEN, new BlockPos(0, -3, 0))
 
             .put(LOW_SPLIT_RIGHT, new BlockPos(0, -3, 0)).put(LOW_SPLIT_RIGHT_VAR_ONE, new BlockPos(0, -3, 0))
             .put(LOW_SPLIT_RIGHT_VAR_TWO, new BlockPos(0, -3, 0)).put(LOW_SPLIT_RIGHT_VAR_THREE, new BlockPos(0, -3, 0))
@@ -158,53 +119,43 @@ public class ShulkerFactoryPieces {
             .put(LOW_SPLIT_RIGHT_VAR_SIX, new BlockPos(0, -3, 0)).put(LOW_SPLIT_RIGHT_VAR_SEVEN, new BlockPos(0, -3, 0))
             .put(LOW_SPLIT_RIGHT_VAR_EIGHT, new BlockPos(0, -3, 0))
 
-            .put(SIMPLE_SUPPORT, new BlockPos(0, 0, 0)).put(REINFORCED_SUPPORT, new BlockPos(0, 0, 0))
-            .put(WATCHTOWER_LEFT, new BlockPos(0, -1, 0)).put(RUINED_WATCHTOWER_LEFT, new BlockPos(0, -1, 0))
+            .put(SIMPLE_SUPPORT, new BlockPos(0, 0, 0)).put(REINFORCED_SUPPORT, new BlockPos(0, 0, 0)).put(WATCHTOWER_LEFT, new BlockPos(0, -1, 0))
+            .put(RUINED_WATCHTOWER_LEFT, new BlockPos(0, -1, 0))
 
             .put(SHORT_BRIDGE_UP, new BlockPos(0, -2, 0)) // +4x +6z
-            .put(SHORT_BRIDGE_UP_DESTROYED, new BlockPos(0, -2, 0))
-            .put(SHORT_BRIDGE_UP_DESTROYED_VAR_ONE, new BlockPos(0, -2, 0))
+            .put(SHORT_BRIDGE_UP_DESTROYED, new BlockPos(0, -2, 0)).put(SHORT_BRIDGE_UP_DESTROYED_VAR_ONE, new BlockPos(0, -2, 0))
 
             .put(LONG_BRIDGE, new BlockPos(0, -2, 0)) // +14x
             .put(LONG_BRIDGE_DESTROYED, new BlockPos(0, -2, 0)).put(LONG_BRIDGE_VAR_ONE, new BlockPos(0, -2, 0))
             .put(LONG_BRIDGE_VAR_TWO, new BlockPos(0, -2, 0)).put(LONG_BRIDGE_VAR_THREE, new BlockPos(0, -2, 0))
 
             // y values for tower pieces are handled in the creation method
-            .put(SPAWNER_OBSIDIAN_BASE, new BlockPos(0, 0, 0)).put(SPAWNER_PIT, new BlockPos(0, -8, 0))
-            .put(SPAWNER_MIDDLE, new BlockPos(0, -8, 0)).put(SPAWNER_ROOM, new BlockPos(0, -8, 0))
-            .put(SPAWNER_RAMP, new BlockPos(0, -27, 0)).put(SPAWNER_RAMP_SUPPORT, new BlockPos(0, -9, 0))
+            .put(SPAWNER_OBSIDIAN_BASE, new BlockPos(0, 0, 0)).put(SPAWNER_PIT, new BlockPos(0, -8, 0)).put(SPAWNER_MIDDLE, new BlockPos(0, -8, 0))
+            .put(SPAWNER_ROOM, new BlockPos(0, -8, 0)).put(SPAWNER_RAMP, new BlockPos(0, -27, 0)).put(SPAWNER_RAMP_SUPPORT, new BlockPos(0, -9, 0))
 
             .put(RESTAURANT, new BlockPos(0, -4, 0)) // +3z, 180 turn
             .build();
 
     /*
-     * These will be used for finding which structures to use when we're getting
-     * near the edge of the area we can generate in. The generation method which
+     * These will be used for finding which structures to use when we're getting near the edge of the area we can generate in. The generation method which
      * includes the variants will be called, so only the default weight is listed
      */
     private static final List<Tuple<Function<GenerationInformation, GenerationInformation>, Double>> FOREWARD_WEIGHTS = ImmutableList
             .<Tuple<Function<GenerationInformation, GenerationInformation>, Double>>builder()
-            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(
-                    ShulkerFactoryPieces::steepRampsUp, OPTIONAL_STAIRS_WEIGHT / 2))
-            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(
-                    ShulkerFactoryPieces::addBridge, OPTIONAL_STAIRS_WEIGHT / 2))
+            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::steepRampsUp, OPTIONAL_STAIRS_WEIGHT / 2))
+            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::addBridge, OPTIONAL_STAIRS_WEIGHT / 2))
             .build();
     private static final List<Tuple<Function<GenerationInformation, GenerationInformation>, Double>> RIGHT_WEIGHTS = ImmutableList
             .<Tuple<Function<GenerationInformation, GenerationInformation>, Double>>builder()
-            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(
-                    ShulkerFactoryPieces::addTurnRight, PLATFORM_WEIGHT / 2))
-            .build();
+            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::addTurnRight, PLATFORM_WEIGHT / 2)).build();
     private static final List<Tuple<Function<GenerationInformation, GenerationInformation>, Double>> REVERSE_WEIGHTS = ImmutableList
             .<Tuple<Function<GenerationInformation, GenerationInformation>, Double>>builder()
-            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(
-                    ShulkerFactoryPieces::addRestaurant, RESTAURAUNT_WEIGHT))
-            .build();
+            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::addRestaurant, RESTAURAUNT_WEIGHT)).build();
     private static final List<Tuple<Function<GenerationInformation, GenerationInformation>, Double>> LEFT_WEIGHTS = ImmutableList
             .<Tuple<Function<GenerationInformation, GenerationInformation>, Double>>builder()
-            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(
-                    ShulkerFactoryPieces::addTurnLeft, PLATFORM_WEIGHT / 2))
-            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(
-                    ShulkerFactoryPieces::randomTowerLeft, (TOWER_WEIGHT + RUINED_TOWER_WEIGHT) / 2))
+            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::addTurnLeft, PLATFORM_WEIGHT / 2))
+            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::randomTowerLeft,
+                    (TOWER_WEIGHT + RUINED_TOWER_WEIGHT) / 2))
             .build();
     private static final double SUM_OF_FOREWARD_WEIGHTS = FOREWARD_WEIGHTS.stream().mapToDouble(a -> a.getB()).sum();
     private static final double SUM_OF_RIGHT_WEIGHTS = RIGHT_WEIGHTS.stream().mapToDouble(a -> a.getB()).sum();
@@ -220,8 +171,7 @@ public class ShulkerFactoryPieces {
         BlockPos rotationOffSet;
 
         /*
-         * /////////////////////////////////////////////////////////////////////////////
-         * //////////////
+         * ///////////////////////////////////////////////////////////////////////////// //////////////
          * 
          * Ramp
          * 
@@ -235,13 +185,11 @@ public class ShulkerFactoryPieces {
             // y=32 should be right in the middle of most islands
             while (blockpos.getY() > 57) {
                 blockpos = blockpos.add(0, -32, 0);
-                generationInfo.pieceList
-                        .add(new ShulkerFactoryPieces.Piece(generationInfo, SPAWNER_RAMP_SUPPORT, blockpos));
+                generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SPAWNER_RAMP_SUPPORT, blockpos));
             }
         }
         /*
-         * /////////////////////////////////////////////////////////////////////////////
-         * //////////////
+         * ///////////////////////////////////////////////////////////////////////////// //////////////
          * 
          * Tower
          * 
@@ -263,8 +211,7 @@ public class ShulkerFactoryPieces {
             blockpos = blockpos.add(0, -8, 0);
             while (blockpos.getY() > 2) {
                 blockpos = blockpos.add(0, -2, 0);
-                generationInfo.pieceList
-                        .add(new ShulkerFactoryPieces.Piece(generationInfo, SPAWNER_OBSIDIAN_BASE, blockpos));
+                generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SPAWNER_OBSIDIAN_BASE, blockpos));
 
             }
 
@@ -277,9 +224,8 @@ public class ShulkerFactoryPieces {
     private static MutableBoundingBox getSpawnerTowerBoundingBox(Tuple<BlockPos, Rotation> location) {
         BlockPos swbCorner = location.getA().add(new BlockPos(0, -256, -6).rotate(location.getB()));
         BlockPos netCorner = location.getA().add(new BlockPos(14, 15, 14).rotate(location.getB()));
-        return new MutableBoundingBox(Math.min(swbCorner.getX(), netCorner.getX()),
-                Math.min(swbCorner.getZ(), netCorner.getZ()), Math.max(swbCorner.getX(), netCorner.getX()),
-                Math.max(swbCorner.getZ(), netCorner.getZ()));
+        return new MutableBoundingBox(Math.min(swbCorner.getX(), netCorner.getX()), Math.min(swbCorner.getZ(), netCorner.getZ()),
+                Math.max(swbCorner.getX(), netCorner.getX()), Math.max(swbCorner.getZ(), netCorner.getZ()));
 
     }
 
@@ -287,9 +233,8 @@ public class ShulkerFactoryPieces {
     private static MutableBoundingBox getSupportsBoundingBox(Tuple<BlockPos, Rotation> location) {
         BlockPos swbCorner = location.getA().add(new BlockPos(0, -256, 0).rotate(location.getB()));
         BlockPos netCorner = location.getA().add(new BlockPos(8, -4, 8).rotate(location.getB()));
-        return new MutableBoundingBox(Math.min(swbCorner.getX(), netCorner.getX()), 0,
-                Math.min(swbCorner.getZ(), netCorner.getZ()), Math.max(swbCorner.getX(), netCorner.getX()),
-                netCorner.getY(), Math.max(swbCorner.getZ(), netCorner.getZ()));
+        return new MutableBoundingBox(Math.min(swbCorner.getX(), netCorner.getX()), 0, Math.min(swbCorner.getZ(), netCorner.getZ()),
+                Math.max(swbCorner.getX(), netCorner.getX()), netCorner.getY(), Math.max(swbCorner.getZ(), netCorner.getZ()));
 
     }
 
@@ -373,8 +318,7 @@ public class ShulkerFactoryPieces {
         BlockPos blockpos = generationInfo.position.add(rotationOffSet);
 
         /*
-         * /////////////////////////////////////////////////////////////////////////////
-         * ////////////////////
+         * ///////////////////////////////////////////////////////////////////////////// ////////////////////
          * 
          * Tower
          * 
@@ -394,8 +338,7 @@ public class ShulkerFactoryPieces {
 
         generationInfo.pieceList.add(piece);
         /*
-         * /////////////////////////////////////////////////////////////////////////////
-         * ////////////////////
+         * ///////////////////////////////////////////////////////////////////////////// ////////////////////
          * 
          * Supports
          * 
@@ -409,8 +352,7 @@ public class ShulkerFactoryPieces {
         if (canGenerate(generationInfo, REINFORCED_SUPPORT)) {
             do {
                 structurePos = structurePos.add(0, -16, 0);
-                generationInfo.pieceList
-                        .add(new ShulkerFactoryPieces.Piece(generationInfo, REINFORCED_SUPPORT, structurePos));
+                generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, REINFORCED_SUPPORT, structurePos));
             } while (structurePos.getY() > 32);
         }
 
@@ -424,8 +366,8 @@ public class ShulkerFactoryPieces {
     }
 
     private static GenerationInformation addRandomPiece(GenerationInformation generationInfo) {
-        int randomValue = generationInfo.random.nextInt((int) ((RUINED_TOWER_WEIGHT + TOWER_WEIGHT
-                + OPTIONAL_STAIRS_WEIGHT + PLATFORM_WEIGHT + RESTAURAUNT_WEIGHT) * 2));
+        int randomValue = generationInfo.random
+                .nextInt((int) ((RUINED_TOWER_WEIGHT + TOWER_WEIGHT + OPTIONAL_STAIRS_WEIGHT + PLATFORM_WEIGHT + RESTAURAUNT_WEIGHT) * 2));
         GenerationInformation endPosition = new GenerationInformation(generationInfo);
         int previous = 0;
 
@@ -511,8 +453,7 @@ public class ShulkerFactoryPieces {
         if (canGenerate(supportInfo, SIMPLE_SUPPORT)) {
             do {
                 structurePos = structurePos.add(0, -16, 0);
-                generationInfo.pieceList
-                        .add(new ShulkerFactoryPieces.Piece(generationInfo, SIMPLE_SUPPORT, structurePos));
+                generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SIMPLE_SUPPORT, structurePos));
             } while (structurePos.getY() > 32);
         }
 
@@ -584,8 +525,7 @@ public class ShulkerFactoryPieces {
         if (canGenerate(supportInfo, SIMPLE_SUPPORT)) {
             do {
                 structurePos = structurePos.add(0, -16, 0);
-                generationInfo.pieceList
-                        .add(new ShulkerFactoryPieces.Piece(generationInfo, SIMPLE_SUPPORT, structurePos));
+                generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SIMPLE_SUPPORT, structurePos));
             } while (structurePos.getY() > 32);
         }
 
@@ -638,8 +578,7 @@ public class ShulkerFactoryPieces {
     /*
      * Begins assembling your structure and where the pieces needs to go.
      */
-    public static void start(TemplateManager templateManager, BlockPos pos, Rotation rotation,
-            List<StructurePiece> pieceList, Random random) {
+    public static void start(TemplateManager templateManager, BlockPos pos, Rotation rotation, List<StructurePiece> pieceList, Random random) {
         int x = pos.getX();
         int z = pos.getZ();
         int y = pos.getY();
@@ -649,8 +588,8 @@ public class ShulkerFactoryPieces {
         int west_boundry = z - BLOCKS_TO_GENERATION_BOUNDRY;
         int east_boundry = z + BLOCKS_TO_GENERATION_BOUNDRY;
 
-        GenerationInformation generationInfo = new GenerationInformation(north_boundry, south_boundry, west_boundry,
-                east_boundry, pos, rotation, pieceList, templateManager, random);
+        GenerationInformation generationInfo = new GenerationInformation(north_boundry, south_boundry, west_boundry, east_boundry, pos, rotation, pieceList,
+                templateManager, random);
 
         generationInfo = addEntrance(generationInfo);
         generationInfo = addTurnUp(generationInfo);
@@ -660,15 +599,12 @@ public class ShulkerFactoryPieces {
         // If we get too close to the boundary don't risk getting cut off; just generate
         // the spawner structure
         generationInfo.position.getX() > north_boundry - 35 || generationInfo.position.getX() < south_boundry + 35
-                || generationInfo.position.getZ() > east_boundry - 35
-                || generationInfo.position.getZ() < west_boundry + 35)) {
+                || generationInfo.position.getZ() > east_boundry - 35 || generationInfo.position.getZ() < west_boundry + 35)) {
             // We want to try to pull away from the edges of where we can generate if we go
             // too far in one direction
             // 1 pulls strongly to positive, -1 to negative, and 0 has no pull
-            double pullX = -((double) (generationInfo.position.getX() - south_boundry)
-                    / (double) (north_boundry - south_boundry));
-            double pullZ = -((double) (generationInfo.position.getZ() - west_boundry)
-                    / (double) (east_boundry - west_boundry));
+            double pullX = -((double) (generationInfo.position.getX() - south_boundry) / (double) (north_boundry - south_boundry));
+            double pullZ = -((double) (generationInfo.position.getZ() - west_boundry) / (double) (east_boundry - west_boundry));
             double pullRight = 0;
             double pullForewards = 0;
             switch (generationInfo.rotation) {
@@ -702,39 +638,32 @@ public class ShulkerFactoryPieces {
         assembleSpawnerTower(generationInfo);
     }
 
-    private static GenerationInformation generateRandomWithDirectionalWeights(GenerationInformation generationInfo,
-            double pullForewards, double pullRight) {
+    private static GenerationInformation generateRandomWithDirectionalWeights(GenerationInformation generationInfo, double pullForewards, double pullRight) {
         // Multipliers are between 0 and 2
         double leftMultiplier = -pullRight + SPREAD;
         double rightMultiplier = pullRight + SPREAD;
         double forewardMultiplier = pullForewards + SPREAD;
         double reverseMultiplier = -pullForewards + SPREAD;
-        double rollBound = leftMultiplier * (double) SUM_OF_LEFT_WEIGHTS
-                + rightMultiplier * (double) SUM_OF_RIGHT_WEIGHTS
-                + forewardMultiplier * (double) SUM_OF_FOREWARD_WEIGHTS
-                + reverseMultiplier * (double) SUM_OF_REVERSE_WEIGHTS;
+        double rollBound = leftMultiplier * (double) SUM_OF_LEFT_WEIGHTS + rightMultiplier * (double) SUM_OF_RIGHT_WEIGHTS
+                + forewardMultiplier * (double) SUM_OF_FOREWARD_WEIGHTS + reverseMultiplier * (double) SUM_OF_REVERSE_WEIGHTS;
         double rand = generationInfo.random.nextDouble() * rollBound;
         double previous = 0;
         ArrayList<Tuple<Function<GenerationInformation, GenerationInformation>, Double>> weightedGenerationOptionCutoffs = new ArrayList<Tuple<Function<GenerationInformation, GenerationInformation>, Double>>();
         for (Tuple<Function<GenerationInformation, GenerationInformation>, Double> weightedPiece : LEFT_WEIGHTS) {
-            weightedGenerationOptionCutoffs
-                    .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(weightedPiece.getA(),
-                            previous += weightedPiece.getB() * leftMultiplier));
+            weightedGenerationOptionCutoffs.add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(weightedPiece.getA(),
+                    previous += weightedPiece.getB() * leftMultiplier));
         }
         for (Tuple<Function<GenerationInformation, GenerationInformation>, Double> weightedPiece : RIGHT_WEIGHTS) {
-            weightedGenerationOptionCutoffs
-                    .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(weightedPiece.getA(),
-                            previous += weightedPiece.getB() * rightMultiplier));
+            weightedGenerationOptionCutoffs.add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(weightedPiece.getA(),
+                    previous += weightedPiece.getB() * rightMultiplier));
         }
         for (Tuple<Function<GenerationInformation, GenerationInformation>, Double> weightedPiece : FOREWARD_WEIGHTS) {
-            weightedGenerationOptionCutoffs
-                    .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(weightedPiece.getA(),
-                            previous += weightedPiece.getB() * forewardMultiplier));
+            weightedGenerationOptionCutoffs.add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(weightedPiece.getA(),
+                    previous += weightedPiece.getB() * forewardMultiplier));
         }
         for (Tuple<Function<GenerationInformation, GenerationInformation>, Double> weightedPiece : REVERSE_WEIGHTS) {
-            weightedGenerationOptionCutoffs
-                    .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(weightedPiece.getA(),
-                            previous += weightedPiece.getB() * reverseMultiplier));
+            weightedGenerationOptionCutoffs.add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(weightedPiece.getA(),
+                    previous += weightedPiece.getB() * reverseMultiplier));
         }
         GenerationInformation result = null;
         for (Tuple<Function<GenerationInformation, GenerationInformation>, Double> pieceCutoff : weightedGenerationOptionCutoffs) {
@@ -745,8 +674,8 @@ public class ShulkerFactoryPieces {
         }
         if (result == null) {
             // I messed up
-            Cobbler.LOGGER.info("generateRandomWithDirectionalWeights([generationInfo], " + pullForewards + ", "
-                    + pullRight + " encountered an error, generating a random piece");
+            Cobbler.LOGGER.info("generateRandomWithDirectionalWeights([generationInfo], " + pullForewards + ", " + pullRight
+                    + " encountered an error, generating a random piece");
             result = addRandomPiece(generationInfo);
         }
         return result;
@@ -756,11 +685,9 @@ public class ShulkerFactoryPieces {
     private static boolean canGenerate(GenerationInformation generationInfo, ResourceLocation structure) {
         MutableBoundingBox boundingBox;
         if (structure.equals(SPAWNER_ROOM)) {
-            boundingBox = getSpawnerTowerBoundingBox(
-                    new Tuple<BlockPos, Rotation>(generationInfo.position, generationInfo.rotation));
+            boundingBox = getSpawnerTowerBoundingBox(new Tuple<BlockPos, Rotation>(generationInfo.position, generationInfo.rotation));
         } else if (structure.equals(REINFORCED_SUPPORT) || structure.equals(SIMPLE_SUPPORT)) {
-            boundingBox = getSupportsBoundingBox(
-                    new Tuple<BlockPos, Rotation>(generationInfo.position, generationInfo.rotation));
+            boundingBox = getSupportsBoundingBox(new Tuple<BlockPos, Rotation>(generationInfo.position, generationInfo.rotation));
         } else {
             boundingBox = new ShulkerFactoryPieces.Piece(generationInfo, structure).getBoundingBox();
         }
@@ -771,9 +698,8 @@ public class ShulkerFactoryPieces {
     }
 
     /*
-     * Here's where some voodoo happens. Most of this doesn't need to be touched but
-     * you do have to pass in the IStructurePieceType you registered into the super
-     * constructors.
+     * Here's where some voodoo happens. Most of this doesn't need to be touched but you do have to pass in the IStructurePieceType you registered into the
+     * super constructors.
      * 
      * The method you will most likely want to touch is the handleDataMarker method.
      */
@@ -790,8 +716,7 @@ public class ShulkerFactoryPieces {
             this.setupPiece(generationInfo.templateManager);
         }
 
-        public Piece(GenerationInformation generationInfo, ResourceLocation resourceLocationIn,
-                BlockPos positionOverride) {
+        public Piece(GenerationInformation generationInfo, ResourceLocation resourceLocationIn, BlockPos positionOverride) {
             super(Structures.FOR_REGISTERING_SHULKER_FACTORY, 0);
             this.resourceLocation = resourceLocationIn;
             BlockPos blockpos = ShulkerFactoryPieces.OFFSET.get(resourceLocation);
@@ -809,8 +734,7 @@ public class ShulkerFactoryPieces {
 
         private void setupPiece(TemplateManager templateManager) {
             Template template = templateManager.getTemplateDefaulted(this.resourceLocation);
-            PlacementSettings placementsettings = (new PlacementSettings()).setRotation(this.rotation)
-                    .setMirror(Mirror.NONE);
+            PlacementSettings placementsettings = (new PlacementSettings()).setRotation(this.rotation).setMirror(Mirror.NONE);
             this.setup(template, this.templatePosition, placementsettings);
         }
 
@@ -825,25 +749,19 @@ public class ShulkerFactoryPieces {
         }
 
         /*
-         * If you added any data marker structure blocks to your structure, you can
-         * access and modify them here. In this case, our structure has a data maker
-         * with the string "chest" put into it. So we check to see if the incoming
-         * function is "chest" and if it is, we now have that exact position.
+         * If you added any data marker structure blocks to your structure, you can access and modify them here. In this case, our structure has a data maker
+         * with the string "chest" put into it. So we check to see if the incoming function is "chest" and if it is, we now have that exact position.
          * 
-         * So what is done here is we replace the structure block with a chest and we
-         * can then set the loottable for it.
+         * So what is done here is we replace the structure block with a chest and we can then set the loottable for it.
          * 
-         * You can set other data markers to do other behaviors such as spawn a random
-         * mob in a certain spot, randomize what rare block spawns under the floor, or
-         * what item an Item Frame will have.
+         * You can set other data markers to do other behaviors such as spawn a random mob in a certain spot, randomize what rare block spawns under the floor,
+         * or what item an Item Frame will have.
          */
         @Override
-        protected void handleDataMarker(String function, BlockPos pos, IWorld worldIn, Random rand,
-                MutableBoundingBox sbb) {
+        protected void handleDataMarker(String function, BlockPos pos, IWorld worldIn, Random rand, MutableBoundingBox sbb) {
             if (function.startsWith("Sentry")) {
                 ShulkerEntity shulkerentity = EntityType.SHULKER.create(worldIn.getWorld());
-                shulkerentity.setPosition((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D,
-                        (double) pos.getZ() + 0.5D);
+                shulkerentity.setPosition((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D);
                 shulkerentity.setAttachmentPos(pos);
                 worldIn.addEntity(shulkerentity);
                 worldIn.setBlockState(pos, Blocks.AIR.getDefaultState(), 1 | 2);
@@ -860,17 +778,14 @@ public class ShulkerFactoryPieces {
             }
         }
 
-        @Override
-        public boolean func_225577_a_(IWorld worldIn, ChunkGenerator<?> p_225577_2_, Random randomIn,
-                MutableBoundingBox structureBoundingBoxIn, ChunkPos chunkPos) {
-            PlacementSettings placementsettings = (new PlacementSettings()).setRotation(this.rotation)
-                    .setMirror(Mirror.NONE);
-            BlockPos blockpos = ShulkerFactoryPieces.OFFSET.get(this.resourceLocation);
-            this.templatePosition.add(Template.transformedBlockPos(placementsettings,
-                    new BlockPos(0 - blockpos.getX(), 0, 0 - blockpos.getZ())));
-
-            return super.func_225577_a_(worldIn, p_225577_2_, randomIn, structureBoundingBoxIn, chunkPos);
-        }
+//        @Override
+//        public boolean func_230383_a_(ISeedReader seedReader, StructureManager structureManager, ChunkGenerator p_225577_2_, Random randomIn, MutableBoundingBox structureBoundingBoxIn, ChunkPos chunkPos) {
+//            PlacementSettings placementsettings = (new PlacementSettings()).setRotation(this.rotation).setMirror(Mirror.NONE);
+//            BlockPos blockpos = ShulkerFactoryPieces.OFFSET.get(this.resourceLocation);
+//            this.templatePosition.add(Template.transformedBlockPos(placementsettings, new BlockPos(0 - blockpos.getX(), 0, 0 - blockpos.getZ())));
+//            return super.func_214810_a(p_214810_1_, p_214810_2_) func_230383_a_(p_230383_1_, p_230383_2_, p_230383_3_, p_230383_4_, p_230383_5_, p_230383_6_, p_230383_7_)
+//            return super.func_225577_a_(worldIn, p_225577_2_, randomIn, structureBoundingBoxIn, chunkPos);
+//        }
     }
 
 }
