@@ -2,21 +2,23 @@ package com.nhwhite3118.cobbler;
 
 import java.util.Random;
 
+import com.nhwhite3118.cobbler.structures.Structures;
+
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.monster.SpiderEntity;
 import net.minecraft.item.Items;
+import net.minecraft.loot.ConstantRange;
+import net.minecraft.loot.ItemLootEntry;
+import net.minecraft.loot.LootPool;
+import net.minecraft.loot.RandomValueRange;
+import net.minecraft.loot.functions.ExplorationMap;
+import net.minecraft.loot.functions.SetCount;
 import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.storage.MapDecoration;
-import net.minecraft.world.storage.loot.ConstantRange;
-import net.minecraft.world.storage.loot.ItemLootEntry;
-import net.minecraft.world.storage.loot.LootPool;
-import net.minecraft.world.storage.loot.RandomValueRange;
-import net.minecraft.world.storage.loot.functions.ExplorationMap;
-import net.minecraft.world.storage.loot.functions.SetCount;
 import net.minecraftforge.common.IPlantable;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -97,14 +99,23 @@ public final class ForgeEventSubscriber {
     @SubscribeEvent
     public static void lootTablesLoading(LootTableLoadEvent event) {
         if (event.getName().getPath().equals("chests/end_city_treasure") && Cobbler.CobblerConfig.addMapsToShulkerFactoriesToEndCities.get()) {
-            LootPool.Builder customMapPoolBuilder = LootPool.builder().name("cobbler:end_explorers_map_pool").rolls(ConstantRange.of(1))
-                    .addEntry(ItemLootEntry.builder(Items.MAP)
-                            .acceptFunction(ExplorationMap.func_215903_b().func_216065_a("cobbler:shulker_factory").func_216064_a(MapDecoration.Type.RED_X)
-                                    .func_216062_a((byte) 1).func_216063_a(false))
+            LootPool.Builder customMapPoolBuilder = LootPool
+                    .builder().name("cobbler:end_explorers_map_pool").rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.MAP).acceptFunction(
+                            ExplorationMap.func_215903_b().func_237427_a_(Structures.SHULKER_FACTORY)/** .func_216065_a("cobbler:shulker_factory") **/
+                                    .func_216064_a(MapDecoration.Type.RED_X).func_216062_a((byte) 1).func_216063_a(false))
                             .acceptFunction(SetCount.builder(RandomValueRange.of(-Cobbler.CobblerConfig.shulkerFactoryMapChance.get() + 2.0F, 1.0F))));
             LootPool customMapPool = customMapPoolBuilder.build();
             event.getTable().addPool(customMapPool);
         }
+//        LootTable.builder()
+//        .addLootPool(LootPool
+//                .builder()
+//                .rolls(ConstantRange.of(1))
+//                .addEntry(ItemLootEntry.builder(Items.MAP)
+//                        .acceptFunction(ExplorationMap.func_215903_b()
+//                                .func_237427_a_(Structure.field_236380_p_)
+//                                .func_216064_a(MapDecoration.Type.RED_X)
+//                                .func_216062_a((byte)1).func_216063_a(false))))
     }
 
     @SubscribeEvent

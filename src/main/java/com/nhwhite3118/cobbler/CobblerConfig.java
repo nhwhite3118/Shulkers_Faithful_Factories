@@ -40,7 +40,8 @@ public class CobblerConfig {
                     .translation("repurposedstructures.config.feature.endStructures.addshulkerfactories").define("shulkerFactorys", true));
 
             shulkerFactorySpawnrate = subscriber.subscribe(builder.comment("\r\n How often Shulker Factories will attempt to spawn per chunk. "
-                    + "\r\n The chance of a factory generating at a chunk is 1/spawnrate."
+                    + "\r\n It will spawn in a chunk if a random number between 0 and 1 is less than 1/(((spawnRate + spawnRate * 0.75) / 2, 2)^2)"
+                    + "\r\n This is to keep it consistent with older versions which went off of the separation instead of being truly random."
                     + "\r\n 10 to practically always have one in render distance, 1000 for extremely rare factories"
                     + "\r\n 20 is slightly more common than end cities" + "\r\n Default value of 200 should average one every ~7,000 blocks (varies widely)")
                     .translation("nhwhite3118.config.structure.endStructures.shulkerfactories").defineInRange("shulkerFactorySpawnrate", 200, 10, 1000));
