@@ -9,7 +9,6 @@ import com.nhwhite3118.cobbler.utils.ConfigHelper;
 
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.DeferredWorkQueue;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -31,7 +30,7 @@ public class Cobbler {
 
     public Cobbler() {
         // Register the setup method for modloading
-        Structures.STRUCTURES.register(FMLJavaModLoadingContext.get().getModEventBus());
+        // Structures.STRUCTURES.register(FMLJavaModLoadingContext.get().getModEventBus());
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
         // Register ourselves for server and other game events we are interested in
@@ -39,11 +38,9 @@ public class Cobbler {
         CobblerConfig = ConfigHelper.register(ModConfig.Type.COMMON, CobblerConfig.CobblerConfigValues::new);
     }
 
+    @SuppressWarnings("deprecation")
     public void setup(final FMLCommonSetupEvent event) {
-        DeferredWorkQueue.runLater(() -> {
-            Structures.registerStructures();
-            Cobbler.addFeaturesAndStructuresToBiomes();
-        });
+        Cobbler.addFeaturesAndStructuresToBiomes();
     }
 
     private static void addFeaturesAndStructuresToBiomes() {
@@ -54,10 +51,6 @@ public class Cobbler {
             if (Cobbler.CobblerConfig.spawnShulkerFactories.get()) {
                 Structures.generateShulkerFactory(biome, biomeNamespace, biomePath);
             }
-
-//            if (Cobbler.ENVIRONMENT == Cobbler.ENVIRONMENTS.DEBUG) {
-//                Structures.generateTestStructures(biome, biomeNamespace, biomePath);
-//            }
         }
     }
 }

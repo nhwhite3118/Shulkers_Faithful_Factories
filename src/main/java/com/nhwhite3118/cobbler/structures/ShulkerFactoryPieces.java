@@ -708,7 +708,7 @@ public class ShulkerFactoryPieces {
         private Rotation rotation;
 
         public Piece(GenerationInformation generationInfo, ResourceLocation resourceLocationIn) {
-            super(Structures.FOR_REGISTERING_SHULKER_FACTORY, 0);
+            super(Structures.FOR_REGISTERING_SHULKER_FACTORY_PIECES, 0);
             this.resourceLocation = resourceLocationIn;
             BlockPos blockpos = ShulkerFactoryPieces.OFFSET.get(resourceLocation);
             this.templatePosition = generationInfo.position.add(blockpos.getX(), blockpos.getY(), blockpos.getZ());
@@ -717,7 +717,7 @@ public class ShulkerFactoryPieces {
         }
 
         public Piece(GenerationInformation generationInfo, ResourceLocation resourceLocationIn, BlockPos positionOverride) {
-            super(Structures.FOR_REGISTERING_SHULKER_FACTORY, 0);
+            super(Structures.FOR_REGISTERING_SHULKER_FACTORY_PIECES, 0);
             this.resourceLocation = resourceLocationIn;
             BlockPos blockpos = ShulkerFactoryPieces.OFFSET.get(resourceLocation);
             this.templatePosition = positionOverride.add(blockpos.getX(), blockpos.getY(), blockpos.getZ());
@@ -726,7 +726,7 @@ public class ShulkerFactoryPieces {
         }
 
         public Piece(TemplateManager templateManagerIn, CompoundNBT tagCompound) {
-            super(Structures.FOR_REGISTERING_SHULKER_FACTORY, tagCompound);
+            super(Structures.FOR_REGISTERING_SHULKER_FACTORY_PIECES, tagCompound);
             this.resourceLocation = new ResourceLocation(tagCompound.getString("Template"));
             this.rotation = Rotation.valueOf(tagCompound.getString("Rot"));
             this.setupPiece(templateManagerIn);

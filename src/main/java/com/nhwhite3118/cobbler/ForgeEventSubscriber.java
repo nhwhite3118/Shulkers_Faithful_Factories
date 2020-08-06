@@ -99,16 +99,23 @@ public final class ForgeEventSubscriber {
     @SubscribeEvent
     public static void lootTablesLoading(LootTableLoadEvent event) {
         if (event.getName().getPath().equals("chests/end_city_treasure") && Cobbler.CobblerConfig.addMapsToShulkerFactoriesToEndCities.get()) {
-            LootPool.Builder customMapPoolBuilder = LootPool.builder().name("cobbler:end_explorers_map_pool").rolls(ConstantRange.of(1))
-                    .addEntry(
-                            ItemLootEntry
-                                    .builder(Items.MAP).acceptFunction(ExplorationMap.func_215903_b()
-                                            .func_237427_a_(Structures.SHULKER_FACTORY_REGISTRY.get())/** .func_216065_a("cobbler:shulker_factory") **/
-                                            .func_216064_a(MapDecoration.Type.RED_X).func_216062_a((byte) 1).func_216063_a(false))
-                                    .acceptFunction(SetCount.builder(RandomValueRange.of(-Cobbler.CobblerConfig.shulkerFactoryMapChance.get() + 2.0F, 1.0F))));
+            LootPool.Builder customMapPoolBuilder = LootPool
+                    .builder().name("cobbler:end_explorers_map_pool").rolls(ConstantRange.of(1)).addEntry(ItemLootEntry.builder(Items.MAP).acceptFunction(
+                            ExplorationMap.func_215903_b().func_237427_a_(Structures.SHULKER_FACTORY)/** .func_216065_a("cobbler:shulker_factory") **/
+                                    .func_216064_a(MapDecoration.Type.RED_X).func_216062_a((byte) 1).func_216063_a(false))
+                            .acceptFunction(SetCount.builder(RandomValueRange.of(-Cobbler.CobblerConfig.shulkerFactoryMapChance.get() + 2.0F, 1.0F))));
             LootPool customMapPool = customMapPoolBuilder.build();
             event.getTable().addPool(customMapPool);
         }
+//        LootTable.builder()
+//        .addLootPool(LootPool
+//                .builder()
+//                .rolls(ConstantRange.of(1))
+//                .addEntry(ItemLootEntry.builder(Items.MAP)
+//                        .acceptFunction(ExplorationMap.func_215903_b()
+//                                .func_237427_a_(Structure.field_236380_p_)
+//                                .func_216064_a(MapDecoration.Type.RED_X)
+//                                .func_216062_a((byte)1).func_216063_a(false))))
     }
 
     @SubscribeEvent
