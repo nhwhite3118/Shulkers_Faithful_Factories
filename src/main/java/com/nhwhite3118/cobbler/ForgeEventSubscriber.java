@@ -34,6 +34,12 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 @EventBusSubscriber(modid = Cobbler.MODID, bus = EventBusSubscriber.Bus.FORGE)
 public final class ForgeEventSubscriber {
 
+    /*
+     * Lets bonemeal spawn oak saplings when used on grass
+     * 
+     * TODO: Rewrite and optimize. Make it so the config can set a flat chance to spawn saplings and a max number of saplings to grow at once. Config is
+     * confusing because of how this method works
+     */
     @SubscribeEvent
     public static void onUseBonemeal(BonemealEvent event) {
         World world = event.getWorld();
@@ -75,6 +81,9 @@ public final class ForgeEventSubscriber {
         }
     }
 
+    /*
+     * Makes saplings sometimes grow into dead bushes in high light levels in the desert
+     */
     @SubscribeEvent
     public static void onPlantGrowth(SaplingGrowTreeEvent event) {
         World world = (World) event.getWorld();
@@ -96,6 +105,9 @@ public final class ForgeEventSubscriber {
         }
     }
 
+    /*
+     * Adds end explorer maps to the end_city_treasure loot table
+     */
     @SubscribeEvent
     public static void lootTablesLoading(LootTableLoadEvent event) {
         if (event.getName().getPath().equals("chests/end_city_treasure") && Cobbler.CobblerConfig.addMapsToShulkerFactoriesToEndCities.get()) {
@@ -107,17 +119,11 @@ public final class ForgeEventSubscriber {
             LootPool customMapPool = customMapPoolBuilder.build();
             event.getTable().addPool(customMapPool);
         }
-//        LootTable.builder()
-//        .addLootPool(LootPool
-//                .builder()
-//                .rolls(ConstantRange.of(1))
-//                .addEntry(ItemLootEntry.builder(Items.MAP)
-//                        .acceptFunction(ExplorationMap.func_215903_b()
-//                                .func_237427_a_(Structure.field_236380_p_)
-//                                .func_216064_a(MapDecoration.Type.RED_X)
-//                                .func_216062_a((byte)1).func_216063_a(false))))
     }
 
+    /*
+     * Makes spiders spin webs
+     */
     @SubscribeEvent
     public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
         if (event.getEntity() instanceof SpiderEntity && Cobbler.CobblerConfig.spidersCanSpinWebs.get()) {

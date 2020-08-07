@@ -30,7 +30,6 @@ public class Cobbler {
 
     public Cobbler() {
         // Register the setup method for modloading
-        // Structures.STRUCTURES.register(FMLJavaModLoadingContext.get().getModEventBus());
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
 
         // Register ourselves for server and other game events we are interested in
@@ -49,7 +48,7 @@ public class Cobbler {
             String biomePath = biome.getRegistryName().getPath();
 
             if (Cobbler.CobblerConfig.spawnShulkerFactories.get()) {
-                Structures.generateShulkerFactory(biome, biomeNamespace, biomePath);
+                Structures.addShulkerFactoryToBiomes(biome, biomeNamespace, biomePath);
             }
         }
     }

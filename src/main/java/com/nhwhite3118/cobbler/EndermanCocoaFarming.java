@@ -31,6 +31,9 @@ public final class EndermanCocoaFarming {
     /*
      * If cocoa has the enderman_holdable tag then it will cause issues with this because the enderman will make two attempts to pick it up, one the vanilla way
      * and one our way
+     * 
+     * TODO: This should all be added as a goal into the enderman class's map of goals instead of being hacked into the mob griefing check. See CreateWebGoal
+     * for a reference
      */
     @SubscribeEvent
     public static void letEndermenBreakAndPlaceCocoa(EntityMobGriefingEvent event) {

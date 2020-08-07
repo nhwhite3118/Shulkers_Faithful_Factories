@@ -33,9 +33,6 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
 
     /*
      * The structure name to show in the /locate command.
-     * 
-     * Make sure this matches what the resourcelocation of your structure will be because if you don't add the MODID: part, Minecraft will put minecraft: in
-     * front of the name instead and we don't want that. We want our structure to have our mod's ID rather than Minecraft so people don't get confused.
      */
     @Override
     public String getStructureName() {
@@ -60,6 +57,9 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
         return 261892189;
     }
 
+    /*
+     * Structure locate optimization courtesy of TelepathicGrunt. Skips generating chunks for invalid biomes
+     */
     @Override
     public BlockPos func_236388_a_(IWorldReader worldView, StructureManager structureAccessor, BlockPos blockPos, int radius, boolean skipExistingChunks,
             long seed, StructureSeparationSettings structureConfig) {
@@ -106,43 +106,6 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
 
         return null;
     }
-
-//    /*
-//     * This is where all the checks will be done to determine if the structure can spawn here.
-//     * 
-//     * Notice how the biome is also passed in. While you could do manual checks on the biome to see if you can spawn here, that is highly discouraged. Instead,
-//     * you should do the biome check in the FMLCommonSetupEvent event (setup method in StructureTutorialMain) and add your structure to the biome with
-//     * .addFeature and .addStructure methods.
-//     * 
-//     * Instead, this method is best used for determining if the chunk position itself is valid, if certain other structures are too close or not, or some other
-//     * restrictive condition.
-//     *
-//     * For example, Pillager Outposts added a check to make sure it cannot spawn within 10 chunk of a Village. (Bedrock Edition seems to not have the same
-//     * check)
-//     */
-//    @Override
-//    protected boolean func_230363_a_(ChunkGenerator chunkGenerator, BiomeProvider biomeProvider, long seed, SharedSeedRandom random, int x, int z, Biome biome,
-//            ChunkPos chunkPos, NoFeatureConfig config) {
-//        random.setLargeFeatureSeed(seed, x, z);
-//
-//        // ChunkPos chunkpos = this.getStartPositionForPosition(chunkGen, rand, chunkPosX, chunkPosZ, 0, 0);
-//
-//        double spawnRate = (double) Cobbler.CobblerConfig.shulkerFactorySpawnrate.get();
-//        if (spawnRate == 0 || !Cobbler.CobblerConfig.spawnShulkerFactories.get()) {
-//            return false;
-//        }
-////        // This should give the same rarity as before when we used separation
-////        double temp = (spawnRate + spawnRate * 0.75) / 2;
-////        double adjustedSpawnRate = temp * temp;
-////        // Checks to see if current chunk is valid to spawn in.
-////        if (random.nextDouble() < 1.0 / adjustedSpawnRate) {
-////            if (biomeProvider.hasStructure(this)) {
-////                return true;
-////            }
-////        }
-//
-//        return true;
-//    }
 
     /*
      * Handles calling up the structure's pieces class and height that structure will spawn at.

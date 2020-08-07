@@ -31,13 +31,10 @@ public class Structures {
     public static Structure<NoFeatureConfig> SHULKER_FACTORY = new ShulkerFactoryStructure(NoFeatureConfig.field_236558_a_);
     public static IStructurePieceType FOR_REGISTERING_SHULKER_FACTORY_PIECES = com.nhwhite3118.cobbler.structures.ShulkerFactoryPieces.Piece::new;
 
-    public static void registerPieces() {
-        // It looks like changing this after generating a structure in the world throws
-        // a ton of errors, so I'm leaving it as-is
-
-        register(FOR_REGISTERING_SHULKER_FACTORY_PIECES, "RDHP");
-    }
-
+    /*
+     * This is called when the forge event on the mod event bus for registering features is called. Adds structures to all the registries and maps which they
+     * need to be in for them to work properly.
+     */
     public static void registerStructures(Register<Feature<?>> event) {
         int shulkerFactorySpawnRate = Cobbler.CobblerConfig.shulkerFactorySpawnrate.get();
         if (shulkerFactorySpawnRate == 0 || !Cobbler.CobblerConfig.spawnShulkerFactories.get()) {
@@ -48,12 +45,9 @@ public class Structures {
         Structures.registerPieces();
     }
 
-    private static <F extends Structure<?>> F addToStructureInfoMaps(String name, F structure, GenerationStage.Decoration generationStage) {
-        Structure.field_236365_a_.put(name.toLowerCase(Locale.ROOT), structure);
-        Structure.field_236385_u_.put(structure, generationStage);
-        return Registry.register(Registry.STRUCTURE_FEATURE, name.toLowerCase(Locale.ROOT), structure);
-    }
-
+    /*
+     * Adds the provided structure to the registry, and adds the separation settings. This is how the rarity of the structure is set.
+     */
     public static <F extends Structure<NoFeatureConfig>> void registerStructure(ResourceLocation resourceLocation, F structure,
             GenerationStage.Decoration stage, StructureSeparationSettings StructureSeparationSettings) {
         structure.setRegistryName(resourceLocation);
@@ -70,8 +64,22 @@ public class Structures {
         DimensionSettings.Preset.field_236125_e_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
         DimensionSettings.Preset.field_236126_f_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
         DimensionSettings.Preset.field_236127_g_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
-        // DimensionSettings.Preset.field_236121_a_.forEach(
-        // (presetResourceLocation, preset) -> preset.getChunkGeneratorType().getConfig().getStructures().put(structure, StructureSeparationSettings));
+    }
+
+    /*
+     * The structture class keeps maps of all the structures and their generation stages. We need to add our structures into the maps along with the vanilla
+     * structures or else it will cause errors
+     */
+    private static <F extends Structure<?>> F addToStructureInfoMaps(String name, F structure, GenerationStage.Decoration generationStage) {
+        Structure.field_236365_a_.put(name.toLowerCase(Locale.ROOT), structure);
+        Structure.field_236385_u_.put(structure, generationStage);
+        return Registry.register(Registry.STRUCTURE_FEATURE, name.toLowerCase(Locale.ROOT), structure);
+    }
+
+    public static void registerPieces() {
+        // It looks like changing this after generating a structure in the world throws
+        // a ton of errors, so I'm leaving it as-is
+        register(FOR_REGISTERING_SHULKER_FACTORY_PIECES, "RDHP");
     }
 
     /*
@@ -81,10 +89,8 @@ public class Structures {
         return Registry.register(Registry.STRUCTURE_PIECE, key.toLowerCase(Locale.ROOT), structurePiece);
     }
 
-    public static void generateShulkerFactory(Biome biome, String biomeNamespace, String biomePath) {
+    public static void addShulkerFactoryToBiomes(Biome biome, String biomeNamespace, String biomePath) {
         if (biome.getCategory() == Category.THEEND && biome != Biomes.THE_END && biome != Biomes.SMALL_END_ISLANDS) {
-            int spawnRate = Cobbler.CobblerConfig.shulkerFactorySpawnrate.get();
-
             biome.func_235063_a_(SHULKER_FACTORY.func_236391_a_(IFeatureConfig.NO_FEATURE_CONFIG));
 
         }
