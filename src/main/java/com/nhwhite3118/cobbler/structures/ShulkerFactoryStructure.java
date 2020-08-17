@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.util.math.MutableBoundingBox;
 import net.minecraft.util.math.SectionPos;
+import net.minecraft.util.registry.DynamicRegistries;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkStatus;
@@ -48,7 +49,7 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
     }
 
     /*
-     * This is used so that if two structure's has the same spawn location algorithm, they will not end up in perfect sync as long as they have different seed
+     * This is used so that if two structures have the same spawn location algorithm, they will not end up in perfect sync as long as they have different seed
      * modifier.
      * 
      * So make this a big random number that is unique only to this structure.
@@ -83,7 +84,7 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
                         int trueChunkX = chunkX + spacing * xRadius;
                         int trueChunkZ = chunkZ + spacing * zRadius;
                         ChunkPos chunkPos = structure.func_236392_a_(structureConfig, seed, chunkRandom, trueChunkX, trueChunkZ);
-                        if (worldView.getNoiseBiome((chunkPos.x << 2) + 2, 60, (chunkPos.z << 2) + 2).hasStructure(structure)) {
+                        if (worldView.getNoiseBiome((chunkPos.x << 2) + 2, 60, (chunkPos.z << 2) + 2).func_242440_e().func_242493_a(structure)) {
                             IChunk chunk = worldView.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_STARTS);
                             StructureStart<?> structureStart = structureAccessor.func_235013_a_(SectionPos.from(chunk.getPos(), 0), structure, chunk);
                             if (structureStart != null && structureStart.isValid()) {
@@ -116,8 +117,8 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
         }
 
         @Override
-        public void func_230364_a_(ChunkGenerator generator, TemplateManager templateManagerIn, int chunkX, int chunkZ, Biome p_230364_5_,
-                IFeatureConfig config) {
+        public void func_230364_a_(DynamicRegistries dynamicRegistries, ChunkGenerator generator, TemplateManager templateManagerIn, int chunkX, int chunkZ,
+                Biome p_230364_5_, IFeatureConfig config) {
             // Check out vanilla's WoodlandMansionStructure for how they offset the x and z
             // so that they get the y value of the land at the mansion's entrance, no matter
             // which direction the mansion is rotated.

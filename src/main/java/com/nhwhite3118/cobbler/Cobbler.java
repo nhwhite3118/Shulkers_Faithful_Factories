@@ -7,13 +7,14 @@ import com.nhwhite3118.cobbler.CobblerConfig.CobblerConfigValues;
 import com.nhwhite3118.cobbler.structures.Structures;
 import com.nhwhite3118.cobbler.utils.ConfigHelper;
 
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.ForgeRegistries;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("cobbler")
@@ -43,12 +44,13 @@ public class Cobbler {
     }
 
     private static void addFeaturesAndStructuresToBiomes() {
-        for (Biome biome : ForgeRegistries.BIOMES) {
-            String biomeNamespace = biome.getRegistryName().getNamespace();
-            String biomePath = biome.getRegistryName().getPath();
+        for (Biome biome : WorldGenRegistries.field_243657_i) {
+            // This is super-super bad. getKey runs in n time on number of biomes, and so does this loop, making it n^2. This only runs once though, so I'll
+            // leave it for now
+            ResourceLocation biomeRegisteryKey = WorldGenRegistries.field_243657_i.getKey(biome);
 
             if (Cobbler.CobblerConfig.spawnShulkerFactories.get()) {
-                Structures.addShulkerFactoryToBiomes(biome, biomeNamespace, biomePath);
+                Structures.addShulkerFactoryToBiomes(biome, biomeRegisteryKey);
             }
         }
     }

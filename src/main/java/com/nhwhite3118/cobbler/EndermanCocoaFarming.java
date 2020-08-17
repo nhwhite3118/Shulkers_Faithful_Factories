@@ -16,7 +16,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.BlockSnapshot;
@@ -100,7 +99,7 @@ public final class EndermanCocoaFarming {
 
         // Place cocoa. Below code is a modified version of the tick event in EndermanEntity.PlaceBlockGoal
         Random random = enderman.getRNG();
-        IWorld iworld = enderman.world;
+        World iworld = enderman.world;
         int i = MathHelper.floor(enderman.getPosX() - 1.0D + random.nextDouble() * 2.0D);
         int j = MathHelper.floor(enderman.getPosY() + random.nextDouble() * 2.0D);
         int k = MathHelper.floor(enderman.getPosZ() - 1.0D + random.nextDouble() * 2.0D);
@@ -116,7 +115,8 @@ public final class EndermanCocoaFarming {
         // Direction[] possibleRotations = heldBlockState.getValidRotations(iworld, blockpos);
         heldBlockState = heldBlockState.with(HorizontalBlock.HORIZONTAL_FACING, adjacentLog.getB());
         if (heldBlockState != null && canPlaceBlock(iworld, blockpos, heldBlockState, blockstate, jungleLogState, jungleLogPos)
-                && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(enderman, BlockSnapshot.create(iworld, blockpos), adjacentLog.getB())) {
+                && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(enderman, BlockSnapshot.create(iworld.func_234923_W_(), iworld, blockpos),
+                        adjacentLog.getB())) {
 //            if (possibleRotations == null || possibleRotations.length == 0) {
 //                return;
 //            }

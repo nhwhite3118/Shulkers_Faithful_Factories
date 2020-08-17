@@ -22,7 +22,7 @@ import net.minecraft.util.Rotation;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MutableBoundingBox;
-import net.minecraft.world.IWorld;
+import net.minecraft.world.IServerWorld;
 import net.minecraft.world.gen.feature.structure.StructurePiece;
 import net.minecraft.world.gen.feature.structure.TemplateStructurePiece;
 import net.minecraft.world.gen.feature.template.PlacementSettings;
@@ -86,7 +86,17 @@ public class ShulkerFactoryPieces {
     private static final ResourceLocation SPAWNER_RAMP = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_ramp_reinforced");
     private static final ResourceLocation SPAWNER_RAMP_SUPPORT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_spawner_ramp_supports_reinforced");
 
-    private static final ResourceLocation RESTAURANT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_restaurant");
+    private static final ResourceLocation RESTAURANT = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_incubator");
+
+    private static final ResourceLocation INCUBATOR = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_restaurant");
+    private static final ResourceLocation SUPPORT_PLATFORM_STAIRS = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_support_platform_stairs");
+    private static final ResourceLocation SUPPORT_PLATFORM_STAIRS_VAR_ONE = new ResourceLocation(
+            Cobbler.MODID + ":shulkerfactory_support_platform_stairs_damaged");
+    private static final ResourceLocation SUPPORT_PLATFORM_STAIRS_VAR_TWO = new ResourceLocation(
+            Cobbler.MODID + ":shulkerfactory_support_platform_stairs_very_damaged");
+    private static final ResourceLocation VOID_CHANDELIER = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_support_platform_1_void_chandelier");
+    private static final ResourceLocation SUPPORT_STAIRS_TO_STANDARD = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_support_stairs_to_standard");
+    private static final ResourceLocation SUPPORT_ROOM_TOP = new ResourceLocation(Cobbler.MODID + ":shulkerfactory_support_room_top");
 
     private static final ResourceLocation FACTORY_LOOT = new ResourceLocation(Cobbler.MODID + ":chests/shulker_factory_treasure");
 
@@ -96,7 +106,9 @@ public class ShulkerFactoryPieces {
     private static final double RUINED_TOWER_WEIGHT = 9;
     private static final double PLATFORM_WEIGHT = 40;
     private static final double OPTIONAL_STAIRS_WEIGHT = 5;
+    private static final double INCUBATOR_WEIGHT = 3;
     private static final double RESTAURAUNT_WEIGHT = 3;
+    private static final double SUPPORT_CITY_WEIGHT = 15;
     // 1 generates closer to start, increasing it increases the spread. As it
     // approaches infinity, piece direction will not be taken into account.
     // Increases multiplicatively.
@@ -134,6 +146,11 @@ public class ShulkerFactoryPieces {
             .put(SPAWNER_ROOM, new BlockPos(0, -8, 0)).put(SPAWNER_RAMP, new BlockPos(0, -27, 0)).put(SPAWNER_RAMP_SUPPORT, new BlockPos(0, -9, 0))
 
             .put(RESTAURANT, new BlockPos(0, -4, 0)) // +3z, 180 turn
+
+            .put(INCUBATOR, new BlockPos(0, -3, 0)).put(SUPPORT_PLATFORM_STAIRS, new BlockPos(0, 0, 0))
+            .put(SUPPORT_PLATFORM_STAIRS_VAR_ONE, new BlockPos(0, 0, 0)).put(SUPPORT_PLATFORM_STAIRS_VAR_TWO, new BlockPos(0, 0, 0))
+            .put(SUPPORT_ROOM_TOP, new BlockPos(0, 0, 0)).put(SUPPORT_STAIRS_TO_STANDARD, new BlockPos(0, 0, 0)).put(VOID_CHANDELIER, new BlockPos(0, 0, 0))
+
             .build();
 
     /*
@@ -144,16 +161,18 @@ public class ShulkerFactoryPieces {
             .<Tuple<Function<GenerationInformation, GenerationInformation>, Double>>builder()
             .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::steepRampsUp, OPTIONAL_STAIRS_WEIGHT / 2))
             .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::addBridge, OPTIONAL_STAIRS_WEIGHT / 2))
-            .build();
+            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::makeSupportCity, SUPPORT_CITY_WEIGHT)).build();
     private static final List<Tuple<Function<GenerationInformation, GenerationInformation>, Double>> RIGHT_WEIGHTS = ImmutableList
             .<Tuple<Function<GenerationInformation, GenerationInformation>, Double>>builder()
-            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::addTurnRight, PLATFORM_WEIGHT / 2)).build();
+            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::addTurnRight, PLATFORM_WEIGHT / 2))
+            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::addIncubator, INCUBATOR_WEIGHT / 2)).build();
     private static final List<Tuple<Function<GenerationInformation, GenerationInformation>, Double>> REVERSE_WEIGHTS = ImmutableList
             .<Tuple<Function<GenerationInformation, GenerationInformation>, Double>>builder()
             .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::addRestaurant, RESTAURAUNT_WEIGHT)).build();
     private static final List<Tuple<Function<GenerationInformation, GenerationInformation>, Double>> LEFT_WEIGHTS = ImmutableList
             .<Tuple<Function<GenerationInformation, GenerationInformation>, Double>>builder()
             .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::addTurnLeft, PLATFORM_WEIGHT / 2))
+            .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::addIncubator, INCUBATOR_WEIGHT / 2))
             .add(new Tuple<Function<GenerationInformation, GenerationInformation>, Double>(ShulkerFactoryPieces::randomTowerLeft,
                     (TOWER_WEIGHT + RUINED_TOWER_WEIGHT) / 2))
             .build();
@@ -366,8 +385,8 @@ public class ShulkerFactoryPieces {
     }
 
     private static GenerationInformation addRandomPiece(GenerationInformation generationInfo) {
-        int randomValue = generationInfo.random
-                .nextInt((int) ((RUINED_TOWER_WEIGHT + TOWER_WEIGHT + OPTIONAL_STAIRS_WEIGHT + PLATFORM_WEIGHT + RESTAURAUNT_WEIGHT) * 2));
+        int randomValue = generationInfo.random.nextInt((int) ((RUINED_TOWER_WEIGHT + TOWER_WEIGHT + OPTIONAL_STAIRS_WEIGHT + PLATFORM_WEIGHT
+                + RESTAURAUNT_WEIGHT + INCUBATOR_WEIGHT + SUPPORT_CITY_WEIGHT) * 2));
         GenerationInformation endPosition = new GenerationInformation(generationInfo);
         int previous = 0;
 
@@ -383,10 +402,14 @@ public class ShulkerFactoryPieces {
             endPosition = addBridge(generationInfo);
         } else if (randomValue < (previous += RESTAURAUNT_WEIGHT * 2)) {
             endPosition = addRestaurant(generationInfo);
+        } else if (randomValue < (previous += INCUBATOR_WEIGHT * 2)) {
+            endPosition = addRestaurant(generationInfo);
+        } else if (randomValue < (previous += SUPPORT_CITY_WEIGHT * 2)) {
+            endPosition = makeSupportCity(generationInfo);
         } else {
             // We might get here now due to truncating double weights, but it shouldn't
             // happen often
-            endPosition = multipleSteepRampsUp(generationInfo);
+            // endPosition = multipleSteepRampsUp(generationInfo);
         }
 
         return endPosition;
@@ -458,6 +481,210 @@ public class ShulkerFactoryPieces {
         }
 
         return result;
+    }
+
+    private static GenerationInformation addIncubator(GenerationInformation generationInfo) {
+        // Create Incubator
+        BlockPos rotationOffSet = new BlockPos(0, 0, -2).rotate(generationInfo.rotation);
+        BlockPos blockpos = generationInfo.position.add(rotationOffSet);
+
+        if (!canGenerate(generationInfo, INCUBATOR)) {
+            // Simple way to avoid infinite loop if it, for example, generates 4 left towers
+            // in a row
+            GenerationInformation result = new GenerationInformation(generationInfo);
+            result.lastGenerationSucceded = false;
+            result.lastStructureAttempted = INCUBATOR;
+            return result;
+        }
+        ResourceLocation structure = INCUBATOR;
+        generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, structure, blockpos));
+
+        // Create supports
+        rotationOffSet = new BlockPos(0, -2, -2).rotate(generationInfo.rotation);
+        BlockPos structurePos = generationInfo.position.add(rotationOffSet);
+
+        GenerationInformation supportInfo = new GenerationInformation(generationInfo);
+        supportInfo.position = structurePos;
+        supportInfo.position = structurePos.add(generationInfo.position.add(rotationOffSet));
+        if (canGenerate(supportInfo, SIMPLE_SUPPORT)) {
+            do {
+                structurePos = structurePos.add(0, -16, 0);
+                generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SIMPLE_SUPPORT, structurePos));
+            } while (structurePos.getY() > 32);
+        }
+
+        // Branch and pick main path foreward if applicable
+        GenerationInformation result = new GenerationInformation(generationInfo);
+        int forewardPath = generationInfo.random.nextInt(23);
+        int numberOfPaths = generationInfo.random.nextInt(2);
+        switch (forewardPath) {
+        case 0:
+            if (result.isMainPath || numberOfPaths > 0) {
+                result = splitTurnLeft(result);
+            }
+            if (numberOfPaths == 2) {
+                GenerationInformation sidePath = new GenerationInformation(generationInfo);
+                sidePath.isMainPath = false;
+                sidePath = splitTurnRight(sidePath);
+                makeSidePath(sidePath, 0);
+            }
+            break;
+        case 1:
+            if (result.isMainPath || numberOfPaths > 0) {
+                result = splitTurnRight(result);
+            }
+            if (numberOfPaths == 2) {
+                GenerationInformation sidePath = new GenerationInformation(generationInfo);
+                sidePath.isMainPath = false;
+                sidePath = splitTurnLeft(sidePath);
+                makeSidePath(sidePath, 0);
+            }
+
+            break;
+        case 2:
+            // foreward
+            break;
+        default:
+            break;
+        }
+        result.lastGenerationSucceded = true;
+        result.lastStructureAttempted = INCUBATOR;
+
+        return result;
+    }
+
+    private static GenerationInformation splitTurnLeft(GenerationInformation generationInfo) {
+        // Move from bl corner to bl corner of stairs up and turn left
+        GenerationInformation result = new GenerationInformation(generationInfo);
+        result.position = generationInfo.position.add(new BlockPos(0, 0, -2).rotate(generationInfo.rotation));
+        BlockPos rotationOffSet = new BlockPos(2, 1, -1).rotate(generationInfo.rotation);
+        result.position = result.position.add(rotationOffSet);
+        result.rotation = generationInfo.rotation.add(Rotation.COUNTERCLOCKWISE_90);
+
+        rotationOffSet = new BlockPos(0, -2, -2).rotate(generationInfo.rotation);
+
+        return result;
+    }
+
+    private static GenerationInformation splitTurnRight(GenerationInformation generationInfo) {
+        // Move from bl corner to bl corner of stairs up and turn left
+        GenerationInformation result = new GenerationInformation(generationInfo);
+        result.position = generationInfo.position.add(new BlockPos(0, 0, -2).rotate(generationInfo.rotation));
+        BlockPos rotationOffSet = new BlockPos(6, 1, 9).rotate(generationInfo.rotation);
+        result.position = result.position.add(rotationOffSet);
+        result.rotation = generationInfo.rotation.add(Rotation.COUNTERCLOCKWISE_90);
+
+        rotationOffSet = new BlockPos(0, -3, -2).rotate(generationInfo.rotation);
+
+        return result;
+    }
+
+    private static GenerationInformation makeSupportCity(GenerationInformation generationInfo) {
+        //
+        // Generate going down
+        //
+        BlockPos rotationOffSet = new BlockPos(0, -1, -2).rotate(generationInfo.rotation);
+        BlockPos structurePos = generationInfo.position.add(rotationOffSet);
+        GenerationInformation supportInfo = new GenerationInformation(generationInfo);
+        supportInfo.position = generationInfo.position.add(rotationOffSet);
+
+        if (!canGenerate(generationInfo, SIMPLE_SUPPORT)) {
+            generationInfo.lastGenerationSucceded = false;
+            generationInfo.lastStructureAttempted = SUPPORT_PLATFORM_STAIRS;
+            return generationInfo;
+        }
+        do {
+            int pieceSelector = generationInfo.random.nextInt(3);
+            ResourceLocation selectedPiece;
+            switch (pieceSelector) {
+            case 0:
+                selectedPiece = SUPPORT_PLATFORM_STAIRS;
+                break;
+            case 1:
+                selectedPiece = SUPPORT_PLATFORM_STAIRS_VAR_ONE;
+                break;
+            case 2:
+                selectedPiece = SUPPORT_PLATFORM_STAIRS_VAR_TWO;
+                break;
+            default:
+                selectedPiece = SUPPORT_PLATFORM_STAIRS;
+                break;
+            }
+            generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, selectedPiece, structurePos));
+            structurePos = structurePos.add(0, -18, 0);
+        } while (structurePos.getY() > 45);
+        generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, VOID_CHANDELIER, structurePos));
+        structurePos = structurePos.add(0, -18, 0);
+
+        //
+        // Generate going up
+        //
+
+        GenerationInformation result = new GenerationInformation(generationInfo);
+        structurePos = supportInfo.position; // Bottom left of supports
+        // reserve a spot for the top room
+        int numPossiblePiecesUp = (200 - structurePos.getY()) / 16;
+        int numberGoingUp = numPossiblePiecesUp <= 0 ? 0 : generationInfo.random.nextInt(numPossiblePiecesUp);
+        numberGoingUp = Math.max(1, numberGoingUp);
+        numberGoingUp = generationInfo.random.nextInt(numberGoingUp);
+        numberGoingUp = Math.max(1, numberGoingUp);
+        boolean hasBranched = false;
+        for (int i = 0; i < numberGoingUp; i++) {
+
+            // Increases likelihood of branching off each time until it's guaranteed, if this is the main path
+            int shouldBranchHere = 0;
+            if (generationInfo.isMainPath) {
+                shouldBranchHere = numberGoingUp - i - 1 > 0 ? supportInfo.random.nextInt(numberGoingUp - i - 1) : 0;
+            } else {
+                shouldBranchHere = (numberGoingUp - i) * 2 > 0 ? supportInfo.random.nextInt((numberGoingUp - i) * 2) : 1;
+            }
+
+            if (shouldBranchHere == 0 && !hasBranched) {
+                BlockPos branchPos = generationInfo.position.add(9, 7, 0).rotate(generationInfo.rotation);
+                result.position = branchPos;
+                generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SUPPORT_STAIRS_TO_STANDARD, branchPos));
+                result.position = result.position.add(new BlockPos(7, 1, 0).rotate(generationInfo.rotation));
+            }
+
+            // Add the stairs
+            structurePos = structurePos.add(0, 16, 0);
+            int pieceSelector = generationInfo.random.nextInt(3);
+            ResourceLocation selectedPiece;
+            switch (pieceSelector) {
+            case 0:
+                selectedPiece = SUPPORT_PLATFORM_STAIRS;
+                break;
+            case 1:
+                selectedPiece = SUPPORT_PLATFORM_STAIRS_VAR_ONE;
+                break;
+            case 2:
+                selectedPiece = SUPPORT_PLATFORM_STAIRS_VAR_TWO;
+                break;
+            default:
+                selectedPiece = SUPPORT_PLATFORM_STAIRS;
+                break;
+            }
+            generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, selectedPiece, structurePos));
+
+        }
+        structurePos = structurePos.add(-8, 16, -5).rotate(generationInfo.rotation);
+        generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SUPPORT_ROOM_TOP, structurePos));
+
+        if (!hasBranched) {
+            return null;
+        }
+
+        return result;
+    }
+
+    private static void makeSidePath(GenerationInformation generationInfo, int sidePiecesAdded) {
+        int branchLength = 10;
+        boolean terminate = branchLength <= sidePiecesAdded ? true : generationInfo.random.nextInt(branchLength - sidePiecesAdded) == 0;
+
+        generationInfo = addRandomPiece(generationInfo);
+        if (!terminate && generationInfo != null) {
+            makeSidePath(generationInfo, sidePiecesAdded++);
+        }
     }
 
     private static GenerationInformation addTurnRight(GenerationInformation generationInfo) {
@@ -589,7 +816,7 @@ public class ShulkerFactoryPieces {
         int east_boundry = z + BLOCKS_TO_GENERATION_BOUNDRY;
 
         GenerationInformation generationInfo = new GenerationInformation(north_boundry, south_boundry, west_boundry, east_boundry, pos, rotation, pieceList,
-                templateManager, random);
+                templateManager, random, true);
 
         generationInfo = addEntrance(generationInfo);
         generationInfo = addTurnUp(generationInfo);
@@ -635,7 +862,9 @@ public class ShulkerFactoryPieces {
             }
         }
 
-        assembleSpawnerTower(generationInfo);
+        if (generationInfo.isMainPath) {
+            assembleSpawnerTower(generationInfo);
+        }
     }
 
     private static GenerationInformation generateRandomWithDirectionalWeights(GenerationInformation generationInfo, double pullForewards, double pullRight) {
@@ -675,8 +904,8 @@ public class ShulkerFactoryPieces {
         if (result == null) {
             // I messed up
             Cobbler.LOGGER.info("generateRandomWithDirectionalWeights([generationInfo], " + pullForewards + ", " + pullRight
-                    + " encountered an error, generating a random piece");
-            result = addRandomPiece(generationInfo);
+                    + " encountered an error, generating a bridge");
+            result = addBridge(generationInfo);
         }
         return result;
 
@@ -758,7 +987,7 @@ public class ShulkerFactoryPieces {
          * or what item an Item Frame will have.
          */
         @Override
-        protected void handleDataMarker(String function, BlockPos pos, IWorld worldIn, Random rand, MutableBoundingBox sbb) {
+        protected void handleDataMarker(String function, BlockPos pos, IServerWorld worldIn, Random rand, MutableBoundingBox sbb) {
             if (function.startsWith("Sentry")) {
                 ShulkerEntity shulkerentity = EntityType.SHULKER.create(worldIn.getWorld());
                 shulkerentity.setPosition((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D);

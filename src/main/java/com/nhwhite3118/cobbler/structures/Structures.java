@@ -3,12 +3,16 @@ package com.nhwhite3118.cobbler.structures;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.nhwhite3118.cobbler.Cobbler;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.util.registry.WorldGenRegistries;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.Category;
 import net.minecraft.world.biome.Biomes;
@@ -58,12 +62,31 @@ public class Structures {
         tempMap.put(structure, StructureSeparationSettings);
         DimensionStructuresSettings.field_236191_b_ = ImmutableMap.copyOf(tempMap);
 
-        DimensionSettings.Preset.field_236122_b_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
-        DimensionSettings.Preset.field_236123_c_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
-        DimensionSettings.Preset.field_236124_d_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
-        DimensionSettings.Preset.field_236125_e_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
-        DimensionSettings.Preset.field_236126_f_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
-        DimensionSettings.Preset.field_236127_g_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
+        WorldGenRegistries.field_243658_j.func_243576_d(DimensionSettings.field_242734_c).func_236108_a_().func_236195_a_().put(structure,
+                StructureSeparationSettings);
+        ;
+        WorldGenRegistries.field_243658_j.func_243576_d(DimensionSettings.field_242735_d).func_236108_a_().func_236195_a_().put(structure,
+                StructureSeparationSettings);
+        ;
+        WorldGenRegistries.field_243658_j.func_243576_d(DimensionSettings.field_242736_e).func_236108_a_().func_236195_a_().put(structure,
+                StructureSeparationSettings);
+        ;
+        WorldGenRegistries.field_243658_j.func_243576_d(DimensionSettings.field_242737_f).func_236108_a_().func_236195_a_().put(structure,
+                StructureSeparationSettings);
+        ;
+        WorldGenRegistries.field_243658_j.func_243576_d(DimensionSettings.field_242738_g).func_236108_a_().func_236195_a_().put(structure,
+                StructureSeparationSettings);
+        ;
+        WorldGenRegistries.field_243658_j.func_243576_d(DimensionSettings.field_242739_h).func_236108_a_().func_236195_a_().put(structure,
+                StructureSeparationSettings);
+        ;
+
+        // DimensionSettings.field_242734_c.func_240901_a_()..put(structure, StructureSeparationSettings);
+//        DimensionSettings.Preset.field_236123_c_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
+//        DimensionSettings.Preset.field_236124_d_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
+//        DimensionSettings.Preset.field_236125_e_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
+//        DimensionSettings.Preset.field_236126_f_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
+//        DimensionSettings.Preset.field_236127_g_.func_236137_b_().func_236108_a_().func_236195_a_().put(structure, StructureSeparationSettings);
     }
 
     /*
@@ -89,10 +112,19 @@ public class Structures {
         return Registry.register(Registry.STRUCTURE_PIECE, key.toLowerCase(Locale.ROOT), structurePiece);
     }
 
-    public static void addShulkerFactoryToBiomes(Biome biome, String biomeNamespace, String biomePath) {
-        if (biome.getCategory() == Category.THEEND && biome != Biomes.THE_END && biome != Biomes.SMALL_END_ISLANDS) {
-            biome.func_235063_a_(SHULKER_FACTORY.func_236391_a_(IFeatureConfig.NO_FEATURE_CONFIG));
+    public static void addShulkerFactoryToBiomes(Biome biome, ResourceLocation biomeRegisteryKey) {
+        if (biome.getCategory() == Category.THEEND && biomeRegisteryKey != Biomes.THE_END.func_240901_a_()
+                && biomeRegisteryKey != Biomes.SMALL_END_ISLANDS.func_240901_a_()) {
+
+            convertImmutableFeatures(biome);
+            biome.func_242440_e().func_242487_a().add(() -> SHULKER_FACTORY.func_236391_a_(IFeatureConfig.NO_FEATURE_CONFIG));
 
         }
-    };
+    }
+
+    private static void convertImmutableFeatures(Biome biome) {
+        if (biome.func_242440_e().field_242485_g instanceof ImmutableList) {
+            biome.func_242440_e().field_242485_g = biome.func_242440_e().field_242485_g.stream().map(Lists::newArrayList).collect(Collectors.toList());
+        }
+    }
 }

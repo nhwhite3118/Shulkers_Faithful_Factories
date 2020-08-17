@@ -25,9 +25,10 @@ public class GenerationInformation {
     public Random random;
     public boolean lastGenerationSucceded = true;
     public ResourceLocation lastStructureAttempted;
+    public boolean isMainPath = true;
 
-    GenerationInformation(int north, int south, int west, int east, BlockPos pos, Rotation rot,
-            List<StructurePiece> pieces, TemplateManager template, Random rand) {
+    GenerationInformation(int north, int south, int west, int east, BlockPos pos, Rotation rot, List<StructurePiece> pieces, TemplateManager template,
+            Random rand, boolean isMainPath) {
         north_boundry = north;
         south_boundry = south;
         west_boundry = west;
@@ -37,6 +38,7 @@ public class GenerationInformation {
         pieceList = pieces;
         templateManager = template;
         random = rand;
+        this.isMainPath = isMainPath;
     }
 
     /*
@@ -53,6 +55,7 @@ public class GenerationInformation {
         pieceList = in.pieceList;
         templateManager = in.templateManager;
         random = in.random;
+        this.isMainPath = in.isMainPath;
     }
 
 }
