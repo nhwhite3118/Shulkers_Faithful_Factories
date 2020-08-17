@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Lists;
 import com.nhwhite3118.cobbler.Cobbler;
 
 import net.minecraft.util.ResourceLocation;
@@ -124,7 +123,7 @@ public class Structures {
 
     private static void convertImmutableFeatures(Biome biome) {
         if (biome.func_242440_e().field_242485_g instanceof ImmutableList) {
-            biome.func_242440_e().field_242485_g = biome.func_242440_e().field_242485_g.stream().map(Lists::newArrayList).collect(Collectors.toList());
+            biome.func_242440_e().field_242485_g = biome.func_242440_e().field_242485_g.stream().collect(Collectors.toList());
         }
     }
 }
