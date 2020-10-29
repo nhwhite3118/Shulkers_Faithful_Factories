@@ -115,7 +115,7 @@ public final class EndermanCocoaFarming {
         // Direction[] possibleRotations = heldBlockState.getValidRotations(iworld, blockpos);
         heldBlockState = heldBlockState.with(HorizontalBlock.HORIZONTAL_FACING, adjacentLog.getB());
         if (heldBlockState != null && canPlaceBlock(iworld, blockpos, heldBlockState, blockstate, jungleLogState, jungleLogPos)
-                && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(enderman, BlockSnapshot.create(iworld.func_234923_W_(), iworld, blockpos),
+                && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(enderman, BlockSnapshot.create(iworld.getDimensionKey(), iworld, blockpos),
                         adjacentLog.getB())) {
 //            if (possibleRotations == null || possibleRotations.length == 0) {
 //                return;
@@ -134,7 +134,7 @@ public final class EndermanCocoaFarming {
     private static boolean canPlaceBlock(IWorldReader iWorld, BlockPos locationToPlace, BlockState heldBlock, BlockState placementLocationBlockState,
             BlockState blockToPlaceOnBlockState, BlockPos blockToPlaceOnPlacement) {
         return placementLocationBlockState.isAir(iWorld, locationToPlace) && !blockToPlaceOnBlockState.isAir(iWorld, blockToPlaceOnPlacement)
-                && blockToPlaceOnBlockState.func_235785_r_(iWorld, blockToPlaceOnPlacement) && heldBlock.isValidPosition(iWorld, locationToPlace);
+                && blockToPlaceOnBlockState.hasOpaqueCollisionShape(iWorld, blockToPlaceOnPlacement) && heldBlock.isValidPosition(iWorld, locationToPlace);
     }
 
     private static Tuple<BlockPos, Direction> jungleLogAdjacent(IWorldReader iWorld, BlockPos locationToPlace, Direction direction) {

@@ -17,6 +17,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.ChunkStatus;
 import net.minecraft.world.chunk.IChunk;
 import net.minecraft.world.gen.ChunkGenerator;
+import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.Heightmap;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
@@ -32,13 +33,13 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
         super(codec);
     }
 
-    /*
-     * The structure name to show in the /locate command.
-     */
-    @Override
-    public String getStructureName() {
-        return Cobbler.MODID + ":shulker_factory";
-    }
+//    /*
+//     * The structure name to show in the /locate command.
+//     */
+//    @Override
+//    public String getStructureName() {
+//        return Cobbler.MODID + ":shulker_factory";
+//    }
 
     /*
      * This is how the worldgen code will start the generation of our structure when it passes the checks.
@@ -46,6 +47,15 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
     @Override
     public Structure.IStartFactory getStartFactory() {
         return ShulkerFactoryStructure.Start::new;
+    }
+
+    /**
+     * Generation stage for when to generate the structure. there are 10 stages you can pick from! This surface structure stage places the structure before
+     * plants and ores are generated.
+     */
+    @Override
+    public GenerationStage.Decoration func_236396_f_() {
+        return GenerationStage.Decoration.SURFACE_STRUCTURES;
     }
 
     /*
@@ -84,7 +94,7 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
                         int trueChunkX = chunkX + spacing * xRadius;
                         int trueChunkZ = chunkZ + spacing * zRadius;
                         ChunkPos chunkPos = structure.func_236392_a_(structureConfig, seed, chunkRandom, trueChunkX, trueChunkZ);
-                        if (worldView.getNoiseBiome((chunkPos.x << 2) + 2, 60, (chunkPos.z << 2) + 2).func_242440_e().func_242493_a(structure)) {
+                        if (worldView.getNoiseBiome((chunkPos.x << 2) + 2, 60, (chunkPos.z << 2) + 2).getGenerationSettings().hasStructure(structure)) {
                             IChunk chunk = worldView.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_STARTS);
                             StructureStart<?> structureStart = structureAccessor.func_235013_a_(SectionPos.from(chunk.getPos(), 0), structure, chunk);
                             if (structureStart != null && structureStart.isValid()) {
@@ -133,7 +143,7 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
             int z = (chunkZ << 4) + 7;
 
             // Finds the y value of the terrain at location.
-            int surfaceY = generator.func_222531_c(x, z, Heightmap.Type.WORLD_SURFACE_WG);
+            int surfaceY = generator.getNoiseHeightMinusOne(x, z, Heightmap.Type.WORLD_SURFACE_WG);
             if (surfaceY < 30) {
                 return;
             }

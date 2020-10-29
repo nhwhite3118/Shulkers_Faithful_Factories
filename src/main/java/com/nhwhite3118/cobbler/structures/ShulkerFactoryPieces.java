@@ -106,7 +106,7 @@ public class ShulkerFactoryPieces {
     private static final double RUINED_TOWER_WEIGHT = 9;
     private static final double PLATFORM_WEIGHT = 40;
     private static final double OPTIONAL_STAIRS_WEIGHT = 5;
-    private static final double INCUBATOR_WEIGHT = 4;
+    private static final double INCUBATOR_WEIGHT = 2;
     private static final double RESTAURAUNT_WEIGHT = 3;
     private static final double SUPPORT_CITY_WEIGHT = 5;
     // 1 generates closer to start, increasing it increases the spread. As it
@@ -262,7 +262,7 @@ public class ShulkerFactoryPieces {
         BlockPos swbCorner = location.getA().add(new BlockPos(0, -256, 0).rotate(location.getB()));
         BlockPos netCorner = location.getA().add(new BlockPos(8, -4, 8).rotate(location.getB()));
         return new MutableBoundingBox(Math.min(swbCorner.getX(), netCorner.getX()), 0, Math.min(swbCorner.getZ(), netCorner.getZ()),
-                Math.max(swbCorner.getX(), netCorner.getX()), 256, Math.max(swbCorner.getZ(), netCorner.getZ()));
+                Math.max(swbCorner.getX(), netCorner.getX()), location.getA().getY() + 36, Math.max(swbCorner.getZ(), netCorner.getZ()));
 
     }
 
@@ -1026,6 +1026,9 @@ public class ShulkerFactoryPieces {
 
     private static boolean canGenerate(GenerationInformation generationInfo, ResourceLocation structure) {
         MutableBoundingBox boundingBox;
+        if (!structure.equals(SPAWNER_ROOM) && generationInfo.position.getY() > 240) {
+            return false;
+        }
         if (structure.equals(SPAWNER_ROOM)) {
             boundingBox = getSpawnerTowerBoundingBox(new Tuple<BlockPos, Rotation>(generationInfo.position, generationInfo.rotation));
         } else if (structure.equals(REINFORCED_SUPPORT) || structure.equals(SIMPLE_SUPPORT)) {
@@ -1035,6 +1038,11 @@ public class ShulkerFactoryPieces {
         } else {
             boundingBox = new ShulkerFactoryPieces.Piece(generationInfo, structure).getBoundingBox();
         }
+
+        if (boundingBox.maxY > 240 && !structure.equals(SPAWNER_ROOM)) {
+            return false;
+        }
+
         if (StructurePiece.findIntersecting(generationInfo.pieceList, boundingBox) == null) {
             return true;
         }
@@ -1052,7 +1060,7 @@ public class ShulkerFactoryPieces {
         private Rotation rotation;
 
         public Piece(GenerationInformation generationInfo, ResourceLocation resourceLocationIn) {
-            super(Structures.FOR_REGISTERING_SHULKER_FACTORY_PIECES, 0);
+            super(Structures.SHULKER_FACTORY_PIECE_TYPE, 0);
             this.resourceLocation = resourceLocationIn;
             BlockPos blockpos = ShulkerFactoryPieces.OFFSET.get(resourceLocation);
             this.templatePosition = generationInfo.position.add(blockpos.getX(), blockpos.getY(), blockpos.getZ());
@@ -1061,7 +1069,7 @@ public class ShulkerFactoryPieces {
         }
 
         public Piece(GenerationInformation generationInfo, ResourceLocation resourceLocationIn, BlockPos positionOverride) {
-            super(Structures.FOR_REGISTERING_SHULKER_FACTORY_PIECES, 0);
+            super(Structures.SHULKER_FACTORY_PIECE_TYPE, 0);
             this.resourceLocation = resourceLocationIn;
             BlockPos blockpos = ShulkerFactoryPieces.OFFSET.get(resourceLocation);
             this.templatePosition = positionOverride.add(blockpos.getX(), blockpos.getY(), blockpos.getZ());
@@ -1070,7 +1078,7 @@ public class ShulkerFactoryPieces {
         }
 
         public Piece(TemplateManager templateManagerIn, CompoundNBT tagCompound) {
-            super(Structures.FOR_REGISTERING_SHULKER_FACTORY_PIECES, tagCompound);
+            super(Structures.SHULKER_FACTORY_PIECE_TYPE, tagCompound);
             this.resourceLocation = new ResourceLocation(tagCompound.getString("Template"));
             this.rotation = Rotation.valueOf(tagCompound.getString("Rot"));
             this.setupPiece(templateManagerIn);
@@ -1123,12 +1131,12 @@ public class ShulkerFactoryPieces {
         }
 
 //        @Override
-//        public boolean func_230383_a_(ISeedReader seedReader, StructureManager structureManager, ChunkGenerator p_225577_2_, Random randomIn, MutableBoundingBox structureBoundingBoxIn, ChunkPos chunkPos) {
+//        public boolean func_230383_a_(ISeedReader seedReader, StructureManager structureManager, ChunkGenerator chunkGeneratorIn, Random randomIn, MutableBoundingBox structureBoundingBoxIn, ChunkPos chunkPos) {
 //            PlacementSettings placementsettings = (new PlacementSettings()).setRotation(this.rotation).setMirror(Mirror.NONE);
 //            BlockPos blockpos = ShulkerFactoryPieces.OFFSET.get(this.resourceLocation);
 //            this.templatePosition.add(Template.transformedBlockPos(placementsettings, new BlockPos(0 - blockpos.getX(), 0, 0 - blockpos.getZ())));
 //            return super.func_214810_a(p_214810_1_, p_214810_2_) func_230383_a_(p_230383_1_, p_230383_2_, p_230383_3_, p_230383_4_, p_230383_5_, p_230383_6_, p_230383_7_)
-//            return super.func_225577_a_(worldIn, p_225577_2_, randomIn, structureBoundingBoxIn, chunkPos);
+//            return super.create(worldIn, chunkGeneratorIn, randomIn, structureBoundingBoxIn, chunkPos);
 //        }
     }
 

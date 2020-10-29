@@ -98,7 +98,7 @@ public final class ForgeEventSubscriber {
         float saplingDryPercent = (((float) variance / 5.0f) * (float) (Math.max(lightLevel - 10, 0)) + Cobbler.CobblerConfig.desertSaplingsMinDeathrate.get())
                 / 100.0f;
 
-        // func_226691_t_ appears to get the biome of a given BlockPos
+        // getBiome appears to get the biome of a given BlockPos
         if (rand.nextFloat() <= saplingDryPercent && world.getBiome(saplingPos).getCategory() == Biome.Category.DESERT) {
             world.setBlockState(saplingPos, Blocks.DEAD_BUSH.getDefaultState());
             event.setResult(Result.DENY);
