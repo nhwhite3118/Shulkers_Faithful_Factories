@@ -45,17 +45,58 @@ public class GenerationInformation {
      * Copy Constructor
      */
     GenerationInformation(GenerationInformation in) {
+        Copy(in);
+    }
+
+    private void Copy(GenerationInformation in) {
         north_boundry = in.north_boundry;
         south_boundry = in.south_boundry;
         west_boundry = in.west_boundry;
         east_boundry = in.east_boundry;
         position = in.position;
         rotation = in.rotation;
+        isMainPath = in.isMainPath;
         // We don't want a deep copy, we just need to keep a reference to it
         pieceList = in.pieceList;
         templateManager = in.templateManager;
         random = in.random;
-        this.isMainPath = in.isMainPath;
+    }
+
+    /*
+     * Copy Constructors with options for commonly changed things. If only Java allowed default values.
+     */
+    GenerationInformation(GenerationInformation in, BlockPos newPos) {
+        Copy(in);
+        position = newPos;
+    }
+
+    GenerationInformation(GenerationInformation in, Rotation newRot) {
+        Copy(in);
+        rotation = newRot;
+    }
+
+    GenerationInformation(GenerationInformation in, BlockPos newPos, Rotation newRot) {
+        Copy(in);
+        position = newPos;
+        rotation = newRot;
+    }
+
+    GenerationInformation(GenerationInformation in, boolean mainPath) {
+        Copy(in);
+        isMainPath = mainPath;
+    }
+
+    GenerationInformation(GenerationInformation in, BlockPos newPos, Rotation newRot, boolean mainPath) {
+        Copy(in);
+        position = newPos;
+        rotation = newRot;
+        isMainPath = mainPath;
+    }
+
+    GenerationInformation(GenerationInformation in, BlockPos newPos, boolean mainPath) {
+        Copy(in);
+        position = newPos;
+        isMainPath = mainPath;
     }
 
 }

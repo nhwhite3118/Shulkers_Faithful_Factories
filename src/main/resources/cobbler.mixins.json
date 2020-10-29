@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "package": "com.nhwhite3118.cobbler.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "cobbler.refmap.json",
+  "mixins": [
+    "GenerationSettingsAccessor",
+    "AddStructuresToBiomesEarlyMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "minVersion": "0.8"
+}

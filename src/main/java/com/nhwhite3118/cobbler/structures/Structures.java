@@ -1,8 +1,10 @@
 package com.nhwhite3118.cobbler.structures;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableList;
@@ -21,6 +23,7 @@ import net.minecraft.world.gen.GenerationStage;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.IFeatureConfig;
 import net.minecraft.world.gen.feature.NoFeatureConfig;
+import net.minecraft.world.gen.feature.StructureFeature;
 import net.minecraft.world.gen.feature.structure.IStructurePieceType;
 import net.minecraft.world.gen.feature.structure.Structure;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
@@ -115,7 +118,7 @@ public class Structures {
         if (biome.getCategory() == Category.THEEND && biomeRegisteryKey != Biomes.THE_END.func_240901_a_()
                 && biomeRegisteryKey != Biomes.SMALL_END_ISLANDS.func_240901_a_()) {
 
-            convertImmutableFeatures(biome);
+            // convertImmutableFeatures(biome);
             biome.func_242440_e().func_242487_a().add(() -> SHULKER_FACTORY.func_236391_a_(IFeatureConfig.NO_FEATURE_CONFIG));
 
         }
@@ -123,7 +126,13 @@ public class Structures {
 
     private static void convertImmutableFeatures(Biome biome) {
         if (biome.func_242440_e().field_242485_g instanceof ImmutableList) {
-            biome.func_242440_e().field_242485_g = biome.func_242440_e().field_242485_g.stream().collect(Collectors.toList());
+            List<Supplier<StructureFeature<?, ?>>> temp = biome.func_242440_e().field_242485_g.stream().collect(Collectors.toList());
+            if (biome.func_242440_e().field_242485_g.size() > 0) {
+                Cobbler.LOGGER.warn("Making list mutable. Immutable list size is " + biome.func_242440_e().field_242485_g.size() + " and mutable list size is "
+                        + temp.size());
+
+            }
+            biome.func_242440_e().field_242485_g = temp;
         }
     }
 }
