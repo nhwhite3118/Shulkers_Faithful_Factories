@@ -25,9 +25,10 @@ public class GenerationInformation {
     public Random random;
     public boolean lastGenerationSucceded = true;
     public ResourceLocation lastStructureAttempted;
+    public boolean isMainPath = true;
 
-    GenerationInformation(int north, int south, int west, int east, BlockPos pos, Rotation rot,
-            List<StructurePiece> pieces, TemplateManager template, Random rand) {
+    GenerationInformation(int north, int south, int west, int east, BlockPos pos, Rotation rot, List<StructurePiece> pieces, TemplateManager template,
+            Random rand, boolean isMainPath) {
         north_boundry = north;
         south_boundry = south;
         west_boundry = west;
@@ -37,22 +38,65 @@ public class GenerationInformation {
         pieceList = pieces;
         templateManager = template;
         random = rand;
+        this.isMainPath = isMainPath;
     }
 
     /*
      * Copy Constructor
      */
     GenerationInformation(GenerationInformation in) {
+        Copy(in);
+    }
+
+    private void Copy(GenerationInformation in) {
         north_boundry = in.north_boundry;
         south_boundry = in.south_boundry;
         west_boundry = in.west_boundry;
         east_boundry = in.east_boundry;
         position = in.position;
         rotation = in.rotation;
+        isMainPath = in.isMainPath;
         // We don't want a deep copy, we just need to keep a reference to it
         pieceList = in.pieceList;
         templateManager = in.templateManager;
         random = in.random;
+    }
+
+    /*
+     * Copy Constructors with options for commonly changed things. If only Java allowed default values.
+     */
+    GenerationInformation(GenerationInformation in, BlockPos newPos) {
+        Copy(in);
+        position = newPos;
+    }
+
+    GenerationInformation(GenerationInformation in, Rotation newRot) {
+        Copy(in);
+        rotation = newRot;
+    }
+
+    GenerationInformation(GenerationInformation in, BlockPos newPos, Rotation newRot) {
+        Copy(in);
+        position = newPos;
+        rotation = newRot;
+    }
+
+    GenerationInformation(GenerationInformation in, boolean mainPath) {
+        Copy(in);
+        isMainPath = mainPath;
+    }
+
+    GenerationInformation(GenerationInformation in, BlockPos newPos, Rotation newRot, boolean mainPath) {
+        Copy(in);
+        position = newPos;
+        rotation = newRot;
+        isMainPath = mainPath;
+    }
+
+    GenerationInformation(GenerationInformation in, BlockPos newPos, boolean mainPath) {
+        Copy(in);
+        position = newPos;
+        isMainPath = mainPath;
     }
 
 }

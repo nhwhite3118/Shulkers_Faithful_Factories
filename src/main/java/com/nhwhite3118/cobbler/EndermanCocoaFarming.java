@@ -16,7 +16,6 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.world.IWorld;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.BlockSnapshot;
@@ -31,6 +30,9 @@ public final class EndermanCocoaFarming {
     /*
      * If cocoa has the enderman_holdable tag then it will cause issues with this because the enderman will make two attempts to pick it up, one the vanilla way
      * and one our way
+     * 
+     * TODO: This should all be added as a goal into the enderman class's map of goals instead of being hacked into the mob griefing check. See CreateWebGoal
+     * for a reference
      */
     @SubscribeEvent
     public static void letEndermenBreakAndPlaceCocoa(EntityMobGriefingEvent event) {
@@ -97,7 +99,7 @@ public final class EndermanCocoaFarming {
 
         // Place cocoa. Below code is a modified version of the tick event in EndermanEntity.PlaceBlockGoal
         Random random = enderman.getRNG();
-        IWorld iworld = enderman.world;
+        World iworld = enderman.world;
         int i = MathHelper.floor(enderman.getPosX() - 1.0D + random.nextDouble() * 2.0D);
         int j = MathHelper.floor(enderman.getPosY() + random.nextDouble() * 2.0D);
         int k = MathHelper.floor(enderman.getPosZ() - 1.0D + random.nextDouble() * 2.0D);
@@ -113,7 +115,8 @@ public final class EndermanCocoaFarming {
         // Direction[] possibleRotations = heldBlockState.getValidRotations(iworld, blockpos);
         heldBlockState = heldBlockState.with(HorizontalBlock.HORIZONTAL_FACING, adjacentLog.getB());
         if (heldBlockState != null && canPlaceBlock(iworld, blockpos, heldBlockState, blockstate, jungleLogState, jungleLogPos)
-                && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(enderman, BlockSnapshot.create(iworld, blockpos), adjacentLog.getB())) {
+                && !net.minecraftforge.event.ForgeEventFactory.onBlockPlace(enderman, BlockSnapshot.create(iworld.getDimensionKey(), iworld, blockpos),
+                        adjacentLog.getB())) {
 //            if (possibleRotations == null || possibleRotations.length == 0) {
 //                return;
 //            }
@@ -131,7 +134,7 @@ public final class EndermanCocoaFarming {
     private static boolean canPlaceBlock(IWorldReader iWorld, BlockPos locationToPlace, BlockState heldBlock, BlockState placementLocationBlockState,
             BlockState blockToPlaceOnBlockState, BlockPos blockToPlaceOnPlacement) {
         return placementLocationBlockState.isAir(iWorld, locationToPlace) && !blockToPlaceOnBlockState.isAir(iWorld, blockToPlaceOnPlacement)
-                && blockToPlaceOnBlockState.func_235785_r_(iWorld, blockToPlaceOnPlacement) && heldBlock.isValidPosition(iWorld, locationToPlace);
+                && blockToPlaceOnBlockState.hasOpaqueCollisionShape(iWorld, blockToPlaceOnPlacement) && heldBlock.isValidPosition(iWorld, locationToPlace);
     }
 
     private static Tuple<BlockPos, Direction> jungleLogAdjacent(IWorldReader iWorld, BlockPos locationToPlace, Direction direction) {
