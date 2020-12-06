@@ -11,7 +11,7 @@ import net.minecraft.world.gen.feature.StructureFeature;
 
 public class ConfiguredStructures {
     // Static instance of our structure so we can reference it and add it to biomes easily.
-    public static StructureFeature<?, ?> CONFIGURED_SHULKER_FACTORY = Structures.SHULKER_FACTORY.func_236391_a_(IFeatureConfig.NO_FEATURE_CONFIG);
+    public static StructureFeature<?, ?> CONFIGURED_SHULKER_FACTORY = Structures.SHULKER_FACTORY.withConfiguration(IFeatureConfig.NO_FEATURE_CONFIG);
 
     /*
      * Registers the configured structure which is what gets added to the biomes. Noticed we are not using a forge registry because there is none for configured
