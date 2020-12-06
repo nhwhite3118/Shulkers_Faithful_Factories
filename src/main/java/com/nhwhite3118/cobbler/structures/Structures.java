@@ -54,7 +54,7 @@ public class Structures {
          * (If you are using deferred registries, do not put this line inside the deferred method. Instead, call it anywhere else before you start the
          * configuredstructure registering)
          */
-        Structure.field_236365_a_.put(structure.getRegistryName().toString(), structure);
+        Structure.NAME_STRUCTURE_BIMAP.put(structure.getRegistryName().toString(), structure);
 
         /*
          * Adds the structure's spacing into several places so that the structure's spacing remains correct in any dimension or worldtype instead of not

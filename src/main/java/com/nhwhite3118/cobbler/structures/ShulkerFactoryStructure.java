@@ -54,7 +54,7 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
      * plants and ores are generated.
      */
     @Override
-    public GenerationStage.Decoration func_236396_f_() {
+    public GenerationStage.Decoration getDecorationStage() {
         return GenerationStage.Decoration.SURFACE_STRUCTURES;
     }
 
@@ -93,10 +93,10 @@ public class ShulkerFactoryStructure extends Structure<NoFeatureConfig> {
                     if (xEdge || zEdge) {
                         int trueChunkX = chunkX + spacing * xRadius;
                         int trueChunkZ = chunkZ + spacing * zRadius;
-                        ChunkPos chunkPos = structure.func_236392_a_(structureConfig, seed, chunkRandom, trueChunkX, trueChunkZ);
+                        ChunkPos chunkPos = structure.getChunkPosForStructure(structureConfig, seed, chunkRandom, trueChunkX, trueChunkZ);
                         if (worldView.getNoiseBiome((chunkPos.x << 2) + 2, 60, (chunkPos.z << 2) + 2).getGenerationSettings().hasStructure(structure)) {
                             IChunk chunk = worldView.getChunk(chunkPos.x, chunkPos.z, ChunkStatus.STRUCTURE_STARTS);
-                            StructureStart<?> structureStart = structureAccessor.func_235013_a_(SectionPos.from(chunk.getPos(), 0), structure, chunk);
+                            StructureStart<?> structureStart = structureAccessor.getStructureStart(SectionPos.from(chunk.getPos(), 0), structure, chunk);
                             if (structureStart != null && structureStart.isValid()) {
                                 if (skipExistingChunks && structureStart.isRefCountBelowMax()) {
                                     structureStart.incrementRefCount();
