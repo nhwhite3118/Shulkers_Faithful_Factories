@@ -114,7 +114,7 @@ public class ShulkerFactoryPieces {
     // Increases multiplicatively.
     // Numbers less than 1 will behave unpredictable, and numbers within a few
     // orders of magnitude of double.MAX_VALUE will also behave unpredictably
-    private static final double SPREAD = 1.7;
+    private static final double SPREAD = 2.7;
 
     private static final int BLOCKS_TO_GENERATION_BOUNDRY = 16 * 8 + 8;
 
@@ -181,6 +181,13 @@ public class ShulkerFactoryPieces {
     private static final double SUM_OF_REVERSE_WEIGHTS = REVERSE_WEIGHTS.stream().mapToDouble(a -> a.getB()).sum();
     private static final double SUM_OF_LEFT_WEIGHTS = LEFT_WEIGHTS.stream().mapToDouble(a -> a.getB()).sum();
 
+    
+    private static ResourceLocation randomPieceFrom(GenerationInformation generationInfo, ResourceLocation[] candidates) {
+    	int candidateArraySize = candidates.length;
+    	int selectionNumber = generationInfo.random.nextInt(candidateArraySize);
+    	return candidates[selectionNumber];
+    }
+    
     private static void assembleSpawnerTower(GenerationInformation generationInfo) {
 
         int x = generationInfo.position.getX();
@@ -278,19 +285,8 @@ public class ShulkerFactoryPieces {
     // Adds a 4 high, 4 long bridge
     private static GenerationInformation steepRampsUp(GenerationInformation generationInfo) {
         // 2 in 5 bridges will be destroyed
-        ResourceLocation structure;
-        int variant = generationInfo.random.nextInt(5);
-        switch (variant) {
-        case 0:
-            structure = SHORT_BRIDGE_UP_DESTROYED;
-            break;
-        case 1:
-            structure = SHORT_BRIDGE_UP_DESTROYED_VAR_ONE;
-            break;
-        default:
-            structure = SHORT_BRIDGE_UP;
-            break;
-        }
+        ResourceLocation pieceOptions[] = {SHORT_BRIDGE_UP_DESTROYED, SHORT_BRIDGE_UP_DESTROYED_VAR_ONE, SHORT_BRIDGE_UP, SHORT_BRIDGE_UP, SHORT_BRIDGE_UP};
+        ResourceLocation structure = randomPieceFrom(generationInfo, pieceOptions);
         generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, structure));
 
         BlockPos rotationOffSet = new BlockPos(4, 4, 0).rotate((generationInfo.rotation));
@@ -302,23 +298,9 @@ public class ShulkerFactoryPieces {
     // Adds a 4 high, 4 long bridge
     private static GenerationInformation addBridge(GenerationInformation generationInfo) {
         // 2 in 6 bridges will be destroyed
-        ResourceLocation piece;
-        int variant = generationInfo.random.nextInt(6);
-        switch (variant) {
-        case 0:
-            piece = LONG_BRIDGE;
-            break;
-        case 1:
-            piece = LONG_BRIDGE_VAR_ONE;
-            break;
-        case 2:
-            piece = LONG_BRIDGE_VAR_TWO;
-        case 3:
-            piece = LONG_BRIDGE_VAR_THREE;
-        default:
-            piece = LONG_BRIDGE_DESTROYED;
-            break;
-        }
+        ResourceLocation pieceOptions[] = {LONG_BRIDGE, LONG_BRIDGE_VAR_ONE, LONG_BRIDGE_VAR_TWO, LONG_BRIDGE_VAR_THREE, LONG_BRIDGE_DESTROYED, LONG_BRIDGE_DESTROYED};
+        ResourceLocation piece = randomPieceFrom(generationInfo, pieceOptions);
+        
         if (canGenerate(generationInfo, piece)) {
             // If a bridge can't fit, not many other things will
             return steepRampsUp(generationInfo);
@@ -437,37 +419,18 @@ public class ShulkerFactoryPieces {
             result.lastStructureAttempted = LOW_SPLIT_LEFT;
             return result;
         }
-        ResourceLocation structure;
-        int variant = generationInfo.random.nextInt(8);
-        switch (variant) {
-        case 0:
-            structure = LOW_SPLIT_LEFT;
-            break;
-        case 1:
-            structure = LOW_SPLIT_LEFT_VAR_ONE;
-            break;
-        case 2:
-            structure = LOW_SPLIT_LEFT_VAR_TWO;
-            break;
-        case 3:
-            structure = LOW_SPLIT_LEFT_VAR_THREE;
-            break;
-        case 4:
-            structure = LOW_SPLIT_LEFT_VAR_FOUR;
-            break;
-        case 5:
-            structure = LOW_SPLIT_LEFT_VAR_FIVE;
-            break;
-        case 6:
-            structure = LOW_SPLIT_LEFT_VAR_SIX;
-            break;
-        case 7:
-            structure = LOW_SPLIT_LEFT_VAR_SEVEN;
-            break;
-        default:
-            // We shouldn't get here, but the compiler will complain if this isn't included
-            structure = LOW_SPLIT_LEFT;
-        }
+        
+        ResourceLocation pieceOptions[] = {
+        		LOW_SPLIT_LEFT, 
+        		LOW_SPLIT_LEFT_VAR_ONE, 
+        		LOW_SPLIT_LEFT_VAR_TWO, 
+        		LOW_SPLIT_LEFT_VAR_THREE, 
+        		LOW_SPLIT_LEFT_VAR_FOUR, 
+        		LOW_SPLIT_LEFT_VAR_FIVE, 
+        		LOW_SPLIT_LEFT_VAR_SIX, 
+        		LOW_SPLIT_LEFT_VAR_SEVEN };
+        ResourceLocation structure = randomPieceFrom(generationInfo, pieceOptions);
+        
         generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, structure, blockpos));
         // Move from bl corner to bl corner of stairs up and turn left
         rotationOffSet = new BlockPos(2, 1, -1).rotate(generationInfo.rotation);
@@ -601,6 +564,12 @@ public class ShulkerFactoryPieces {
         BlockPos structurePos = generationInfo.position.add(rotationOffSet);
         GenerationInformation supportInfo = new GenerationInformation(generationInfo);
         supportInfo.position = generationInfo.position.add(rotationOffSet);
+        
+
+        ResourceLocation supportPieceOptions[] = {
+        		SUPPORT_PLATFORM_STAIRS, 
+        		SUPPORT_PLATFORM_STAIRS_VAR_ONE, 
+        		SUPPORT_PLATFORM_STAIRS_VAR_TWO};
 
         if (!canGenerate(supportInfo, SUPPORT_PLATFORM_STAIRS)) {
             generationInfo.lastGenerationSucceded = false;
@@ -608,22 +577,7 @@ public class ShulkerFactoryPieces {
             return generationInfo;
         }
         do {
-            int pieceSelector = generationInfo.random.nextInt(3);
-            ResourceLocation selectedPiece;
-            switch (pieceSelector) {
-            case 0:
-                selectedPiece = SUPPORT_PLATFORM_STAIRS;
-                break;
-            case 1:
-                selectedPiece = SUPPORT_PLATFORM_STAIRS_VAR_ONE;
-                break;
-            case 2:
-                selectedPiece = SUPPORT_PLATFORM_STAIRS_VAR_TWO;
-                break;
-            default:
-                selectedPiece = SUPPORT_PLATFORM_STAIRS;
-                break;
-            }
+            ResourceLocation selectedPiece = randomPieceFrom(generationInfo, supportPieceOptions);
             generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, selectedPiece, structurePos));
             structurePos = structurePos.add(0, -16, 0);
         } while (structurePos.getY() > 45);
@@ -681,22 +635,7 @@ public class ShulkerFactoryPieces {
 
             // Add the stairs
             structurePos = structurePos.add(0, 16, 0);
-            int pieceSelector = generationInfo.random.nextInt(3);
-            ResourceLocation selectedPiece;
-            switch (pieceSelector) {
-            case 0:
-                selectedPiece = SUPPORT_PLATFORM_STAIRS;
-                break;
-            case 1:
-                selectedPiece = SUPPORT_PLATFORM_STAIRS_VAR_ONE;
-                break;
-            case 2:
-                selectedPiece = SUPPORT_PLATFORM_STAIRS_VAR_TWO;
-                break;
-            default:
-                selectedPiece = SUPPORT_PLATFORM_STAIRS;
-                break;
-            }
+            ResourceLocation selectedPiece = randomPieceFrom(generationInfo, supportPieceOptions);
             generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, selectedPiece, structurePos));
 
         }
@@ -721,15 +660,15 @@ public class ShulkerFactoryPieces {
         while (attempts < 3) {
             switch (direction) {
             case 0:
-                result = makeSupportCityLeftBranch(generationInfo, force);
+                result = makeSupportCityLeftBranch(generationInfo, attempts == 2 && force);
                 attempts = result.lastGenerationSucceded ? 3 : attempts + 1;
                 break;
             case 1:
-                result = makeSupportCityForewardBranch(generationInfo, force);
+                result = makeSupportCityForewardBranch(generationInfo, attempts == 2 && force);
                 attempts = result.lastGenerationSucceded ? 3 : attempts + 1;
                 break;
             case 2:
-                result = makeSupportCityRightBranch(generationInfo, force);
+                result = makeSupportCityRightBranch(generationInfo, attempts == 2 && force);
                 attempts = result.lastGenerationSucceded ? 3 : attempts + 1;
                 break;
             }
@@ -755,17 +694,17 @@ public class ShulkerFactoryPieces {
     }
 
     private static GenerationInformation makeSupportCityRightBranch(GenerationInformation generationInfo, boolean force) {
-        BlockPos branchPos = generationInfo.position.add(new BlockPos(5, 9, 3).rotate(generationInfo.rotation));
-        if (!force && !canGenerate(new GenerationInformation(generationInfo, branchPos, generationInfo.rotation.add(Rotation.CLOCKWISE_90)),
+        BlockPos branchPos = generationInfo.position.add(new BlockPos(7, 11, 7).rotate(generationInfo.rotation));
+        GenerationInformation exit = new GenerationInformation(generationInfo, branchPos, generationInfo.rotation.add(Rotation.CLOCKWISE_90));
+        if (!force && !canGenerate(new GenerationInformation(generationInfo, branchPos, exit.rotation),
                 SUPPORT_STAIRS_TO_STANDARD)) {
             GenerationInformation result = new GenerationInformation(generationInfo);
             result.lastGenerationSucceded = false;
             result.lastStructureAttempted = SUPPORT_STAIRS_TO_STANDARD;
             return result;
         }
-        generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SUPPORT_STAIRS_TO_STANDARD, branchPos));
+        generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(exit, SUPPORT_STAIRS_TO_STANDARD));
 
-        GenerationInformation exit = new GenerationInformation(generationInfo, branchPos, generationInfo.rotation.add(Rotation.CLOCKWISE_90));
         exit.position = branchPos.add(new BlockPos(7, 3, 0).rotate(exit.rotation));
         exit.lastGenerationSucceded = true;
         exit.lastStructureAttempted = SUPPORT_STAIRS_TO_STANDARD;
@@ -774,16 +713,16 @@ public class ShulkerFactoryPieces {
 
     private static GenerationInformation makeSupportCityLeftBranch(GenerationInformation generationInfo, boolean force) {
         BlockPos branchPos = generationInfo.position.add(new BlockPos(5, 0, 1).rotate(generationInfo.rotation));
-        if (!force && !canGenerate(new GenerationInformation(generationInfo, branchPos, generationInfo.rotation.add(Rotation.COUNTERCLOCKWISE_90)),
+        GenerationInformation exit = new GenerationInformation(generationInfo, branchPos, generationInfo.rotation.add(Rotation.COUNTERCLOCKWISE_90));
+        if (!force && !canGenerate(new GenerationInformation(generationInfo, branchPos, exit.rotation),
                 SUPPORT_STAIRS_TO_STANDARD)) {
             GenerationInformation result = new GenerationInformation(generationInfo);
             result.lastGenerationSucceded = false;
             result.lastStructureAttempted = SUPPORT_STAIRS_TO_STANDARD;
             return result;
         }
-        generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, SUPPORT_STAIRS_TO_STANDARD, branchPos));
+        generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(exit, SUPPORT_STAIRS_TO_STANDARD));
 
-        GenerationInformation exit = new GenerationInformation(generationInfo, branchPos, generationInfo.rotation.add(Rotation.CLOCKWISE_90));
         exit.position = branchPos.add(new BlockPos(7, 3, 0).rotate(exit.rotation));
         exit.lastGenerationSucceded = true;
         exit.lastStructureAttempted = SUPPORT_STAIRS_TO_STANDARD;
@@ -813,40 +752,19 @@ public class ShulkerFactoryPieces {
             result.lastStructureAttempted = LOW_SPLIT_RIGHT;
             return result;
         }
-        ResourceLocation structure;
-        int variant = generationInfo.random.nextInt(9);
-        switch (variant) {
-        case 0:
-            structure = LOW_SPLIT_RIGHT;
-            break;
-        case 1:
-            structure = LOW_SPLIT_RIGHT_VAR_ONE;
-            break;
-        case 2:
-            structure = LOW_SPLIT_RIGHT_VAR_TWO;
-            break;
-        case 3:
-            structure = LOW_SPLIT_RIGHT_VAR_THREE;
-            break;
-        case 4:
-            structure = LOW_SPLIT_RIGHT_VAR_FOUR;
-            break;
-        case 5:
-            structure = LOW_SPLIT_RIGHT_VAR_FIVE;
-            break;
-        case 6:
-            structure = LOW_SPLIT_RIGHT_VAR_SIX;
-            break;
-        case 7:
-            structure = LOW_SPLIT_RIGHT_VAR_SEVEN;
-            break;
-        case 8:
-            structure = LOW_SPLIT_RIGHT_VAR_EIGHT;
-            break;
-        default:
-            // We shouldn't get here, but the compiler will complain if this isn't included
-            structure = LOW_SPLIT_RIGHT;
-        }
+        
+        ResourceLocation pieceOptions[] = {
+        		LOW_SPLIT_RIGHT, 
+        		LOW_SPLIT_RIGHT_VAR_ONE, 
+        		LOW_SPLIT_RIGHT_VAR_TWO, 
+        		LOW_SPLIT_RIGHT_VAR_THREE, 
+        		LOW_SPLIT_RIGHT_VAR_FOUR, 
+        		LOW_SPLIT_RIGHT_VAR_FIVE, 
+        		LOW_SPLIT_RIGHT_VAR_SIX,
+        		LOW_SPLIT_RIGHT_VAR_SEVEN, 
+        		LOW_SPLIT_RIGHT_VAR_EIGHT  };
+        ResourceLocation structure = randomPieceFrom(generationInfo, pieceOptions);
+        
         generationInfo.pieceList.add(new ShulkerFactoryPieces.Piece(generationInfo, structure, blockpos));
 
         // Move from bl corner to bl corner of stairs up and turn right
