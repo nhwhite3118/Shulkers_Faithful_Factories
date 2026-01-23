@@ -1,4 +1,4 @@
-![](http://cf.way2muchnoise.eu/title/cobbler.svg) ![](http://cf.way2muchnoise.eu/full_cobbler_downloads.svg) ![](http://cf.way2muchnoise.eu/versions/cobbler.svg)
+![](http://cf.way2muchnoise.eu/title/380136.svg) ![](http://cf.way2muchnoise.eu/full_380136_downloads.svg) ![](http://cf.way2muchnoise.eu/versions/380136.svg)
 # Shulker's Faithful Factories
 
 Shulker's Faithful Factories is not meant to fundimentally change the experience of vanilla minecraft, but rather to compliment it by opening up the possibilities of creating more farms and making more resources renewable. It should ultimately keep the same spirit of the vanilla game, but add more things for the more technical players to do.
